@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { Logo } from "../components/signInComponents/Logo"
 import { InputBox } from "../components/signInComponents/InputBox"
 import { SubHeading } from "../components/signInComponents/SubHeading"
@@ -6,6 +8,10 @@ import { BottomWarning } from "../components/signInComponents/BottomWarning"
 
 
 export function SignIn() {
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
     return <div className="flex justify-between items-center h-screen w-screen bg-cover bg-gradient-to-r from-black to-violet-900">
         <div>
             <div className="m-10 text-7xl text-white font-bold">Welcome</div>
@@ -15,13 +21,17 @@ export function SignIn() {
             <SubHeading label={"Join Today"} />
 
             <div className="justify-self-start text-xl my-1">Username</div>
-            <InputBox />
+            <InputBox onChange={(e) => setUsername(e.target.value)} />
 
             <div className="justify-self-start text-xl my-1">Password</div>
-            <InputBox />
+            <InputBox onChange={(e) => setPassword(e.target.value)} />
 
-            <Button label={"Sign In"} />
-            <BottomWarning label={"New to ChatNet?"} buttonText={"SignUp"} />
+            <Button label={"Sign In"} onClick={() => {
+
+                //send backend request here
+
+            }} />
+            <BottomWarning label={"New to ChatNet?"} buttonText={"SignUp"} to={"/signup"} />
 
             
         </div>
