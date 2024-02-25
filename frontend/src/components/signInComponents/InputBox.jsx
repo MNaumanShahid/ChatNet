@@ -1,6 +1,6 @@
 
-export function InputBox() {
+export function InputBox({onChange}) {
     return <div>
-        <input type="text" className="border-2 p-1 w-full rounded" />
+        <input onChange={onChange} type="text" className="border-2 p-1 w-full rounded" />
     </div>
 }
