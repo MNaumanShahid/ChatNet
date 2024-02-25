@@ -62,6 +62,9 @@ export function Signup() {
                 }
                 catch(err) {
                     console.log(err);
+                    if(err.response) {
+                        console.log(err.response);
+                    }
                     setError("Error while trying to signup");
                 }
 
