@@ -51,21 +51,12 @@ export function Signup() {
                         firstname,
                         lastname
                     });
-                    if(response.status == 200) {
-                        //re direct them to the homepage
-                        setError(response.data.message);
-                    }
-                    else {
-                        console.log(response.data.message);
-                        setError(response.data.message);
-                    }
+                    // re direct to homepage
+                    setError(response.data.message);
                 }
                 catch(err) {
                     console.log(err);
-                    if(err.response) {
-                        console.log(err.response);
-                    }
-                    setError("Error while trying to signup");
+                    setError(err.response.data.message);
                 }
 
             }} />

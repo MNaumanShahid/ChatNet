@@ -35,21 +35,12 @@ export function SignIn() {
                         username,
                         password
                     });
-                    if(response.status == 200) {
-                        // re direct them to homepage
-                        setError(response.data.message);
-
-                    } else {
-                        console.log(response.data.message);
-                        setError(response.data.message);
-                    }
+                    setError(response.data.message);
+                    //re direct them to homepage
                 }
                 catch(err) {
                     console.log(err);
-                    if(err.response) {
-                        console.log(err.response);
-                    }
-                    setError("Error while trying to login");
+                    setError(err.response.data.message);
                 }
 
             }} />
