@@ -1,16 +1,18 @@
 import { useState } from "react"
 
+import { BACKEND_URL } from "../components/backend-url"
 import { Logo } from "../components/signInComponents/Logo"
 import { InputBox } from "../components/signInComponents/InputBox"
 import { SubHeading } from "../components/signInComponents/SubHeading"
 import { Button } from "../components/signInComponents/Button"
 import { BottomWarning } from "../components/signInComponents/BottomWarning"
+import axios from "axios"
 
 
 export function SignIn() {
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [err, setError] = useState(null);
 
     return <div className="flex justify-between items-center h-screen w-screen bg-cover bg-gradient-to-r from-black to-violet-900">
         <div>
@@ -26,11 +28,23 @@ export function SignIn() {
             <div className="justify-self-start text-xl my-1">Password</div>
             <InputBox onChange={(e) => setPassword(e.target.value)} />
 
-            <Button label={"Sign In"} onClick={() => {
+            <Button label={"Sign In"} onClick={async () => {
 
-                //send backend request here
+                try {
+                    const response = await axios.post(BACKEND_URL + "/login", {
+                        username,
+                        password
+                    });
+                    setError(response.data.message);
+                    //re direct them to homepage
+                }
+                catch(err) {
+                    console.log(err);
+                    setError(err.response.data.message);
+                }
 
             }} />
+            <div className="bold text-red-600">{err}</div>
             <BottomWarning label={"New to ChatNet?"} buttonText={"SignUp"} to={"/signup"} />
 
             

@@ -1,5 +1,7 @@
 import { useState } from "react"
+import axios from "axios";
 
+import { BACKEND_URL } from "../components/backend-url"
 import { Logo } from "../components/signInComponents/Logo"
 import { InputBox } from "../components/signInComponents/InputBox"
 import { SubHeading } from "../components/signInComponents/SubHeading"
@@ -13,6 +15,7 @@ export function Signup() {
     const [password, setPassword] = useState("");
     const [firstname, setFirstName] = useState("");
     const [lastname, setLastname] = useState("");
+    const [err, setError] = useState(null);
 
 
     return <div className="flex justify-between items-center h-screen w-screen bg-cover bg-gradient-to-r from-black to-violet-900">
@@ -38,13 +41,27 @@ export function Signup() {
             <div className="justify-self-start text-xl my-1">Password</div>
             <InputBox onChange={(e) => setPassword(e.target.value)} />
 
-            <Button label={"Sign Up"} onClick={() => {
+            <Button label={"Sign Up"} onClick={async () => {
                 
-                //send backend request here
+                try {
+                    const response = await axios.post(BACKEND_URL + "/signup", {
+                        username,
+                        email,
+                        password,
+                        firstname,
+                        lastname
+                    });
+                    // re direct to homepage
+                    setError(response.data.message);
+                }
+                catch(err) {
+                    console.log(err);
+                    setError(err.response.data.message);
+                }
 
             }} />
+            <div className="bold text-red-600">{err}</div>
             <BottomWarning label={"Already have an account?"} buttonText={"Login"} to={"/signin"} />
-
             
         </div>
     </div>
