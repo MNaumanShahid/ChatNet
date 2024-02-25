@@ -116,6 +116,10 @@ def login():
                 raise Exception("Username not found.")
 
     except Exception as e:
+        if e.args[0] == "Incorrect password.":
+            return jsonify({'message': str(e)}), 401
+        elif e.args[0] == "Username not found.":
+            return jsonify({'message': str(e)}), 404
         return jsonify({'message': str(e)}), 500
 
 
