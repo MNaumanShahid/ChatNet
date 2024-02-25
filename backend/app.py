@@ -5,9 +5,11 @@ from sqlalchemy.orm import Relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from functools import wraps
 from flask_gravatar import Gravatar
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
 
 gravatar = Gravatar(
@@ -60,8 +62,8 @@ def signup():
         username = data.get('username')
         email = data.get('email')
         password = data.get('password')
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
+        first_name = data.get('firstname')
+        last_name = data.get('lastname')
 
         if not username or not password:
             raise Exception("Invalid Username or Password.")
