@@ -47,7 +47,7 @@ export function SignIn() {
                 catch(err) {
                     console.log(err);
                     if(err.response) {
-                        console.log(err.respoonse);
+                        console.log(err.response);
                     }
                     setError("Error while trying to login");
                 }
