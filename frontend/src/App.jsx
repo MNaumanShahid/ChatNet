@@ -3,6 +3,8 @@ import './App.css'
 
 import { Signup } from './pages/signup'
 import { SignIn } from './pages/signin'
+import { Profile } from './pages/profile'
+import { Home } from './pages/Home'
 
 function App() {
 
@@ -11,7 +13,8 @@ function App() {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
-
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
   )
