@@ -9,7 +9,7 @@ export const Users = {
             "LastName": "Doe",
             "Bio": "Hello, I'm user1!",
             "DateOfBirth": "1990-01-01",
-            "ProfilePicture": "https://example.com/user1.jpg",
+            "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
             "City": "New York"
           },
           {
