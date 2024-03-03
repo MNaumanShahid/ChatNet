@@ -12,7 +12,7 @@ export function Sidebar() {
         navigate("/profile");
     }
 
-    return <div className="m-3">
+    return <div className="m-3 justify-self-start">
         <ProfileButton onClick={goToProfile} />
         <Button label="Home" Icon={HomeIcon} onClick={goToHome}/>
         <Button label="Messenger" Icon={MessengerIcon} />
