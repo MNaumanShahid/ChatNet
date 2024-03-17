@@ -1,4 +1,8 @@
+import { useState } from "react"
+
 export function Post(props){
+    const comments = props.Comments;
+    const [showComments, setShowComments] = useState(false);
     return (
         <div className="mt-5 border-2 w-9/12 mx-auto p-3 rounded-md shadow-lg mb-5">
             <div className="flex font-black">
@@ -27,10 +31,27 @@ export function Post(props){
                     </div>
                     <div>{props.noOfLikes} People Liked it</div>
                 </div>
-                <div>{props.noOfComments} Comments</div>
-
-
-            </div>
+                <div onClick={function (){
+                    if(showComments){setShowComments(false)}
+                    else{setShowComments(true)}
+                }} className="cursor-pointer">{props.noOfComments} Comments</div>
+                </div>
+                <div>
+                {showComments && (
+                    <div className="mt-5">
+                        {comments.map((comment) => (
+                            <div className="flex justify-between ">
+                                <div className=" flex mt-5 my-5">
+                                    <img className="w-9 h-9 rounded-full mr-3" src={comment.ProfilePicture} alt="ProfilePic" /> 
+                                    <div className="mt-2">{comment.Username}: {comment.Content}</div>
+                                </div>
+                                <div className="mt-7">{comment.Timestamp}</div>
+                            </div>
+                        ))}
+                    </div>
+                    )
+                    }
+                </div>
         </div>
     )
 }
