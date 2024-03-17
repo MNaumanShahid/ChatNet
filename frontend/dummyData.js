@@ -124,88 +124,262 @@ export const Users = {
 }
 
 export const Posts = {
-    posts : [
-        {
-            "PostID": 1,
-            "UserID": 1,
-            "PostText": "Just a test post!",
-            "Image": "https://example.com/post1.jpg",
-            "Location": "New York",
-            "Timestamp": "2024-02-28 10:15:00"
-          },
-          {
-            "PostID": 2,
-            "UserID": 2,
-            "PostText": "Exploring the city today.",
-            "Image": "https://example.com/post2.jpg",
-            "Location": "Los Angeles",
-            "Timestamp": "2024-02-27 15:30:00"
-          },
-          {
-            "PostID": 3,
-            "UserID": 3,
-            "PostText": "Coding late into the night.",
-            "Location": "London",
-            "Timestamp": "2024-02-26 23:45:00"
-          },
-          {
-            "PostID": 4,
-            "UserID": 4,
-            "PostText": "Beautiful sunset at the beach.",
-            "Image": "https://example.com/post4.jpg",
-            "Location": "Sydney",
-            "Timestamp": "2024-02-25 18:00:00"
-          },
-          {
-            "PostID": 5,
-            "UserID": 5,
-            "PostText": "Hiking in the mountains.",
-            "Image": "https://example.com/post5.jpg",
-            "Location": "San Francisco",
-            "Timestamp": "2024-02-24 12:45:00"
-          },
-          {
-            "PostID": 6,
-            "UserID": 6,
-            "PostText": "Concert night with friends.",
-            "Location": "Toronto",
-            "Timestamp": "2024-02-23 21:15:00"
-          },
-          {
-            "PostID": 7,
-            "UserID": 7,
-            "PostText": "Ramen dinner in the city.",
-            "Image": "https://example.com/post7.jpg",
-            "Location": "Tokyo",
-            "Timestamp": "2024-02-22 17:30:00"
-          },
-          {
-            "PostID": 8,
-            "UserID": 8,
-            "PostText": "Jazz music and good company.",
-            "Location": "Paris",
-            "Timestamp": "2024-02-21 14:45:00"
-          },
-          {
-            "PostID": 9,
-            "UserID": 9,
-            "PostText": "Sunset views from the balcony.",
-            "Image": "https://example.com/post9.jpg",
-            "Location": "Berlin",
-            "Timestamp": "2024-02-20 19:00:00"
-          },
-          {
-            "PostID": 10,
-            "UserID": 10,
-            "PostText": "Morning run in the park.",
-            "Image": "https://example.com/post10.jpg",
-            "Location": "Madrid",
-            "Timestamp": "2024-02-19 06:30:00"
-          }
-    ]
-}
+  posts: [
+      {
+          "PostID": 1,
+          "Username": "user1",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Just a test post!",
+          "Location": "New York",
+          "Timestamp": "2024-02-28 10:15:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user4", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user5", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Awesome!", "Timestamp": "2024-02-28 10:20:00" },
+              { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Nice one!", "Timestamp": "2024-02-28 10:25:00" },
+              { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Great post!", "Timestamp": "2024-02-28 10:30:00" }
+          ]
+      },
+      {
+          "PostID": 2,
+          "Username": "user2",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Another day, another adventure!",
+          "Location": "Los Angeles",
+          "Timestamp": "2024-02-27 15:30:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Amazing view!", "Timestamp": "2024-02-27 15:35:00" },
+              { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Looks like fun!", "Timestamp": "2024-02-27 15:40:00" }
+          ]
+      },
+      {
+          "PostID": 3,
+          "Username": "user3",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Coding late into the night.",
+          "Location": "London",
+          "Timestamp": "2024-02-26 23:45:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Awesome!", "Timestamp": "2024-02-26 23:50:00" },
+              { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Nice one!", "Timestamp": "2024-02-26 23:55:00" },
+              { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Great post!", "Timestamp": "2024-02-27 00:00:00" }
+          ]
+      },
+      {
+          "PostID": 4,
+          "Username": "user4",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Beautiful sunset at the beach.",
+          "Image": "https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=",
+          "Location": "Sydney",
+          "Timestamp": "2024-02-25 18:00:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Awesome!", "Timestamp": "2024-02-25 18:05:00" },
+              { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Nice one!", "Timestamp": "2024-02-25 18:10:00" }
+          ]
+      },
+      {
+          "PostID": 5,
+          "Username": "user5",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Exploring the ancient ruins.",
+          "Location": "Rome",
+          "Timestamp": "2024-02-24 12:30:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user3", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Amazing!", "Timestamp": "2024-02-24 12:35:00" }
+          ]
+      },
+      {
+          "PostID": 6,
+          "Username": "user6",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Hiking up the mountain trails.",
+          "Image": "https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=",
+          "Location": "Denver",
+          "Timestamp": "2024-02-23 11:45:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Awesome view!", "Timestamp": "2024-02-23 11:50:00" },
+              { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Looks like a great hike!", "Timestamp": "2024-02-23 11:55:00" }
+          ]
+      },
+      {
+          "PostID": 7,
+          "Username": "user7",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Sailing into the sunset.",
+          "Image": "https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=612x612&w=0&k=20&c=A63koPKaCyIwQWOTFBRWXj_PwCrR4cEoOw2S9Q7yVl8=",
+          "Location": "Miami",
+          "Timestamp": "2024-02-22 17:00:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Beautiful!", "Timestamp": "2024-02-22 17:05:00" }
+          ]
+      },
+      {
+          "PostID": 8,
+          "Username": "user8",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Enjoying a cup of coffee at the café.",
+          "Location": "Paris",
+          "Timestamp": "2024-02-21 09:30:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Looks cozy!", "Timestamp": "2024-02-21 09:35:00" }
+          ]
+      },
+      {
+          "PostID": 9,
+          "Username": "user9",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Reading by the fireplace.",
+          "Location": "Tokyo",
+          "Timestamp": "2024-02-20 20:15:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Looks relaxing!", "Timestamp": "2024-02-20 20:20:00" }
+          ]
+      },
+      {
+          "PostID": 10,
+          "Username": "user10",
+          "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "PostText": "Admiring the city lights.",
+          "Location": "Hong Kong",
+          "Timestamp": "2024-02-19 22:45:00",
+          "Likes": [
+            { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" },
+            { "Username": "user2", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg" }
+          ],
+          "Comments": [
+              { "Username": "user1", "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg", "Content": "Stunning view!", "Timestamp": "2024-02-19 22:50:00" }
+          ]
+      }
+  ]
+};
 
-export const comments = {
+
+
+// export const Posts = {
+//     posts : [
+//         {
+//             "PostID": 1,
+//             "UserID": 1,
+//             "PostText": "Just a test post!",
+//             "Image": "https://example.com/post1.jpg",
+//             "Location": "New York",
+//             "Timestamp": "2024-02-28 10:15:00"
+//           },
+//           {
+//             "PostID": 2,
+//             "UserID": 2,
+//             "PostText": "Exploring the city today.",
+//             "Image": "https://example.com/post2.jpg",
+//             "Location": "Los Angeles",
+//             "Timestamp": "2024-02-27 15:30:00"
+//           },
+//           {
+//             "PostID": 3,
+//             "UserID": 3,
+//             "PostText": "Coding late into the night.",
+//             "Location": "London",
+//             "Timestamp": "2024-02-26 23:45:00"
+//           },
+//           {
+//             "PostID": 4,
+//             "UserID": 4,
+//             "PostText": "Beautiful sunset at the beach.",
+//             "Image": "https://example.com/post4.jpg",
+//             "Location": "Sydney",
+//             "Timestamp": "2024-02-25 18:00:00"
+//           },
+//           {
+//             "PostID": 5,
+//             "UserID": 5,
+//             "PostText": "Hiking in the mountains.",
+//             "Image": "https://example.com/post5.jpg",
+//             "Location": "San Francisco",
+//             "Timestamp": "2024-02-24 12:45:00"
+//           },
+//           {
+//             "PostID": 6,
+//             "UserID": 6,
+//             "PostText": "Concert night with friends.",
+//             "Location": "Toronto",
+//             "Timestamp": "2024-02-23 21:15:00"
+//           },
+//           {
+//             "PostID": 7,
+//             "UserID": 7,
+//             "PostText": "Ramen dinner in the city.",
+//             "Image": "https://example.com/post7.jpg",
+//             "Location": "Tokyo",
+//             "Timestamp": "2024-02-22 17:30:00"
+//           },
+//           {
+//             "PostID": 8,
+//             "UserID": 8,
+//             "PostText": "Jazz music and good company.",
+//             "Location": "Paris",
+//             "Timestamp": "2024-02-21 14:45:00"
+//           },
+//           {
+//             "PostID": 9,
+//             "UserID": 9,
+//             "PostText": "Sunset views from the balcony.",
+//             "Image": "https://example.com/post9.jpg",
+//             "Location": "Berlin",
+//             "Timestamp": "2024-02-20 19:00:00"
+//           },
+//           {
+//             "PostID": 10,
+//             "UserID": 10,
+//             "PostText": "Morning run in the park.",
+//             "Image": "https://example.com/post10.jpg",
+//             "Location": "Madrid",
+//             "Timestamp": "2024-02-19 06:30:00"
+//           }
+//     ]
+// }
+
+export const Comments = {
     comments : [
         {
             "CommentID": 1,
