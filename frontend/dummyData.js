@@ -124,86 +124,300 @@ export const Users = {
 }
 
 export const Posts = {
-    posts : [
-        {
-            "PostID": 1,
-            "UserID": 1,
-            "PostText": "Just a test post!",
-            "Image": "https://example.com/post1.jpg",
-            "Location": "New York",
-            "Timestamp": "2024-02-28 10:15:00"
-          },
-          {
-            "PostID": 2,
-            "UserID": 2,
-            "PostText": "Exploring the city today.",
-            "Image": "https://example.com/post2.jpg",
-            "Location": "Los Angeles",
-            "Timestamp": "2024-02-27 15:30:00"
-          },
-          {
-            "PostID": 3,
-            "UserID": 3,
-            "PostText": "Coding late into the night.",
-            "Location": "London",
-            "Timestamp": "2024-02-26 23:45:00"
-          },
-          {
-            "PostID": 4,
-            "UserID": 4,
-            "PostText": "Beautiful sunset at the beach.",
-            "Image": "https://example.com/post4.jpg",
-            "Location": "Sydney",
-            "Timestamp": "2024-02-25 18:00:00"
-          },
-          {
-            "PostID": 5,
-            "UserID": 5,
-            "PostText": "Hiking in the mountains.",
-            "Image": "https://example.com/post5.jpg",
-            "Location": "San Francisco",
-            "Timestamp": "2024-02-24 12:45:00"
-          },
-          {
-            "PostID": 6,
-            "UserID": 6,
-            "PostText": "Concert night with friends.",
-            "Location": "Toronto",
-            "Timestamp": "2024-02-23 21:15:00"
-          },
-          {
-            "PostID": 7,
-            "UserID": 7,
-            "PostText": "Ramen dinner in the city.",
-            "Image": "https://example.com/post7.jpg",
-            "Location": "Tokyo",
-            "Timestamp": "2024-02-22 17:30:00"
-          },
-          {
-            "PostID": 8,
-            "UserID": 8,
-            "PostText": "Jazz music and good company.",
-            "Location": "Paris",
-            "Timestamp": "2024-02-21 14:45:00"
-          },
-          {
-            "PostID": 9,
-            "UserID": 9,
-            "PostText": "Sunset views from the balcony.",
-            "Image": "https://example.com/post9.jpg",
-            "Location": "Berlin",
-            "Timestamp": "2024-02-20 19:00:00"
-          },
-          {
-            "PostID": 10,
-            "UserID": 10,
-            "PostText": "Morning run in the park.",
-            "Image": "https://example.com/post10.jpg",
-            "Location": "Madrid",
-            "Timestamp": "2024-02-19 06:30:00"
-          }
-    ]
-}
+  posts: [
+      {
+          "PostID": 1,
+          "UserID": 1,
+          "PostText": "Just a test post!",
+          "Image": "https://example.com/post1.jpg",
+          "Location": "New York",
+          "Timestamp": "2024-02-28 10:15:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 1, "Content": "Awesome!", "Timestamp": "2024-02-28 10:20:00" },
+              { "UserID": 2, "Content": "Nice one!", "Timestamp": "2024-02-28 10:25:00" },
+              { "UserID": 3, "Content": "Great post!", "Timestamp": "2024-02-28 10:30:00" },
+              { "UserID": 4, "Content": "Love it!", "Timestamp": "2024-02-28 10:35:00" },
+              { "UserID": 5, "Content": "Amazing!", "Timestamp": "2024-02-28 10:40:00" },
+              { "UserID": 6, "Content": "Fantastic!", "Timestamp": "2024-02-28 10:45:00" },
+              { "UserID": 7, "Content": "Impressive!", "Timestamp": "2024-02-28 10:50:00" },
+              { "UserID": 8, "Content": "Incredible!", "Timestamp": "2024-02-28 10:55:00" },
+              { "UserID": 9, "Content": "Wow!", "Timestamp": "2024-02-28 11:00:00" },
+              { "UserID": 10, "Content": "Superb!", "Timestamp": "2024-02-28 11:05:00" }
+          ]
+      },
+      {
+          "PostID": 2,
+          "UserID": 2,
+          "PostText": "Exploring the city today.",
+          "Image": "https://example.com/post2.jpg",
+          "Location": "Los Angeles",
+          "Timestamp": "2024-02-27 15:30:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 10, "Content": "Awesome!", "Timestamp": "2024-02-27 15:35:00" },
+              { "UserID": 9, "Content": "Nice one!", "Timestamp": "2024-02-27 15:40:00" },
+              { "UserID": 8, "Content": "Great post!", "Timestamp": "2024-02-27 15:45:00" },
+              { "UserID": 7, "Content": "Love it!", "Timestamp": "2024-02-27 15:50:00" },
+              { "UserID": 6, "Content": "Amazing!", "Timestamp": "2024-02-27 15:55:00" },
+              { "UserID": 5, "Content": "Fantastic!", "Timestamp": "2024-02-27 16:00:00" },
+              { "UserID": 4, "Content": "Impressive!", "Timestamp": "2024-02-27 16:05:00" },
+              { "UserID": 3, "Content": "Incredible!", "Timestamp": "2024-02-27 16:10:00" },
+              { "UserID": 2, "Content": "Wow!", "Timestamp": "2024-02-27 16:15:00" },
+              { "UserID": 1, "Content": "Superb!", "Timestamp": "2024-02-27 16:20:00" }
+          ]
+      },
+      {
+          "PostID": 3,
+          "UserID": 3,
+          "PostText": "Coding late into the night.",
+          "Location": "London",
+          "Timestamp": "2024-02-26 23:45:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 1, "Content": "Awesome!", "Timestamp": "2024-02-26 23:50:00" },
+              { "UserID": 2, "Content": "Nice one!", "Timestamp": "2024-02-26 23:55:00" },
+              { "UserID": 3, "Content": "Great post!", "Timestamp": "2024-02-27 00:00:00" },
+              { "UserID": 4, "Content": "Love it!", "Timestamp": "2024-02-27 00:05:00" },
+              { "UserID": 5, "Content": "Amazing!", "Timestamp": "2024-02-27 00:10:00" },
+              { "UserID": 6, "Content": "Fantastic!", "Timestamp": "2024-02-27 00:15:00" },
+              { "UserID": 7, "Content": "Impressive!", "Timestamp": "2024-02-27 00:20:00" },
+              { "UserID": 8, "Content": "Incredible!", "Timestamp": "2024-02-27 00:25:00" },
+              { "UserID": 9, "Content": "Wow!", "Timestamp": "2024-02-27 00:30:00" },
+              { "UserID": 10, "Content": "Superb!", "Timestamp": "2024-02-27 00:35:00" }
+          ]
+      },
+      {
+          "PostID": 4,
+          "UserID": 4,
+          "PostText": "Beautiful sunset at the beach.",
+          "Image": "https://example.com/post4.jpg",
+          "Location": "Sydney",
+          "Timestamp": "2024-02-25 18:00:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 10, "Content": "Awesome!", "Timestamp": "2024-02-25 18:05:00" },
+              { "UserID": 9, "Content": "Nice one!", "Timestamp": "2024-02-25 18:10:00" },
+              { "UserID": 8, "Content": "Great post!", "Timestamp": "2024-02-25 18:15:00" },
+              { "UserID": 7, "Content": "Love it!", "Timestamp": "2024-02-25 18:20:00" },
+              { "UserID": 6, "Content": "Amazing!", "Timestamp": "2024-02-25 18:25:00" },
+              { "UserID": 5, "Content": "Fantastic!", "Timestamp": "2024-02-25 18:30:00" },
+              { "UserID": 4, "Content": "Impressive!", "Timestamp": "2024-02-25 18:35:00" },
+              { "UserID": 3, "Content": "Incredible!", "Timestamp": "2024-02-25 18:40:00" },
+              { "UserID": 2, "Content": "Wow!", "Timestamp": "2024-02-25 18:45:00" },
+              { "UserID": 1, "Content": "Superb!", "Timestamp": "2024-02-25 18:50:00" }
+          ]
+      },
+      {
+          "PostID": 5,
+          "UserID": 5,
+          "PostText": "Hiking in the mountains.",
+          "Image": "https://example.com/post5.jpg",
+          "Location": "San Francisco",
+          "Timestamp": "2024-02-24 12:45:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 1, "Content": "Awesome!", "Timestamp": "2024-02-24 12:50:00" },
+              { "UserID": 2, "Content": "Nice one!", "Timestamp": "2024-02-24 12:55:00" },
+              { "UserID": 3, "Content": "Great post!", "Timestamp": "2024-02-24 13:00:00" },
+              { "UserID": 4, "Content": "Love it!", "Timestamp": "2024-02-24 13:05:00" },
+              { "UserID": 5, "Content": "Amazing!", "Timestamp": "2024-02-24 13:10:00" },
+              { "UserID": 6, "Content": "Fantastic!", "Timestamp": "2024-02-24 13:15:00" },
+              { "UserID": 7, "Content": "Impressive!", "Timestamp": "2024-02-24 13:20:00" },
+              { "UserID": 8, "Content": "Incredible!", "Timestamp": "2024-02-24 13:25:00" },
+              { "UserID": 9, "Content": "Wow!", "Timestamp": "2024-02-24 13:30:00" },
+              { "UserID": 10, "Content": "Superb!", "Timestamp": "2024-02-24 13:35:00" }
+          ]
+      },
+      {
+          "PostID": 6,
+          "UserID": 6,
+          "PostText": "Concert night with friends.",
+          "Location": "Toronto",
+          "Timestamp": "2024-02-23 21:15:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 10, "Content": "Awesome!", "Timestamp": "2024-02-23 21:20:00" },
+              { "UserID": 9, "Content": "Nice one!", "Timestamp": "2024-02-23 21:25:00" },
+              { "UserID": 8, "Content": "Great post!", "Timestamp": "2024-02-23 21:30:00" },
+              { "UserID": 7, "Content": "Love it!", "Timestamp": "2024-02-23 21:35:00" },
+              { "UserID": 6, "Content": "Amazing!", "Timestamp": "2024-02-23 21:40:00" },
+              { "UserID": 5, "Content": "Fantastic!", "Timestamp": "2024-02-23 21:45:00" },
+              { "UserID": 4, "Content": "Impressive!", "Timestamp": "2024-02-23 21:50:00" },
+              { "UserID": 3, "Content": "Incredible!", "Timestamp": "2024-02-23 21:55:00" },
+              { "UserID": 2, "Content": "Wow!", "Timestamp": "2024-02-23 22:00:00" },
+              { "UserID": 1, "Content": "Superb!", "Timestamp": "2024-02-23 22:05:00" }
+          ]
+      },
+      {
+          "PostID": 7,
+          "UserID": 7,
+          "PostText": "Ramen dinner in the city.",
+          "Image": "https://example.com/post7.jpg",
+          "Location": "Tokyo",
+          "Timestamp": "2024-02-22 17:30:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 1, "Content": "Awesome!", "Timestamp": "2024-02-22 17:35:00" },
+              { "UserID": 2, "Content": "Nice one!", "Timestamp": "2024-02-22 17:40:00" },
+              { "UserID": 3, "Content": "Great post!", "Timestamp": "2024-02-22 17:45:00" },
+              { "UserID": 4, "Content": "Love it!", "Timestamp": "2024-02-22 17:50:00" },
+              { "UserID": 5, "Content": "Amazing!", "Timestamp": "2024-02-22 17:55:00" },
+              { "UserID": 6, "Content": "Fantastic!", "Timestamp": "2024-02-22 18:00:00" },
+              { "UserID": 7, "Content": "Impressive!", "Timestamp": "2024-02-22 18:05:00" },
+              { "UserID": 8, "Content": "Incredible!", "Timestamp": "2024-02-22 18:10:00" },
+              { "UserID": 9, "Content": "Wow!", "Timestamp": "2024-02-22 18:15:00" },
+              { "UserID": 10, "Content": "Superb!", "Timestamp": "2024-02-22 18:20:00" }
+          ]
+      },
+      {
+          "PostID": 8,
+          "UserID": 8,
+          "PostText": "Jazz music and good company.",
+          "Location": "Paris",
+          "Timestamp": "2024-02-21 14:45:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 10, "Content": "Awesome!", "Timestamp": "2024-02-21 14:50:00" },
+              { "UserID": 9, "Content": "Nice one!", "Timestamp": "2024-02-21 14:55:00" },
+              { "UserID": 8, "Content": "Great post!", "Timestamp": "2024-02-21 15:00:00" },
+              { "UserID": 7, "Content": "Love it!", "Timestamp": "2024-02-21 15:05:00" },
+              { "UserID": 6, "Content": "Amazing!", "Timestamp": "2024-02-21 15:10:00" },
+              { "UserID": 5, "Content": "Fantastic!", "Timestamp": "2024-02-21 15:15:00" },
+              { "UserID": 4, "Content": "Impressive!", "Timestamp": "2024-02-21 15:20:00" },
+              { "UserID": 3, "Content": "Incredible!", "Timestamp": "2024-02-21 15:25:00" },
+              { "UserID": 2, "Content": "Wow!", "Timestamp": "2024-02-21 15:30:00" },
+              { "UserID": 1, "Content": "Superb!", "Timestamp": "2024-02-21 15:35:00" }
+          ]
+      },
+      {
+          "PostID": 9,
+          "UserID": 9,
+          "PostText": "Sunset views from the balcony.",
+          "Image": "https://example.com/post9.jpg",
+          "Location": "Berlin",
+          "Timestamp": "2024-02-20 19:00:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 1, "Content": "Awesome!", "Timestamp": "2024-02-20 19:05:00" },
+              { "UserID": 2, "Content": "Nice one!", "Timestamp": "2024-02-20 19:10:00" },
+              { "UserID": 3, "Content": "Great post!", "Timestamp": "2024-02-20 19:15:00" },
+              { "UserID": 4, "Content": "Love it!", "Timestamp": "2024-02-20 19:20:00" },
+              { "UserID": 5, "Content": "Amazing!", "Timestamp": "2024-02-20 19:25:00" },
+              { "UserID": 6, "Content": "Fantastic!", "Timestamp": "2024-02-20 19:30:00" },
+              { "UserID": 7, "Content": "Impressive!", "Timestamp": "2024-02-20 19:35:00" },
+              { "UserID": 8, "Content": "Incredible!", "Timestamp": "2024-02-20 19:40:00" },
+              { "UserID": 9, "Content": "Wow!", "Timestamp": "2024-02-20 19:45:00" },
+              { "UserID": 10, "Content": "Superb!", "Timestamp": "2024-02-20 19:50:00" }
+          ]
+      },
+      {
+          "PostID": 10,
+          "UserID": 10,
+          "PostText": "Morning run in the park.",
+          "Image": "https://example.com/post10.jpg",
+          "Location": "Madrid",
+          "Timestamp": "2024-02-19 06:30:00",
+          "Likes": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "Comments": [
+              { "UserID": 10, "Content": "Awesome!", "Timestamp": "2024-02-19 06:35:00" },
+              { "UserID": 9, "Content": "Nice one!", "Timestamp": "2024-02-19 06:40:00" },
+              { "UserID": 8, "Content": "Great post!", "Timestamp": "2024-02-19 06:45:00" },
+              { "UserID": 7, "Content": "Love it!", "Timestamp": "2024-02-19 06:50:00" },
+              { "UserID": 6, "Content": "Amazing!", "Timestamp": "2024-02-19 06:55:00" },
+              { "UserID": 5, "Content": "Fantastic!", "Timestamp": "2024-02-19 07:00:00" },
+              { "UserID": 4, "Content": "Impressive!", "Timestamp": "2024-02-19 07:05:00" },
+              { "UserID": 3, "Content": "Incredible!", "Timestamp": "2024-02-19 07:10:00" },
+              { "UserID": 2, "Content": "Wow!", "Timestamp": "2024-02-19 07:15:00" },
+              { "UserID": 1, "Content": "Superb!", "Timestamp": "2024-02-19 07:20:00" }
+          ]
+      }
+  ]
+};
+
+
+
+// export const Posts = {
+//     posts : [
+//         {
+//             "PostID": 1,
+//             "UserID": 1,
+//             "PostText": "Just a test post!",
+//             "Image": "https://example.com/post1.jpg",
+//             "Location": "New York",
+//             "Timestamp": "2024-02-28 10:15:00"
+//           },
+//           {
+//             "PostID": 2,
+//             "UserID": 2,
+//             "PostText": "Exploring the city today.",
+//             "Image": "https://example.com/post2.jpg",
+//             "Location": "Los Angeles",
+//             "Timestamp": "2024-02-27 15:30:00"
+//           },
+//           {
+//             "PostID": 3,
+//             "UserID": 3,
+//             "PostText": "Coding late into the night.",
+//             "Location": "London",
+//             "Timestamp": "2024-02-26 23:45:00"
+//           },
+//           {
+//             "PostID": 4,
+//             "UserID": 4,
+//             "PostText": "Beautiful sunset at the beach.",
+//             "Image": "https://example.com/post4.jpg",
+//             "Location": "Sydney",
+//             "Timestamp": "2024-02-25 18:00:00"
+//           },
+//           {
+//             "PostID": 5,
+//             "UserID": 5,
+//             "PostText": "Hiking in the mountains.",
+//             "Image": "https://example.com/post5.jpg",
+//             "Location": "San Francisco",
+//             "Timestamp": "2024-02-24 12:45:00"
+//           },
+//           {
+//             "PostID": 6,
+//             "UserID": 6,
+//             "PostText": "Concert night with friends.",
+//             "Location": "Toronto",
+//             "Timestamp": "2024-02-23 21:15:00"
+//           },
+//           {
+//             "PostID": 7,
+//             "UserID": 7,
+//             "PostText": "Ramen dinner in the city.",
+//             "Image": "https://example.com/post7.jpg",
+//             "Location": "Tokyo",
+//             "Timestamp": "2024-02-22 17:30:00"
+//           },
+//           {
+//             "PostID": 8,
+//             "UserID": 8,
+//             "PostText": "Jazz music and good company.",
+//             "Location": "Paris",
+//             "Timestamp": "2024-02-21 14:45:00"
+//           },
+//           {
+//             "PostID": 9,
+//             "UserID": 9,
+//             "PostText": "Sunset views from the balcony.",
+//             "Image": "https://example.com/post9.jpg",
+//             "Location": "Berlin",
+//             "Timestamp": "2024-02-20 19:00:00"
+//           },
+//           {
+//             "PostID": 10,
+//             "UserID": 10,
+//             "PostText": "Morning run in the park.",
+//             "Image": "https://example.com/post10.jpg",
+//             "Location": "Madrid",
+//             "Timestamp": "2024-02-19 06:30:00"
+//           }
+//     ]
+// }
 
 export const comments = {
     comments : [
