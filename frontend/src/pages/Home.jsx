@@ -18,7 +18,7 @@ export function Home() {
         <Topbar />
         <div className="grid homepage-grid items-start justify-items-center">
             <Sidebar />
-            <div className="w-full">
+            <div className="w-full h-screen overflow-y-scroll">
                 <AddPost />
                 {posts.map((post) => {
                     return (
