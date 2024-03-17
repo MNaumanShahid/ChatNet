@@ -3,12 +3,16 @@ export function Post(props){
         <div className="mt-5 border-2 w-9/12 mx-auto p-3 rounded-md shadow-lg mb-5">
             <div className="flex font-black">
                 <img className="w-12 h-12 rounded-full mr-3" src={props.ProfilePicture} alt="ProfilePic" />
-                <div classname="text-9xl">Thomas Shelby</div>
+                <div>{props.Username}</div>
             </div>
-            <div className=" font-medium ml-6 my-4">Hello, This is my first post</div>
-            <div >
-                <img className="w-full h-96 my-4" src="https://picsum.photos/200" alt="UserPost" />
-            </div>
+            <div className=" font-medium ml-6 my-4">{props.Text}</div>
+            {props.image ? (
+                <div >
+                    <img className="w-full h-96 my-4" src={props.image} alt="UserPost" />
+                </div>
+            ) : (
+                <div></div>
+            )}
             <div className="flex justify-between">
                     <div className="flex ml-6">
                     <div>
@@ -21,9 +25,9 @@ export function Post(props){
                         <path stroke="red" stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                     </svg>
                     </div>
-                    <div>32 People Liked it</div>
+                    <div>{props.noOfLikes} People Liked it</div>
                 </div>
-                <div>9 Comments</div>
+                <div>{props.noOfComments} Comments</div>
 
 
             </div>

@@ -379,7 +379,7 @@ export const Posts = {
 //     ]
 // }
 
-export const comments = {
+export const Comments = {
     comments : [
         {
             "CommentID": 1,
