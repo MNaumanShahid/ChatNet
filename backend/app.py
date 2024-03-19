@@ -204,25 +204,82 @@ def get_profile(username):
             return jsonify(message=str(e)), 404
         return jsonify({'message': str(e)}), 400
 
+@app.route('/update_user', methods=['PUT'])
+@jwt_required()
+def update_user():
+    try:
+        data = request.get_json()
+        password = data.get('password')
+        update = data.get('update')
+        update_username = update.get('username')
+        email = update.get('email')
+        update_password = update.get('password')
+        first_name = update.get('firstname')
+        last_name = update.get('lastname')
+        bio = update.get('bio')
+        dob = update.get('dob')
+        if dob:
+            dob = datetime.datetime(day=int(dob["day"]), month=int(dob["month"]), year=int(dob["year"]))
+        profile_picture = update.get('profile_picture')
+        city = update.get('city')
+        country = update.get('country')
+        account_private = update.get('account_private')
+        if check_password_hash(current_user.password, password):
+            if update_password:
+                current_user.username = update_username
+            if email:
+                current_user.email = email
+            if first_name:
+                current_user.first_name = first_name
+            if last_name:
+                current_user.lastname = last_name
+            if bio:
+                current_user.bio = bio
+            if dob:
+                current_user.dob = dob
+            if profile_picture:
+                current_user.profile_picture = profile_picture
+            if account_private:
+                current_user.account_private = account_private
+            if city:
+                current_user.city = city
+            if country:
+                current_user.country = country
+            db.session.commit()
+            return jsonify({'message': 'Updated user successfully.'}), 200
+        else:
+            return jsonify(message="Incorrect password."), 401
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+
+
 @app.route("/delete_user", methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def delete_user():
     try:
         data = request.get_json()
-        username = data.get('username')
+        # username = data.get('username')
         password = data.get('password')
-        with app.app_context():
-            user = db.session.query(User).filter_by(username=username).first()
-            if user:
-                if check_password_hash(user.password, password):
-                    db.session.delete(user)
-                    db.session.commit()
-                    response = jsonify(message="Deleted successfully")
-                    return response, 200
-                else:
-                    raise Exception("Incorrect password.")
-            else:
-                raise Exception("User not found")
+        # with app.app_context():
+            # user = db.session.query(User).filter_by(username=username).first()
+            # if user:
+            #     if check_password_hash(user.password, password):
+            #         db.session.delete(user)
+            #         db.session.commit()
+            #         response = jsonify(message="Deleted successfully")
+            #         return response, 200
+            #     else:
+            #         raise Exception("Incorrect password.")
+            # else:
+            #     raise Exception("User not found")
+        if check_password_hash(current_user.password, password):
+            db.session.delete(current_user)
+            db.session.commit()
+            return jsonify(message="User deleted."), 200
+        else:
+            return jsonify(message="Incorrect password."), 401
+
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
@@ -236,7 +293,7 @@ def create_post():
             post_text=data.get('post_text'),
             image=data.get('image'),
             location=data.get('location'),
-            timestamp=data.get('timestamp')
+            timestamp=datetime.datetime.now()
         )
         with app.app_context():
             db.session.add(new_post)
@@ -245,46 +302,38 @@ def create_post():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/update_post/<post_id: int>", methods=['POST'])
+@app.route("/update_post/<post_id>", methods=['PUT'])
 @jwt_required()
 def update_post(post_id):
     try:
-        with app.app_context():
-            post = db.session.query(Post).filter_by(post_id=post_id)
-            if post:
-                if current_user.usernmae == post.username:
-                    data = request.get_json()
-                    post.username=current_user.username,
-                    post.post_text=data.get('post_text'),
-                    post.image=data.get('image'),
-                    post.location=data.get('location'),
-                    post.timestamp=data.get('timestamp')
-                    db.session.commit()
-                    return jsonify(message="Post updated successfully"), 200
-                else:
-                    raise Exception("Unauthorized user.")
-            else:
-                raise Exception("Post not found.")
+        for post in current_user.posts:
+            if post.post_id == post_id:
+                data = request.get_json()
+                if data.get('post_text'):
+                    post.post_text = data.get('post_text')
+                if data.get('image'):
+                    post.image = data.get('image')
+                if data.get('location'):
+                    post.location = data.get('location')
+                if data.get('timestamp'):
+                    post.timestamp = data.get('timestamp')
+                db.session.commit()
+                return jsonify(message="Post updated successfully"), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/delete_post/<post_id: int>", methods=['DELETE'])
+
+@app.route("/delete_post/<post_id>", methods=['DELETE'])
 @jwt_required()
 def delete_post(post_id):
     try:
-        with app.app_context():
-            post = db.session.query(Post).filter_by(post_id=post_id).first()
-            if post:
-                if current_user.usernmae == post.username:
-                    db.session.delete(post)
-                    db.session.commit()
-                    return jsonify(message="Post deleted successfully"), 200
-                else:
-                    raise Exception("Unauthorized user.")
-            else:
-                raise Exception("Post not found.")
+        for post in current_user.posts:
+            if post.post_id == post_id:
+                db.session.delete(post)
+                db.session.commit()
+                return jsonify(message="Post deleted successfully"), 200
     except Exception as e:
-        return jsonify({'message': str(e)}), 400
+        return jsonify(message=str(e)), 400
 
 @app.route("/get_post/<post_id>", methods=['GET'])
 @jwt_required()
@@ -305,7 +354,161 @@ def get_post(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
+@app.route("/get_all_posts/", methods=['GET'])
+@jwt_required()
+def get_all_posts():
+    try:
+        posts = current_user.posts
+        return jsonify(posts=[{
+            "post_id": post.post_id,
+            "post_text": post.post_text,
+            "image": post.image,
+            "location": post.location,
+            "timestamp": post.timestamp,
+            "username": post.username
+        } for post in posts]), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
 
+@app.route("/comment/<post_id>", methods=['POST'])
+@jwt_required()
+def comment(post_id):
+    try:
+        post = db.session.query(Post).filter_by(post_id=post_id)
+        if post:
+            data = request.get_json()
+            content = data.get('content')
+            if content:
+                comment = Comment(
+                    post_id=post_id,
+                    content=content,
+                    timestamp=datetime.datetime.now(),
+                    username=current_user.username
+                )
+                db.session.add(comment)
+                db.session.commit()
+                return jsonify(message="Comment added successfully"), 200
+            else:
+                raise Exception("No content.")
+        else:
+            raise Exception("Post not found.")
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/delete_comment/<comment_id>", methods=['DELETE'])
+@jwt_required()
+def delete_comment(comment_id):
+    try:
+        comment = db.session.query(Comment).filter_by(comment_id=comment_id).first()
+        if comment:
+            post = db.session.query(Post).filter_by(post_id=comment.post_id).first()
+            if comment.username == current_user.username or post.username == current_user.username:
+                db.session.delete(comment)
+                db.session.commit()
+                return jsonify(message="Comment deleted successfully"), 200
+            else:
+                return jsonify(message="User not authorized."), 401
+        else:
+            raise Exception("Comment not found.")
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/get_comments/<post_id>", methods=['GET'])
+@jwt_required()
+def get_comments(post_id):
+    try:
+        post = db.session.query(Post).filter_by(post_id=post_id).first()
+        if post:
+            comments = []
+            for comment in post.comments:
+                add_comment = {
+                    'comment_id': comment.comment_id,
+                    'timestamp': comment.timestamp,
+                    'username': comment.username,
+                    'post_id': comment.post_id,
+                    'content': comment.content
+                }
+                comments.append(add_comment)
+            return jsonify(comments=comments), 200
+        else:
+            raise Exception("Post not found.")
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/like/<post_id>", methods=['POST'])
+@jwt_required()
+def like_post(post_id):
+    try:
+        post = db.session.query(Post).filter_by(post_id=post_id).first()
+        if post:
+            for like in post.likes:
+                if like.username == current_user.username:
+                    db.session.delete(like)
+                    db.session.commit()
+                    return jsonify(message="Disliked successfully"), 200
+            like = Like(
+                post_id=post_id,
+                username=current_user.username,
+                timestamp=datetime.datetime.now(),
+            )
+            db.session.add(like)
+            db.session.commit()
+            return jsonify(message="Liked successfully"), 200
+        else:
+            raise Exception("Post not found.")
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/get_likes/<post_id>", methods=['GET'])
+@jwt_required()
+def get_likes(post_id):
+    try:
+        post = db.session.query(Post).filter_by(post_id=post_id).first()
+        if post:
+            likes = []
+            for like in post.likes:
+                add_like = {
+                    "like_id": like.like_id,
+                    "username": like.username,
+                    "timestamp": like.timestamp,
+                    "post_id": post_id
+                }
+                likes.append(add_like)
+            return jsonify(likes=likes), 200
+        else:
+            raise Exception("Post not found.")
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/search_users/<filter>", methods=['GET'])
+@jwt_required()
+def search_users(filter):
+    try:
+        users_list = []
+        users = db.session.query(User).filter(User.username.like(filter)).limit(5)
+        for user in users:
+            add_user = {
+                "username": user.username,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "profile_picture": user.profile_picture
+            }
+            users_list.append(add_user)
+        users = db.session.query(User).filter(User.first_name.like(filter)).limit(5)
+        for user in users:
+            add_user = {
+                "username": user.username,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "profile_picture": user.profile_picture
+            }
+            users_list.append(add_user)
+        temp = []
+        [temp.append(user) for user in users_list if user not in temp]
+        users_list = temp
+        return jsonify(users=users_list), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
 
 if __name__ == "__main__":
     app.run(debug = True)

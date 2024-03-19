@@ -22,9 +22,9 @@ class User(db.Model):
     country = db.Column(db.String(50))
     account_private = db.Column(db.Boolean, default=False)
 
-    posts = relationship("Post", back_populates="user")
-    comments = relationship("Comment", back_populates="user")
-    likes = relationship("Like", back_populates="user")
+    posts = relationship("Post", back_populates="user", cascade="all, delete")
+    comments = relationship("Comment", back_populates="user", cascade="all, delete")
+    likes = relationship("Like", back_populates="user", cascade="all, delete")
 
     def __repr__(self):
         return f"User ('{self.id}', '{self.username}', '{self}"
