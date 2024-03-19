@@ -40,8 +40,8 @@ class Post(db.Model):
     location = db.Column(db.String(100))
     timestamp = db.Column(db.DateTime)
 
-    comments = relationship("Comment", back_populates="post")
-    likes = relationship("Like", back_populates="post")
+    comments = relationship("Comment", back_populates="post", cascade="all, delete")
+    likes = relationship("Like", back_populates="post", cascade="all, delete")
 
     def __repr__(self):
         return f"Post ('{self.post_id}', '{self}"

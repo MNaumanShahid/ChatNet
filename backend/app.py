@@ -23,7 +23,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-#
 # with app.app_context():
 #     db.create_all()
 
@@ -211,7 +210,6 @@ def update_user():
         data = request.get_json()
         password = data.get('password')
         update = data.get('update')
-        update_username = update.get('username')
         email = update.get('email')
         update_password = update.get('password')
         first_name = update.get('firstname')
@@ -226,7 +224,7 @@ def update_user():
         account_private = update.get('account_private')
         if check_password_hash(current_user.password, password):
             if update_password:
-                current_user.username = update_username
+                current_user.password = update_password
             if email:
                 current_user.email = email
             if first_name:
@@ -252,7 +250,31 @@ def update_user():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-
+@app.route("/update_username", methods=['PUT'])
+@jwt_required()
+def update_username():
+    try:
+        data = request.get_json()
+        password = data['password']
+        update_username = data['username']
+        if check_password_hash(current_user.password, password):
+            for post in current_user.posts:
+                post.username = update_username
+                db.session.commit()
+            for comment in current_user.comments:
+                comment.username = update_username
+                db.session.commit()
+            for like in current_user.likes:
+                like.username = update_username
+                db.session.commit()
+            current_user.username = update_username
+            db.session.commit()
+            user = db.session.query(User).filter_by(username=update_username).first()
+            access_token = create_access_token(identity=user)
+            return jsonify(access_token=access_token,
+                           message="Successfully updated username"), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
 
 @app.route("/delete_user", methods=['POST'])
 @jwt_required()
@@ -374,7 +396,7 @@ def get_all_posts():
 @jwt_required()
 def comment(post_id):
     try:
-        post = db.session.query(Post).filter_by(post_id=post_id)
+        post = db.session.query(Post).filter_by(post_id=post_id).first()
         if post:
             data = request.get_json()
             content = data.get('content')
