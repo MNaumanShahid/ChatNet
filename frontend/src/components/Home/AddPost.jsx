@@ -4,7 +4,7 @@ export function AddPost() {
     const currentUser = Users.Users[0];
 
     return <div className="mt-5 border-2 w-9/12 mx-auto p-3 rounded-md shadow-lg">
-        <div className="text-xl mb-2">Add a Post</div>
+        <div className="text-2xl mb-2">Add a Post</div>
 
         <div className="flex">
             <img className="w-12 h-12 rounded-full mr-3" src={currentUser.ProfilePicture} alt="ProfilePic" />

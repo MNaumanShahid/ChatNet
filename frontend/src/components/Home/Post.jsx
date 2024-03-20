@@ -43,9 +43,18 @@ export function Post(props){
                             <div className="flex justify-between ">
                                 <div className=" flex mt-5 my-5">
                                     <img className="w-9 h-9 rounded-full mr-3" src={comment.ProfilePicture} alt="ProfilePic" /> 
-                                    <div className="mt-2">{comment.Username}: {comment.Content}</div>
+                                    <div>
+                                        <div className="font-semibold">
+                                            {comment.Username} <br />
+                                        </div>
+                                        <div className="">
+                                            {comment.Content}
+                                        </div>
+                                    </div> 
                                 </div>
-                                <div className="mt-7">{comment.Timestamp}</div>
+                                <div className="mt-7">
+                                    {comment.Timestamp}
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -1,10 +1,15 @@
+import { useParams } from "react-router-dom";
+
 import { Topbar } from "../components/global/Topbar"
 import { Sidebar } from "../components/global/Sidebar"
 import { Post } from "../components/Home/Post";
 
 import { Posts, Users } from "../../dummyData"
 
-export function Profile() {
+export function UserProfile() {
+    const params = useParams();
+    console.log(params.username);
+
     const currentUser = Users.Users[0];
     const posts = Posts.posts;
 
@@ -20,8 +25,11 @@ export function Profile() {
                     </div>
                     <div>
                         <div className="flex gap-10">
-                            <div className="text-3xl font-bold ">
+                            <div className="text-3xl font-bold">
                                 {currentUser.FirstName} {currentUser.LastName}
+                            </div>
+                            <div className="bg-primary rounded-full py-2 px-4 text-white cursor-pointer font-semibold">
+                                Follow
                             </div>
                         </div>
                         <div className="text-lg">
