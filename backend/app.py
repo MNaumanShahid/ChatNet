@@ -23,8 +23,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 
 app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
@@ -636,6 +636,43 @@ def get_user_followers(username):
             }
             followers_list.append(list_element)
         return jsonify(followers=followers_list), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/send_notification", methods=['POST'])
+@jwt_required()
+def send_notification():
+    try:
+        data = request.get_json()
+        content = data['content']
+        timestamp = datetime.datetime.now()
+
+        new_notification = Notification(
+            content=content,
+            username=current_user.username,
+            timestamp=timestamp
+        )
+        db.session.add(new_notification)
+        db.session.commit()
+        return jsonify(message="Successfully sent notification"), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/get_notifications", methods=['GET'])
+@jwt_required()
+def get_notifications():
+    try:
+        notifications_list = []
+        ordered_notifications = db.session.query(Notification).filter_by(username=current_user.username).order_by(Notification.timestamp.desc()).all()
+        for notification in ordered_notifications:
+            list_element = {
+                'notification_id': notification.notification_id,
+                'username': notification.username,
+                'timestamp': notification.timestamp,
+                'content': notification.content
+            }
+            notifications_list.append(list_element)
+        return jsonify(notifications=notifications_list), 200
     except Exception as e:
         return jsonify(message=str(e)), 400
 
