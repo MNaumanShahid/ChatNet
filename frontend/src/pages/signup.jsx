@@ -7,9 +7,11 @@ import { InputBox } from "../components/signInComponents/InputBox"
 import { SubHeading } from "../components/signInComponents/SubHeading"
 import { Button } from "../components/signInComponents/Button"
 import { BottomWarning } from "../components/signInComponents/BottomWarning"
+import { useNavigate } from "react-router-dom";
 
 
 export function Signup() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -52,6 +54,8 @@ export function Signup() {
                         lastname
                     });
                     // re direct to homepage
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("token", response.data.access_token);
                     setError(response.data.message);
                 }
                 catch(err) {

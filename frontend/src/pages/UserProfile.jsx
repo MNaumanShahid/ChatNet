@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-
 import { Topbar } from "../components/global/Topbar"
 import { Sidebar } from "../components/global/Sidebar"
 import { Post } from "../components/Home/Post";
-
 import { Posts, Users } from "../../dummyData"
 
+
 export function UserProfile() {
+
     const params = useParams();
     console.log(params.username);
 
@@ -31,13 +31,16 @@ export function UserProfile() {
                             <div className="bg-primary rounded-full py-2 px-4 text-white cursor-pointer font-semibold">
                                 Follow
                             </div>
+                            <div className="bg-primary rounded-full py-2 px-4 text-white cursor-pointer font-semibold">
+                                Message
+                            </div>
                         </div>
                         <div className="text-lg">
                             <b>Bio</b> <br />
                             {currentUser.Bio}
                         </div>
                         <div className="flex gap-20 mt-5">
-                            <div className="text-xl font-semibold cursor-pointer">
+                            <div className="text-xl font-medium cursor-pointer">
                                 <div>
                                     Followers
                                 </div>
@@ -46,7 +49,7 @@ export function UserProfile() {
                                 </div>
                             </div>
 
-                            <div className="text-xl font-semibold cursor-pointer">
+                            <div className="text-xl font-medium cursor-pointer">
                                 <div>
                                     Following
                                 </div>

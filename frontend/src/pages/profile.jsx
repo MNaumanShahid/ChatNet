@@ -9,7 +9,7 @@ export function Profile() {
     const posts = Posts.posts;
 
     return <div>
-        <Topbar /> 
+        <Topbar />
         <div className="grid homepage-grid items-start">
             <Sidebar />    {/*Grid - Left Div */}
             <div> {/* Grid - Center Div */}
@@ -49,7 +49,7 @@ export function Profile() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-screen overflow-y-scroll mt-10">
+                <div className="w-full h-screen overflow-y-scroll">
                     {posts.map(post => {
                         return (
                             <div>
