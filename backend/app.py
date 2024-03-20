@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_cors import CORS
-from models import db, User, Post, Comment, Like, Notification
+from models import db, User, Post, Comment, Like, Notification, follow
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
@@ -224,7 +224,7 @@ def update_user():
         account_private = update.get('account_private')
         if check_password_hash(current_user.password, password):
             if update_password:
-                current_user.password = update_password
+                current_user.password = generate_password_hash(update_password)
             if email:
                 current_user.email = email
             if first_name:
@@ -257,6 +257,9 @@ def update_username():
         data = request.get_json()
         password = data['password']
         update_username = data['username']
+        check_user = db.session.query(User).filter_by(username=update_username).first()
+        if check_user:
+            return jsonify(message="Username already exists."), 400
         if check_password_hash(current_user.password, password):
             for post in current_user.posts:
                 post.username = update_username
@@ -270,12 +273,27 @@ def update_username():
             for notification in current_user.notifications:
                 notification.username = update_username
                 db.session.commit()
+            # db.session.execute(
+            #     follow.update()
+            #     .values(following_username=update_username)
+            #     .where(following_username=current_user.username)
+            # )
+            # db.session.execute(
+            #     follow.update()
+            #     .values(follower_username=update_username)
+            #     .where(follower_username=current_user.username)
+            # )
+            # db.session.commit()
+            # for followed in current_user.following:
+            #     followed.
             current_user.username = update_username
             db.session.commit()
             user = db.session.query(User).filter_by(username=update_username).first()
             access_token = create_access_token(identity=user)
             return jsonify(access_token=access_token,
                            message="Successfully updated username"), 200
+        else:
+            return jsonify(message="Incorrect password."), 401
     except Exception as e:
         return jsonify(message=str(e)), 400
 

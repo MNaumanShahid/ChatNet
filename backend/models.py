@@ -41,7 +41,8 @@ class User(db.Model):
         secondary = follow,
         primaryjoin = (follow.c.following_username == username),
         secondaryjoin = (follow.c.follower_username == username),
-        backref = 'following'
+        backref = 'following',
+        cascade = "all, delete"
     )
 
     def __repr__(self):
