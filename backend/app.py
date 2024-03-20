@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_cors import CORS
-from models import db, User, Post, Comment, Like
+from models import db, User, Post, Comment, Like, Notification
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
@@ -23,8 +23,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
@@ -266,6 +266,9 @@ def update_username():
                 db.session.commit()
             for like in current_user.likes:
                 like.username = update_username
+                db.session.commit()
+            for notification in current_user.notifications:
+                notification.username = update_username
                 db.session.commit()
             current_user.username = update_username
             db.session.commit()
@@ -531,6 +534,111 @@ def search_users(filter):
         return jsonify(users=users_list), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
+
+@app.route("/follow_user/<username>", methods=['POST'])
+@jwt_required()
+def follow_user(username):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        if user:
+            if user in current_user.following:
+                return jsonify({'message': 'User already followed.'}), 400
+            else:
+                current_user.following.append(user)
+                db.session.commit()
+                return jsonify({'message': 'User successfully followed.'}), 200
+        else:
+            return jsonify("User not found"), 400
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/unfollow_user/<username>", methods=['POST'])
+@jwt_required()
+def unfollow_user(username):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        if user:
+            if user in current_user.following:
+                current_user.following.remove(user)
+                db.session.commit()
+                return jsonify({'message': 'User unfollowed successfully'}), 200
+            else:
+                return jsonify({'message': 'User not followed.'}), 400
+        else:
+            return jsonify("User not found"), 400
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/get_following", methods=['GET'])
+@jwt_required()
+def get_following():
+    try:
+        following_list = []
+        following = current_user.following
+        for user in following:
+            list_element = {
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'profile_picture': user.profile_picture
+            }
+            following_list.append(list_element)
+        return jsonify(following=following_list), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/get_followers", methods=['GET'])
+@jwt_required()
+def get_followers():
+    try:
+        followers_list = []
+        followers = current_user.followers
+        for user in followers:
+            list_element = {
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'profile_picture': user.profile_picture
+            }
+            followers_list.append(list_element)
+        return jsonify(followers=followers_list), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/user/get_following/<username>", methods=['GET'])
+def get_user_following(username):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        following_list = []
+        for followed in user.following:
+            list_element = {
+                'username': followed.username,
+                'first_name': followed.first_name,
+                'last_name': followed.last_name,
+                'profile_picture': followed.profile_picture
+            }
+            following_list.append(list_element)
+        return jsonify(following=following_list), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/user/get_followers/<username>", methods=['GET'])
+def get_user_followers(username):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        followers_list = []
+        for follower in user.followers:
+            list_element = {
+                'username': follower.username,
+                'first_name': follower.first_name,
+                'last_name': follower.last_name,
+                'profile_picture': follower.profile_picture
+            }
+            followers_list.append(list_element)
+        return jsonify(followers=followers_list), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
 
 if __name__ == "__main__":
     app.run(debug = True)
