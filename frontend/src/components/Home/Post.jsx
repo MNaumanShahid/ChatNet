@@ -1,15 +1,39 @@
-import { useState } from "react"
+import { jwtDecode } from "jwt-decode"
 
-export function Post(props){
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
+
+
+export function Post(props) {
+    const [likes,setLikes] = useState(props.likes);
+    const [isLiked,setIsLiked] = useState(false);
+    const navigate = useNavigate();
     const comments = props.Comments;
     const [showComments, setShowComments] = useState(false);
-    const [likes,setLikes] = useState(props.noOfLikes);
-    const [isLiked,setIsLiked] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token");   //get jwt from local storage
+    //     const decoded = jwtDecode(token);
+    //     console.log(token);
+
+    // }, []);
+
+
+    const goToProfile = (Username) => () => {
+
+        if(Username == currentUser) {   //if the clicked user is current user, redirect him to /profile
+            navigate("/profile");
+        } else {                        //else take it to desired user's profile page
+            navigate("/user/" + Username);
+        }
+    }
+
     return (
         <div className="mt-5 border-2 w-9/12 mx-auto p-3 rounded-md shadow-lg mb-5">
             <div className="flex font-black">
-                <img className="w-12 h-12 rounded-full mr-3" src={props.ProfilePicture} alt="ProfilePic" />
-                <div>{props.Username}</div>
+                <img onClick={goToProfile(props.Username)} className="w-12 h-12 rounded-full mr-3 cursor-pointer" src={props.ProfilePicture} alt="ProfilePic" />
+                <div onClick={goToProfile(props.Username)} className="cursor-pointer">{props.Username}</div>
             </div>
             <div className=" font-medium ml-6 my-4">{props.Text}</div>
             {props.image ? (
@@ -47,10 +71,19 @@ export function Post(props){
                         {comments.map((comment) => (
                             <div className="flex justify-between ">
                                 <div className=" flex mt-5 my-5">
-                                    <img className="w-9 h-9 rounded-full mr-3" src={comment.ProfilePicture} alt="ProfilePic" /> 
-                                    <div className="mt-2">{comment.Username}: {comment.Content}</div>
+                                    <img onClick={goToProfile(comment.Username)} className="w-9 h-9 rounded-full mr-3 cursor-pointer" src={comment.ProfilePicture} alt="ProfilePic" /> 
+                                    <div>
+                                        <div onClick={goToProfile(comment.Username)} className="font-semibold cursor-pointer">
+                                            {comment.Username} <br />
+                                        </div>
+                                        <div className="">
+                                            {comment.Content}
+                                        </div>
+                                    </div> 
                                 </div>
-                                <div className="mt-7">{comment.Timestamp}</div>
+                                <div className="mt-7">
+                                    {comment.Timestamp}
+                                </div>
                             </div>
                         ))}
                     </div>
