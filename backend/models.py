@@ -22,7 +22,7 @@ class User(db.Model):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50))
     bio = db.Column(db.Text)
-    dob = db.Column(db.DateTime, nullable=False)
+    dob = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
     profile_picture = db.Column(db.String(1000))
     city = db.Column(db.String(50))
     country = db.Column(db.String(50))

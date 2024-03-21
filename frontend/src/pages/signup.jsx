@@ -54,6 +54,7 @@ export function Signup() {
                         lastname
                     });
                     // re direct to homepage
+                    setError(response.data.message);
                     localStorage.setItem("username", username);
                     localStorage.setItem("token", response.data.access_token);
                     navigate("/");

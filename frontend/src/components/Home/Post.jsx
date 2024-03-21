@@ -1,14 +1,26 @@
-import { useState } from "react"
+import { jwtDecode } from "jwt-decode"
+
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
+
 
 export function Post(props) {
     const navigate = useNavigate();
     const comments = props.Comments;
     const [showComments, setShowComments] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");   //get jwt from local storage
+        const decoded = jwtDecode(token);
+        console.log(token);
+
+    }, []);
+
 
     const goToProfile = (Username) => () => {
-        const currentuser = localStorage.getItem("username");   //get the current user's username from localstorage
-        if(Username == currentuser) {   //if the clicked user is current user, redirect him to /profile
+
+        if(Username == currentUser) {   //if the clicked user is current user, redirect him to /profile
             navigate("/profile");
         } else {                        //else take it to desired user's profile page
             navigate("/user/" + Username);
