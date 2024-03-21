@@ -295,8 +295,6 @@ export const Posts = {
   ]
 };
 
-
-
 // export const Posts = {
 //     posts : [
 //         {
@@ -379,80 +377,6 @@ export const Posts = {
 //     ]
 // }
 
-export const Comments = {
-    comments : [
-        {
-            "CommentID": 1,
-            "UserID": 2,
-            "PostID": 1,
-            "Content": "Nice post!",
-            "Timestamp": "2024-02-28 10:30:00"
-          },
-          {
-            "CommentID": 2,
-            "UserID": 3,
-            "PostID": 2,
-            "Content": "Love the city vibes!",
-            "Timestamp": "2024-02-27 16:00:00"
-          },
-          {
-            "CommentID": 3,
-            "UserID": 4,
-            "PostID": 3,
-            "Content": "What are you coding?",
-            "Timestamp": "2024-02-26 23:50:00"
-          },
-          {
-            "CommentID": 4,
-            "UserID": 5,
-            "PostID": 4,
-            "Content": "Stunning view!",
-            "Timestamp": "2024-02-25 18:15:00"
-          },
-          {
-            "CommentID": 5,
-            "UserID": 6,
-            "PostID": 5,
-            "Content": "Those mountains are amazing!",
-            "Timestamp": "2024-02-24 13:00:00"
-          },
-          {
-            "CommentID": 6,
-            "UserID": 7,
-            "PostID": 6,
-            "Content": "How was the concert?",
-            "Timestamp": "2024-02-23 21:30:00"
-          },
-          {
-            "CommentID": 7,
-            "UserID": 8,
-            "PostID": 7,
-            "Content": "I love ramen!",
-            "Timestamp": "2024-02-22 17:45:00"
-          },
-          {
-            "CommentID": 8,
-            "UserID": 9,
-            "PostID": 8,
-            "Content": "Jazz nights are the best.",
-            "Timestamp": "2024-02-21 15:00:00"
-          },
-          {
-            "CommentID": 9,
-            "UserID": 10,
-            "PostID": 9,
-            "Content": "Beautiful colors in the sunset.",
-            "Timestamp": "2024-02-20 19:15:00"
-          },
-          {
-            "CommentID": 10,
-            "UserID": 1,
-            "PostID": 10,
-            "Content": "Keep up the morning runs!",
-            "Timestamp": "2024-02-19 06:45:00"
-          }      
-    ]
-}
 
 export const Likes = {
     likes : [
