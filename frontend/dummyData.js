@@ -21,7 +21,7 @@ export const Users = {
             "LastName": "Smith",
             "Bio": "Nice to meet you!",
             "DateOfBirth": "1985-05-15",
-            "ProfilePicture": "https://example.com/user2.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=male",
             "City": "Los Angeles"
           },
           {
@@ -33,7 +33,7 @@ export const Users = {
             "LastName": "Johnson",
             "Bio": "Exploring the world of social media!",
             "DateOfBirth": "1998-09-22",
-            "ProfilePicture": "https://example.com/user3.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=female",
             "City": "London"
           },
           {
@@ -45,7 +45,7 @@ export const Users = {
             "LastName": "Davis",
             "Bio": "Just another social media user",
             "DateOfBirth": "1995-03-10",
-            "ProfilePicture": "https://example.com/user4.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=male",
             "City": "Sydney"
           },
           {
@@ -57,7 +57,7 @@ export const Users = {
             "LastName": "Brown",
             "Bio": "Coding and exploring",
             "DateOfBirth": "1993-11-18",
-            "ProfilePicture": "https://example.com/user5.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=female",
             "City": "San Francisco"
           },
           {
@@ -69,7 +69,7 @@ export const Users = {
             "LastName": "White",
             "Bio": "Enjoying life and sharing moments",
             "DateOfBirth": "1988-07-03",
-            "ProfilePicture": "https://example.com/user6.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=male",
             "City": "Toronto"
           },
           {
@@ -81,7 +81,7 @@ export const Users = {
             "LastName": "Lee",
             "Bio": "Travel enthusiast",
             "DateOfBirth": "1991-12-08",
-            "ProfilePicture": "https://example.com/user7.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=female",
             "City": "Tokyo"
           },
           {
@@ -93,7 +93,7 @@ export const Users = {
             "LastName": "Clark",
             "Bio": "Music lover and foodie",
             "DateOfBirth": "1982-04-25",
-            "ProfilePicture": "https://example.com/user8.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=male",
             "City": "Paris"
           },
           {
@@ -105,7 +105,7 @@ export const Users = {
             "LastName": "Turner",
             "Bio": "Nature and photography",
             "DateOfBirth": "1987-06-30",
-            "ProfilePicture": "https://example.com/user9.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=female",
             "City": "Berlin"
           },
           {
@@ -117,7 +117,7 @@ export const Users = {
             "LastName": "Carter",
             "Bio": "Fitness and healthy living",
             "DateOfBirth": "1994-08-12",
-            "ProfilePicture": "https://example.com/user10.jpg",
+            "ProfilePicture": "https://xsgames.co/randomusers/avatar.php?g=male",
             "City": "Madrid"
           }
     ]
