@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export function Post(props) {
-    const [likes,setLikes] = useState(props.likes);
+    const [likes,setLikes] = useState(props.noOfLikes);
     const [isLiked,setIsLiked] = useState(false);
     const navigate = useNavigate();
     const comments = props.Comments;

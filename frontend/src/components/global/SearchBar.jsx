@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import { Users } from "../../../dummyData"
 
 export function SearchBar() {
-  const [suggestions, setSuggestions] = useState([
-    "Zohaib",
-    "Faraaz",
-    "Nauman",
-    "Aryan",
-  ]);
+  const users = Users.Users;
+  const [suggestions, setSuggestions] = useState(users);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
 
@@ -61,8 +58,11 @@ export function SearchBar() {
         {showSuggestions && (
           <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow z-10 p-2">
             {suggestions.map((suggestion, index) => (
-              <div key={index} className="px-4 py-2 cursor-pointer hover:bg-primary hover:text-white rounded-md">
-                {suggestion}
+              <div key={index} className="flex px-4 py-2 cursor-pointer hover:bg-primary hover:text-white rounded-md">
+                <div>
+                  <img className="w-9 h-9 mr-3 rounded-full" src={suggestion.ProfilePicture} alt="profilePic" />
+                </div>
+                <div>{suggestion.Username}</div>
               </div>
             ))}
           </div>
