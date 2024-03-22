@@ -6,6 +6,7 @@ import { SignIn } from './pages/signin'
 import { Profile } from './pages/profile'
 import { Home } from './pages/Home'
 import { UserProfile } from './pages/UserProfile'
+import { Settings } from './pages/Settings'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/" element={<Home />} />
           <Route path="/user/:username" element={<UserProfile />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
   )

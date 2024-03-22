@@ -59,8 +59,8 @@ export function Post(props) {
                     if(showComments){setShowComments(false)}
                     else{setShowComments(true)}
                 }} className="cursor-pointer">{props.noOfComments} Comments</div>
-                </div>
-                <div>
+            </div>
+            <div>
                 {showComments && (
                     <div className="mt-5">
                         {comments.map((comment) => (
@@ -84,7 +84,7 @@ export function Post(props) {
                     </div>
                     )
                     }
-                </div>
+            </div>
         </div>
     )
 }

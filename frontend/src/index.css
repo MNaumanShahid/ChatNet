@@ -10,6 +10,10 @@
 
     .profile-grid {
         display: grid;
-        grid-template-columns: 20% 70%;
+        grid-template-columns: 20% 70% 10%;
+    }
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 15% 85%;
     }
 }

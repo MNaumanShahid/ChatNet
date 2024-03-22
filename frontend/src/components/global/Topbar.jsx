@@ -8,14 +8,7 @@ export function Topbar() {
     const [showOps, setShowOps] = useState(false);
 
     const OpsClickHandler = () => {
-        if(showOps) {
-            setShowOps(false);
-            console.log(showOps);
-        } else {
-            setShowOps(true);
-            console.log(showOps);
-
-        }
+        navigate("/settings");
     }
 
     const LogoHandler = () => {
