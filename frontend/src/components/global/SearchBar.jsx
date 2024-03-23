@@ -60,9 +60,9 @@ export function SearchBar() {
             {suggestions.map((suggestion, index) => (
               <div key={index} className="flex px-4 py-2 cursor-pointer hover:bg-primary hover:text-white rounded-md">
                 <div>
-                  <img className="w-9 h-9 mr-3 rounded-full" src={suggestion.ProfilePicture} alt="profilePic" />
+                  <img className="w-9 h-9 mr-3 rounded-full" src={suggestion.profilePicture} alt="profilePic" />
                 </div>
-                <div>{suggestion.Username}</div>
+                <div>{suggestion.username}</div>
               </div>
             ))}
           </div>

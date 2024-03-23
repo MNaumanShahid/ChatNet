@@ -13,12 +13,11 @@ export function Post(props) {
     const [showComments, setShowComments] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");   //get jwt from local storage
-        const decoded = jwtDecode(token);
-        const setCurrentUser = decoded.sub;
-
-     }, []);
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token");   //get jwt from local storage
+    //     const decoded = jwtDecode(token);
+    //     const setCurrentUser = decoded.sub;
+    //  }, []);
 
 
     const goToProfile = (Username) => () => {
