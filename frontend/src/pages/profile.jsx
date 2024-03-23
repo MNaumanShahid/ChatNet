@@ -5,7 +5,7 @@ import { Post } from "../components/Home/Post";
 import { Posts, Users } from "../../dummyData"
 
 
-export async function Profile() {
+export function Profile() {
     const currentUser = Users.Users[0];
     const posts = Posts.posts;
 
