@@ -29,11 +29,11 @@ export function Signup() {
     }
 
 
-    return <div className="flex justify-between items-center bg-cover bg-gradient-to-r from-black to-violet-900">
+    return <div className="flex justify-between items-center h-screen bg-cover bg-gradient-to-r from-black to-violet-900">
         <div>
             <div className="m-10 text-7xl text-white font-bold">Welcome</div>
         </div>
-        <div className="border-2 grid grid-cols-1 h-auto place-items-center mr-0 px-64 py-7 rounded-l-2xl bg-white">
+        <div style={{height: "95%"}} className="border-2 grid grid-cols-1 place-items-center mr-0 px-64 py-7 rounded-l-2xl bg-white">
             <Logo label={"ChatNet"} />
             <SubHeading label={"Join Today"} />
 
