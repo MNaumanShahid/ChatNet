@@ -28,7 +28,7 @@ export function ProfileOps({clickHandler}) {
       }, []);
     return  <div className="relative">
                 <div onClick={divHandler} className="cursor-pointer h-12 w-12 overflow-hidden rounded-full">
-                    <img src={currentUser.ProfilePicture} alt="ops" />
+                    <img src={currentUser.profilePicture} alt="ops" />
                     {showBar && (
                     <div className="absolute top-full right-0">
                         <div className="bg-white border border-gray-300 rounded-md shadow z-10 p-2">
