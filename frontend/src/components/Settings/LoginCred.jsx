@@ -29,7 +29,7 @@ export function LoginCred() {
 
         </div>
         <div className="text-xl font-normal mt-20">
-            Original password
+            Old password
             <InputBox value={null} setValue={setOgPswd} />
         </div>
         <div className="mt-3">
