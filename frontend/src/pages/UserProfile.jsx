@@ -1,16 +1,20 @@
+import { useParams } from "react-router-dom";
 import { Topbar } from "../components/global/Topbar"
 import { Sidebar } from "../components/global/Sidebar"
 import { Post } from "../components/Home/Post";
-
 import { Posts, Users } from "../../dummyData"
 
 
-export async function Profile() {
+export function UserProfile() {
+
+    const params = useParams();
+    console.log(params.username);
+
     const currentUser = Users.Users[0];
     const posts = Posts.posts;
 
     return <div>
-        <Topbar />
+        <Topbar /> 
         <div className="grid homepage-grid items-start">
             <Sidebar />    {/*Grid - Left Div */}
             <div> {/* Grid - Center Div */}
@@ -21,8 +25,14 @@ export async function Profile() {
                     </div>
                     <div>
                         <div className="flex gap-10">
-                            <div className="text-3xl font-bold ">
+                            <div className="text-3xl font-bold">
                                 {currentUser.firstname} {currentUser.lastname}
+                            </div>
+                            <div className="bg-primary rounded-full py-2 px-4 text-white cursor-pointer font-semibold">
+                                Follow
+                            </div>
+                            <div className="bg-primary rounded-full py-2 px-4 text-white cursor-pointer font-semibold">
+                                Message
                             </div>
                         </div>
                         <div className="text-lg">
@@ -30,7 +40,7 @@ export async function Profile() {
                             {currentUser.Bio}
                         </div>
                         <div className="flex gap-20 mt-5">
-                            <div className="text-xl font-semibold cursor-pointer">
+                            <div className="text-xl font-medium cursor-pointer">
                                 <div>
                                     Followers
                                 </div>
@@ -39,7 +49,7 @@ export async function Profile() {
                                 </div>
                             </div>
 
-                            <div className="text-xl font-semibold cursor-pointer">
+                            <div className="text-xl font-medium cursor-pointer">
                                 <div>
                                     Following
                                 </div>
@@ -50,7 +60,7 @@ export async function Profile() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-screen overflow-y-scroll">
+                <div className="w-full h-screen overflow-y-scroll mt-10">
                     {posts.map(post => {
                         return (
                             <div>

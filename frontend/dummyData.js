@@ -1,127 +1,139 @@
 export const Users = {
-    Users : [
+  Users : [
+      {
+          "userID": 1,
+          "username": "user1",
+          "email": "user1@example.com",
+          "password": "pass1",
+          "firstname": "Thomas",
+          "lastname": "Shelby",
+          "bio": "Hello, I'm user1!",
+          "dateOfBirth": "05-11-1988 12:34:56",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "New York",
+          "country": "USA"
+        },
         {
-            "UserID": 1,
-            "Username": "user1",
-            "Email": "user1@example.com",
-            "Password": "pass1",
-            "FirstName": "Thomas ",
-            "LastName": "shelby",
-            "Bio": "Hello, I'm user1!",
-            "DateOfBirth": "1990-01-01",
-            "ProfilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
-            "City": "New York"
-          },
-          {
-            "UserID": 2,
-            "Username": "user2",
-            "Email": "user2@example.com",
-            "Password": "pass2",
-            "FirstName": "Jane",
-            "LastName": "Smith",
-            "Bio": "Nice to meet you!",
-            "DateOfBirth": "1985-05-15",
-            "ProfilePicture": "https://example.com/user2.jpg",
-            "City": "Los Angeles"
-          },
-          {
-            "UserID": 3,
-            "Username": "user3",
-            "Email": "user3@example.com",
-            "Password": "pass3",
-            "FirstName": "Alex",
-            "LastName": "Johnson",
-            "Bio": "Exploring the world of social media!",
-            "DateOfBirth": "1998-09-22",
-            "ProfilePicture": "https://example.com/user3.jpg",
-            "City": "London"
-          },
-          {
-            "UserID": 4,
-            "Username": "user4",
-            "Email": "user4@example.com",
-            "Password": "pass4",
-            "FirstName": "Emily",
-            "LastName": "Davis",
-            "Bio": "Just another social media user",
-            "DateOfBirth": "1995-03-10",
-            "ProfilePicture": "https://example.com/user4.jpg",
-            "City": "Sydney"
-          },
-          {
-            "UserID": 5,
-            "Username": "user5",
-            "Email": "user5@example.com",
-            "Password": "pass5",
-            "FirstName": "Michael",
-            "LastName": "Brown",
-            "Bio": "Coding and exploring",
-            "DateOfBirth": "1993-11-18",
-            "ProfilePicture": "https://example.com/user5.jpg",
-            "City": "San Francisco"
-          },
-          {
-            "UserID": 6,
-            "Username": "user6",
-            "Email": "user6@example.com",
-            "Password": "pass6",
-            "FirstName": "Sarah",
-            "LastName": "White",
-            "Bio": "Enjoying life and sharing moments",
-            "DateOfBirth": "1988-07-03",
-            "ProfilePicture": "https://example.com/user6.jpg",
-            "City": "Toronto"
-          },
-          {
-            "UserID": 7,
-            "Username": "user7",
-            "Email": "user7@example.com",
-            "Password": "pass7",
-            "FirstName": "Chris",
-            "LastName": "Lee",
-            "Bio": "Travel enthusiast",
-            "DateOfBirth": "1991-12-08",
-            "ProfilePicture": "https://example.com/user7.jpg",
-            "City": "Tokyo"
-          },
-          {
-            "UserID": 8,
-            "Username": "user8",
-            "Email": "user8@example.com",
-            "Password": "pass8",
-            "FirstName": "Emma",
-            "LastName": "Clark",
-            "Bio": "Music lover and foodie",
-            "DateOfBirth": "1982-04-25",
-            "ProfilePicture": "https://example.com/user8.jpg",
-            "City": "Paris"
-          },
-          {
-            "UserID": 9,
-            "Username": "user9",
-            "Email": "user9@example.com",
-            "Password": "pass9",
-            "FirstName": "Kevin",
-            "LastName": "Turner",
-            "Bio": "Nature and photography",
-            "DateOfBirth": "1987-06-30",
-            "ProfilePicture": "https://example.com/user9.jpg",
-            "City": "Berlin"
-          },
-          {
-            "UserID": 10,
-            "Username": "user10",
-            "Email": "user10@example.com",
-            "Password": "pass10",
-            "FirstName": "Olivia",
-            "LastName": "Carter",
-            "Bio": "Fitness and healthy living",
-            "DateOfBirth": "1994-08-12",
-            "ProfilePicture": "https://example.com/user10.jpg",
-            "City": "Madrid"
-          }
-    ]
+          "userID": 2,
+          "username": "user2",
+          "email": "user2@example.com",
+          "password": "pass2",
+          "firstname": "Jane",
+          "lastname": "Smith",
+          "bio": "Nice to meet you!",
+          "dateOfBirth": "15-07-1979 08:45:23",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Los Angeles",
+          "country": "USA"
+        },
+        {
+          "userID": 3,
+          "username": "user3",
+          "email": "user3@example.com",
+          "password": "pass3",
+          "firstname": "Alex",
+          "lastname": "Johnson",
+          "bio": "Exploring the world of social media!",
+          "dateOfBirth": "22-04-1992 15:21:47",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "London",
+          "country": "UK"
+        },
+        {
+          "userID": 4,
+          "username": "user4",
+          "email": "user4@example.com",
+          "password": "pass4",
+          "firstname": "Emily",
+          "lastname": "Davis",
+          "bio": "Just another social media user",
+          "dateOfBirth": "10-10-1985 09:12:34",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Sydney",
+          "country": "Australia"
+        },
+        {
+          "userID": 5,
+          "username": "user5",
+          "email": "user5@example.com",
+          "password": "pass5",
+          "firstname": "Michael",
+          "lastname": "Brown",
+          "bio": "Coding and exploring",
+          "dateOfBirth": "18-03-1976 18:09:53",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "San Francisco",
+          "country": "USA"
+        },
+        {
+          "userID": 6,
+          "username": "user6",
+          "email": "user6@example.com",
+          "password": "pass6",
+          "firstname": "Sarah",
+          "lastname": "White",
+          "bio": "Enjoying life and sharing moments",
+          "dateOfBirth": "03-09-1999 14:56:21",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Toronto",
+          "country": "Canada"
+        },
+        {
+          "userID": 7,
+          "username": "user7",
+          "email": "user7@example.com",
+          "password": "pass7",
+          "firstname": "Chris",
+          "lastname": "Lee",
+          "bio": "Travel enthusiast",
+          "dateOfBirth": "08-12-1982 07:43:29",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Tokyo",
+          "country": "Japan"
+        },
+        {
+          "userID": 8,
+          "username": "user8",
+          "email": "user8@example.com",
+          "password": "pass8",
+          "firstname": "Emma",
+          "lastname": "Clark",
+          "bio": "Music lover and foodie",
+          "dateOfBirth": "25-06-2001 16:32:45",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "userID": 9,
+          "username": "user9",
+          "email": "user9@example.com",
+          "password": "pass9",
+          "firstname": "Kevin",
+          "lastname": "Turner",
+          "bio": "Nature and photography",
+          "dateOfBirth": "30-01-1989 10:20:37",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Berlin",
+          "country": "Germany"
+        },
+        {
+          "userID": 10,
+          "username": "user10",
+          "email": "user10@example.com",
+          "password": "pass10",
+          "firstname": "Olivia",
+          "lastname": "Carter",
+          "bio": "Fitness and healthy living",
+          "dateOfBirth": "12-12-1996 22:47:59",
+          "profilePicture": "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+          "city": "Madrid",
+          "country": "Spain"
+        }
+  ]
 }
+
+
 
 export const Posts = {
   posts: [
@@ -295,8 +307,6 @@ export const Posts = {
   ]
 };
 
-
-
 // export const Posts = {
 //     posts : [
 //         {
@@ -379,80 +389,6 @@ export const Posts = {
 //     ]
 // }
 
-export const Comments = {
-    comments : [
-        {
-            "CommentID": 1,
-            "UserID": 2,
-            "PostID": 1,
-            "Content": "Nice post!",
-            "Timestamp": "2024-02-28 10:30:00"
-          },
-          {
-            "CommentID": 2,
-            "UserID": 3,
-            "PostID": 2,
-            "Content": "Love the city vibes!",
-            "Timestamp": "2024-02-27 16:00:00"
-          },
-          {
-            "CommentID": 3,
-            "UserID": 4,
-            "PostID": 3,
-            "Content": "What are you coding?",
-            "Timestamp": "2024-02-26 23:50:00"
-          },
-          {
-            "CommentID": 4,
-            "UserID": 5,
-            "PostID": 4,
-            "Content": "Stunning view!",
-            "Timestamp": "2024-02-25 18:15:00"
-          },
-          {
-            "CommentID": 5,
-            "UserID": 6,
-            "PostID": 5,
-            "Content": "Those mountains are amazing!",
-            "Timestamp": "2024-02-24 13:00:00"
-          },
-          {
-            "CommentID": 6,
-            "UserID": 7,
-            "PostID": 6,
-            "Content": "How was the concert?",
-            "Timestamp": "2024-02-23 21:30:00"
-          },
-          {
-            "CommentID": 7,
-            "UserID": 8,
-            "PostID": 7,
-            "Content": "I love ramen!",
-            "Timestamp": "2024-02-22 17:45:00"
-          },
-          {
-            "CommentID": 8,
-            "UserID": 9,
-            "PostID": 8,
-            "Content": "Jazz nights are the best.",
-            "Timestamp": "2024-02-21 15:00:00"
-          },
-          {
-            "CommentID": 9,
-            "UserID": 10,
-            "PostID": 9,
-            "Content": "Beautiful colors in the sunset.",
-            "Timestamp": "2024-02-20 19:15:00"
-          },
-          {
-            "CommentID": 10,
-            "UserID": 1,
-            "PostID": 10,
-            "Content": "Keep up the morning runs!",
-            "Timestamp": "2024-02-19 06:45:00"
-          }      
-    ]
-}
 
 export const Likes = {
     likes : [
