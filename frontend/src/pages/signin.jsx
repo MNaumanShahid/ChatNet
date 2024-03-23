@@ -37,9 +37,7 @@ export function SignIn() {
                         username,
                         password
                     });
-                    setError(response.data.message);
-                    //set username to local storage
-                    localStorage.setItem("username", username);
+                    //set token to local storage
                     localStorage.setItem("token", response.access_token);
                     //redirect them to homepage
                     navigate("/");

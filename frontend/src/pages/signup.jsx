@@ -25,7 +25,11 @@ export function Signup() {
     const [err, setError] = useState(null);
 
     const setDate = (newValue) => {
-        setDob(newValue?.format('DD-MM-YYYY HH:mm:ss'));
+        setDob({
+            day: newValue?.date(),
+            month: newValue?.month() + 1,
+            year: newValue?.year()
+        });
     }
 
 
@@ -65,11 +69,13 @@ export function Signup() {
                         email,
                         password,
                         firstname,
-                        lastname
+                        lastname,
+                        dob
                     });
                     // re direct to homepage
                     setError(response.data.message);
-                    localStorage.setItem("token", response.data.access_token);
+                    let token = "Bearer " + response.data.access_token;
+                    localStorage.setItem("token", token);
                     navigate("/");
                 }
                 catch(err) {
