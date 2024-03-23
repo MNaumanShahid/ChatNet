@@ -10,7 +10,7 @@ import { Settings } from './pages/Settings'
 
 function App() {
 
-  return (
+  return(
       <BrowserRouter>
         <Routes>
           <Route path="/signup" element={<Signup />} />

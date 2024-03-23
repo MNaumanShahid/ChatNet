@@ -694,6 +694,53 @@ def get_notifications():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
+@app.route("/get_timeline", methods=['GET'])
+@jwt_required()
+def get_timeline():
+    try:
+        data = request.get_json()
+        limit = data.get('limit')
+        timeline_posts = []
+        current_user_posts = []
+        ordered_current_user_posts = db.session.query(Post).filter_by(username=current_user.username).order_by(Post.timestamp.desc()).all()
+        for post in ordered_current_user_posts:
+            if datetime.datetime.now() - post.timestamp < timedelta(minutes=30):
+                current_user_posts.append({
+                    'timestamp': post.timestamp,
+                    'post_text': post.post_text,
+                    'post_id': post.post_id,
+                    'username': post.username,
+                    'image': post.image,
+                    'location': post.location
+                })
+        timeline_posts.append(current_user_posts)
+        for followed in current_user.following:
+            user_posts = []
+            followed_username = followed.username
+            ordered_followed_user_posts = db.session.query(Post).filter_by(username=followed_username).order_by(Post.timestamp.desc()).all()
+            for post in ordered_followed_user_posts:
+                if datetime.datetime.now() - post.timestamp < timedelta(hours=6):
+                    user_posts.append({
+                    'timestamp': post.timestamp,
+                    'post_text': post.post_text,
+                    'post_id': post.post_id,
+                    'username': post.username,
+                    'image': post.image,
+                    'location': post.location
+                    })
+            timeline_posts.append(user_posts)
+
+        final_timeline_posts = []
+        for i in range(max(len(x) for x in timeline_posts)):
+            for user_posts in timeline_posts:
+                if i < len(user_posts):
+                    final_timeline_posts.append(user_posts[i])
+        return jsonify(posts=final_timeline_posts), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)
