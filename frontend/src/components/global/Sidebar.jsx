@@ -22,12 +22,12 @@ export function Sidebar() {
 function ProfileButton({onClick}) {
     const currentUser = Users.Users[0];
 
-    return <div onClick={onClick} className="p-2 flex justify-start items-center hover:bg-gray-300 hover:cursor-pointer rounded-lg mb-5">
+    return <div onClick={onClick} className="p-2 flex justify-start items-center hover:bg-gray-300 transition-colors duration-200 hover:cursor-pointer rounded-lg mb-5">
         <div className="h-14 w-14 rounded-full overflow-hidden mr-3">
-            <img src={currentUser.ProfilePicture} alt="ProfilePic" />
+            <img src={currentUser.profilePicture} alt="ProfilePic" />
         </div>
         <div className="text-xl font-semibold">
-            {currentUser.FirstName} {currentUser.LastName}
+            {currentUser.firstname} {currentUser.lastname}
         </div>
     </div>
 }
@@ -35,7 +35,7 @@ function ProfileButton({onClick}) {
 //Sidebar button
 function Button({label, Icon, onClick}) {
 
-    return <div onClick={onClick} className="p-2 flex gap-3 rounded-lg justify-start items-center hover:bg-gray-300 hover:cursor-pointer">
+    return <div onClick={onClick} className="p-2 flex gap-3 rounded-lg justify-start items-center hover:bg-gray-300 transition-colors duration-200 hover:cursor-pointer">
         <Icon />
         <div className="text-lg">
             {label}

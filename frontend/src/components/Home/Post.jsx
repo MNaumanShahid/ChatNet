@@ -1,4 +1,5 @@
-import { jwtDecode } from "jwt-decode"
+import { jwtDecode } from "jwt-decode";
+import dayjs from "dayjs";
 
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
@@ -12,12 +13,12 @@ export function Post(props) {
     const [showComments, setShowComments] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("token");   //get jwt from local storage
-    //     const decoded = jwtDecode(token);
-    //     console.log(token);
+    useEffect(() => {
+        const token = localStorage.getItem("token");   //get jwt from local storage
+        const decoded = jwtDecode(token);
+        const setCurrentUser = decoded.sub;
 
-    // }, []);
+     }, []);
 
 
     const goToProfile = (Username) => () => {
@@ -63,14 +64,14 @@ export function Post(props) {
                     if(showComments){setShowComments(false)}
                     else{setShowComments(true)}
                 }} className="cursor-pointer">{props.noOfComments} Comments</div>
-                </div>
-                <div>
+            </div>
+            <div>
                 {showComments && (
                     <div className="mt-5">
                         {comments.map((comment) => (
-                            <div className="flex justify-between ">
-                                <div className=" flex mt-5 my-5">
-                                    <img onClick={goToProfile(comment.Username)} className="w-9 h-9 rounded-full mr-3 cursor-pointer" src={comment.ProfilePicture} alt="ProfilePic" /> 
+                            <div className="flex justify-between items-center">
+                                <div className="flex my-5">
+                                    <img onClick={goToProfile(comment.Username)} className="w-9 h-9 rounded-full mr-3 cursor-pointer items-center" src={comment.ProfilePicture} alt="ProfilePic" /> 
                                     <div>
                                         <div onClick={goToProfile(comment.Username)} className="font-semibold cursor-pointer">
                                             {comment.Username} <br />
@@ -80,15 +81,15 @@ export function Post(props) {
                                         </div>
                                     </div> 
                                 </div>
-                                <div className="mt-7">
-                                    {comment.Timestamp}
+                                <div>
+                                    {dayjs(comment.Timestamp).format('MMM D')}
                                 </div>
                             </div>
                         ))}
                     </div>
                     )
                     }
-                </div>
+            </div>
         </div>
     )
 }

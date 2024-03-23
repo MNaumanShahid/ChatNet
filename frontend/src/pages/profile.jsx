@@ -4,7 +4,8 @@ import { Post } from "../components/Home/Post";
 
 import { Posts, Users } from "../../dummyData"
 
-export function Profile() {
+
+export async function Profile() {
     const currentUser = Users.Users[0];
     const posts = Posts.posts;
 
@@ -16,12 +17,12 @@ export function Profile() {
 
                 <div className="flex ml-20 gap-20 mt-10 items-center">
                     <div className="rounded-full overflow-hidden h-36 w-36">
-                        <img src={currentUser.ProfilePicture} alt="DisplayPic" />
+                        <img src={currentUser.profilePicture} alt="DisplayPic" />
                     </div>
                     <div>
                         <div className="flex gap-10">
                             <div className="text-3xl font-bold ">
-                                {currentUser.FirstName} {currentUser.LastName}
+                                {currentUser.firstname} {currentUser.lastname}
                             </div>
                         </div>
                         <div className="text-lg">
