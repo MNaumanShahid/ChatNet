@@ -21,12 +21,12 @@ export function UserProfile() {
 
                 <div className="flex ml-20 gap-20 mt-10 items-center">
                     <div className="rounded-full overflow-hidden h-36 w-36">
-                        <img src={currentUser.ProfilePicture} alt="DisplayPic" />
+                        <img src={currentUser.profilePicture} alt="DisplayPic" />
                     </div>
                     <div>
                         <div className="flex gap-10">
                             <div className="text-3xl font-bold">
-                                {currentUser.FirstName} {currentUser.LastName}
+                                {currentUser.firstname} {currentUser.lastname}
                             </div>
                             <div className="bg-primary rounded-full py-2 px-4 text-white cursor-pointer font-semibold">
                                 Follow

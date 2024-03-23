@@ -17,7 +17,7 @@ export function ProfileOps({clickHandler}) {
         const handleClickOutside = () => {
           setShowBar(false);
         };
-    
+      
         // Add event listener when component mounts
         window.addEventListener("click", handleClickOutside);
     

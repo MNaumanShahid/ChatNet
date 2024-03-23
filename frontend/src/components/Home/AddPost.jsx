@@ -20,7 +20,7 @@ export function AddPost() {
         <div className="text-2xl mb-2">Add a Post</div>
         <form onSubmit={submitHandler}>
             <div className="flex">
-                <img className="w-12 h-12 rounded-full mr-3" src={currentUser.ProfilePicture} alt="ProfilePic" />
+                <img className="w-12 h-12 rounded-full mr-3" src={currentUser.profilePicture} alt="ProfilePic" />
                 <textarea className="w-full" name="text"rows="4" placeholder="What's on your mind?"></textarea>
             </div>
 
