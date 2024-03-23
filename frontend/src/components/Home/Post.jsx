@@ -14,7 +14,7 @@ export function Post(props) {
     useEffect(() => {
         const token = localStorage.getItem("token");   //get jwt from local storage
         const decoded = jwtDecode(token);
-        console.log(token);
+        const setCurrentUser = decoded.sub;
 
     }, []);
 

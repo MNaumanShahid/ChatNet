@@ -4,7 +4,8 @@ import { Post } from "../components/Home/Post";
 
 import { Posts, Users } from "../../dummyData"
 
-export function Profile() {
+
+export async function Profile() {
     const currentUser = Users.Users[0];
     const posts = Posts.posts;
 
