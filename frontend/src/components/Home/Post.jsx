@@ -19,7 +19,12 @@ export function Post(props) {
     //     const setCurrentUser = decoded.sub;
     //  }, []);
 
-
+    const commentHandler = (event) => {
+        const newComment = event.target.value;
+    }
+    const addComment = () => {
+        //Backend request to add the comment to the current post.
+    }
     const goToProfile = (Username) => () => {
 
         if(Username == currentUser) {   //if the clicked user is current user, redirect him to /profile
@@ -63,6 +68,12 @@ export function Post(props) {
                     if(showComments){setShowComments(false)}
                     else{setShowComments(true)}
                 }} className="cursor-pointer">{props.noOfComments} Comments</div>
+            </div>
+            <div className="flex justify-between">
+                <input className="ml-4 mt-4 mb-2 rounded-full w-5/6 h-10 px-3 border-2 border-grey-300" onChange={commentHandler} type="text" name="commentInput" placeholder="Add a comment" />
+                <div className="mt-5 mx-4">
+                    <button type="submit" className="bg-primary text-white font-medium rounded-full px-5 py-1" onClick={addComment}>Submit</button>
+                </div>
             </div>
             <div>
                 {showComments && (
