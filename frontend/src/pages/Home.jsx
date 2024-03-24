@@ -4,11 +4,23 @@ import { AddPost } from "../components/Home/AddPost";
 import { Post } from "../components/Home/Post";
 import { Users } from "../../dummyData";
 import { Posts } from "../../dummyData";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 
 export function Home() {
     const users = Users.Users;
     const posts = Posts.posts;
+    const navigate = useNavigate();
+
+    //if user isn't logged in, redirect them to login page
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if(!token) {
+            navigate("/signin");
+        }
+    },[]);
+
     return <div>
         <Topbar />
         <div className="grid homepage-grid items-start justify-items-center">

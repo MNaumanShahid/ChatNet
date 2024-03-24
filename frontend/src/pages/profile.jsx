@@ -7,23 +7,31 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../components/backend-url";
 import { SECTION_TYPE_GRANULARITY } from "@mui/x-date-pickers/internals/utils/getDefaultReferenceDate";
+import { useNavigate } from "react-router";
 
 
 export function Profile() {
     const [currentUser, setCurrentUser] = useState(null);
     const posts = Posts.posts;
+    const navigate = useNavigate();
     
     const token = localStorage.getItem("token");
+
+    //if the user isn't logged in, re direct them to login page
+    useEffect(() => {
+        if(!token) {
+            navigate("/signin");
+        }
+    }); 
 
     useEffect(() => {
         axios.get(BACKEND_URL + "/", {
             headers: {
-                "Authorization": token
+                Authorization: token
             }
         })
         .then(res => {
             setCurrentUser(res.data);
-            console.log(currentUser);
         })
         
     }, [])

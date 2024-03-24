@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { BACKEND_URL } from "../components/backend-url"
 import { Logo } from "../components/Login/Logo"
@@ -15,6 +15,14 @@ export function SignIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [err, setError] = useState(null);
+
+    //if user is already logged in, redirect them to their homepage
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if(token) {
+            navigate("/");
+        }
+    },[])
 
     return <div className="flex justify-between items-center h-screen bg-cover bg-gradient-to-r from-black to-violet-900">
         <div>
@@ -38,7 +46,8 @@ export function SignIn() {
                         password
                     });
                     //set token to local storage
-                    localStorage.setItem("token", response.access_token);
+                    const token = "Bearer " + response.data.access_token;
+                    localStorage.setItem("token", token);
                     //redirect them to homepage
                     navigate("/");
                 }
