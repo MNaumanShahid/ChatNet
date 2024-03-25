@@ -14,6 +14,7 @@ export function LoginCred() {
     const [pswdMatch, setPswdMatch] = useState(null);
     const [error, setError] = useState(null);
     const [msg, setMsg] = useState(null);
+    const [msg2, setMsg2] = useState(null);
 
     //fetch current user details
     const token = localStorage.getItem("token");
@@ -28,17 +29,28 @@ export function LoginCred() {
         })
     },[]);
 
-    let updateData = {};
+    let updateUsername = {};
     useEffect(() => {
         if(username) {
-            updateData.username = username
-            console.log(updateData);
+            updateUsername.username = username;
         }
         if(ogPswd) {
-            updateData.password = ogPswd
-            console.log(updateData);
+            updateUsername.password = ogPswd
         }
     }, [username, ogPswd]);
+
+    let updatePswd = {
+        password: null,
+        update: {}
+    };
+    useEffect(() => {
+        if(password) {
+            updatePswd.update.password = password
+        }
+        if(ogPswd) {
+            updatePswd.password = ogPswd
+        }
+    }, [password, ogPswd]);
 
 
     useEffect(() => {
@@ -51,25 +63,62 @@ export function LoginCred() {
 
     const onClick = async () => {
         setError(null);
-        try {
-            console.log(updateData);
-            //make sure update and password fields aren't null
-            if(!Object.keys(updateData).length > 0) {
-                throw new Error("No data updated");
-            }
-            if(!ogPswd) {
-                throw new Error("Password is required");
-            }
-            const response = await axios.put(BACKEND_URL + "/update_username", updateData, {
-                headers: {
-                    Authorization: token
+        setMsg(null);
+        setMsg2(null);
+
+        if(updateUsername.username) {
+
+            try {
+                //make sure update and password fields aren't null
+                if(!Object.keys(updateUsername).length > 0) {
+                    throw new Error("No data updated");
                 }
-            });
-            setMsg(response.data.message);
+                if(!ogPswd) {
+                    throw new Error("Password is required");
+                }
+                const response = await axios.put(BACKEND_URL + "/update_username", updateUsername, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                setMsg("Updated username");
+                const newJwt = response.data.access_token;
+                const newToken = "Bearer " + newJwt;
+                localStorage.setItem("token", newToken);
+                updateUsername = {};
+            }
+            catch(err) {
+                setError(err.response.data.message);
+                console.log(err);
+            }
         }
-        catch(err) {
-            setError(err.message);
+
+        if(Object.keys(updatePswd.update).length > 0) {
+            try {
+                if(!Object.keys(updatePswd.update) > 0) {
+                    throw new Error("No data updated");
+                }
+                if(!ogPswd) {
+                    throw new Error("Password is required");
+                }
+                const response = await axios.put(BACKEND_URL + "/update_user", updatePswd, {
+                    headers: {
+                        Authorization: localStorage.getItem("token")
+                    }
+                });
+                setMsg2("Updated Password");
+                updatePswd = {
+                    password: null,
+                    update: {}
+                }
+            }
+            catch(err) {
+                console.log(err);
+                setError(err.message);
+            }
         }
+
+
     }
 
     return <div className="mt-5">
@@ -108,6 +157,14 @@ export function LoginCred() {
                     {msg && (
                         <div>{msg}</div>
                     )}
+                    {msg2 && (
+                        <div>{msg2}</div>
+                    )}
+                </div>
+                <div className="flex">
+                    <div className="border-2 border-red-400 text-red-600 mt-20 py-2 px-10 rounded-lg cursor-pointer">
+                        Delete Your Account
+                    </div>
                 </div>
             </>
         )}
