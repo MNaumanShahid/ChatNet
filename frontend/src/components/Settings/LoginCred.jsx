@@ -6,6 +6,7 @@ import { BACKEND_URL } from "../backend-url";
 import { PasswordBox } from "./PasswordBox";
 
 export function LoginCred() {
+    const [confirm, setConfirm] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
@@ -121,7 +122,50 @@ export function LoginCred() {
 
     }
 
-    return <div className="mt-5">
+    const confirmHandler = () => {
+        if(confirm) setConfirm(false);
+        else setConfirm(true);
+    }
+    useEffect(() => {
+        // Function to handle clicks outside of search box and suggestion box
+        const handleClickOutside = () => {
+          setShowBar(false);
+        };
+      
+        // Add event listener when component mounts
+        window.addEventListener("click", handleClickOutside);
+    
+        // Remove event listener when component unmounts
+        return () => {
+          window.removeEventListener("click", handleClickOutside);
+        };
+      }, []);
+
+    const onConfirm = () => {
+        alert("hello");
+        confirmHandler();
+    }
+    const onCancel = () => {
+        confirmHandler();
+    }
+
+    return <div className="relative">
+        {confirm && (
+            <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center">
+            <div className="bg-black opacity-50 absolute inset-0"></div>
+            <div className="bg-white rounded-lg p-8 max-w-sm mx-auto relative">
+              <h2 className="text-xl font-semibold mb-4">Confirm Account Deletion</h2>
+              <p className="mb-4">Are you sure you want to delete your account?</p>
+              <div className="flex justify-end">
+                <button className="bg-red-500 text-white px-4 py-2 mr-2 rounded"
+                  onClick={onConfirm}>Delete</button>
+                <button className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                  onClick={onCancel}>Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="mt-5">
         {currentUser && (
             <>
                 <div className="grid grid-cols-2 gap-x-40 gap-y-7">
@@ -162,11 +206,12 @@ export function LoginCred() {
                     )}
                 </div>
                 <div className="flex">
-                    <div className="border-2 border-red-400 text-red-600 mt-20 py-2 px-10 rounded-lg cursor-pointer">
+                    <div onClick={confirmHandler} className="border-2 border-red-400 text-red-600 mt-20 py-2 px-10 rounded-lg cursor-pointer">
                         Delete Your Account
                     </div>
                 </div>
             </>
         )}
     </div> 
+    </div>
 }
