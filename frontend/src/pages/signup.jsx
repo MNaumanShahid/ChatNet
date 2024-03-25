@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
@@ -24,8 +24,20 @@ export function Signup() {
     const [dob, setDob] = useState(null);
     const [err, setError] = useState(null);
 
+    //if user is already logged in, redirect them to their homepage
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if(token) {
+            navigate("/");
+        }
+    },[])
+
     const setDate = (newValue) => {
-        setDob(newValue?.format('DD-MM-YYYY HH:mm:ss'));
+        setDob({
+            day: newValue?.date(),
+            month: newValue?.month() + 1,
+            year: newValue?.year()
+        });
     }
 
 
@@ -65,11 +77,13 @@ export function Signup() {
                         email,
                         password,
                         firstname,
-                        lastname
+                        lastname,
+                        dob
                     });
                     // re direct to homepage
                     setError(response.data.message);
-                    localStorage.setItem("token", response.data.access_token);
+                    let token = "Bearer " + response.data.access_token;
+                    localStorage.setItem("token", token);
                     navigate("/");
                 }
                 catch(err) {
