@@ -23,7 +23,7 @@ class User(db.Model):
     last_name = db.Column(db.String(50))
     bio = db.Column(db.Text)
     dob = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
-    profile_picture = db.Column(db.String(1000))
+    profile_picture = db.Column(db.String(1000), nullable=False, server_default="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=")
     city = db.Column(db.String(50))
     country = db.Column(db.String(50))
     account_private = db.Column(db.Boolean, default=False)
@@ -35,6 +35,8 @@ class User(db.Model):
     comments = relationship("Comment", back_populates="user", cascade="all, delete")
     likes = relationship("Like", back_populates="user", cascade="all, delete")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete")
+    # sent_messages = relationship("Message", back_populates="sender", cascade="all, delete")
+    # received_messages = relationship("Message", back_populates="receiver", cascade="all, delete")
 
     followers = db.relationship(
         'User',
@@ -95,12 +97,25 @@ class Like(db.Model):
 class Notification(db.Model):
     __tablename__ = "notifications"
     notification_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
-    username = db.Column(db.String(32), db.ForeignKey('users'))
+    username = db.Column(db.String(32), db.ForeignKey('users.username'), nullable=False)
     user = relationship("User", lazy="subquery", back_populates="notifications")
     timestamp = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     content = db.Column(db.Text)
 
     def __repr__(self):
         return f"Notification ('{self.notification_id}', '{self}"
+
+# class Message(db.Model):
+#     __tablename__ = "messages"
+#     message_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
+#     timestamp = db.Column(db.DateTime, server_default=db.func.now())
+#     content = db.Column(db.Text, nullable=False)
+#     sender_username = db.Column(db.String(32), db.ForeignKey('users.username'), nullable=False)
+#     sender = relationship("User", lazy="subquery", back_populates="sent_messages")
+#     receiver_username = db.Column(db.String(32), db.ForeignKey('users.username'), nullable=True)
+#     receiver = relationship("User", lazy="subquery", back_populates="received_messages")
+#
+#     def __repr__(self):
+#         return f"Message ('{self.message_id}', '{self}"
 
 

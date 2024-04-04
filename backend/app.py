@@ -391,6 +391,8 @@ def get_post(post_id):
                     image=post.image,
                     location=post.location,
                     timestamp=post.timestamp,
+                    likes_count = len(post.likes),
+                    comments_count = len(post.comments)
                 ), 200
             else:
                 raise Exception("Post not found.")
@@ -408,10 +410,34 @@ def get_all_posts():
             "image": post.image,
             "location": post.location,
             "timestamp": post.timestamp,
-            "username": post.username
+            "username": post.username,
+            "likes_count": len(post.likes),
+            "comments_count": len(post.comments)
         } for post in posts]), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
+
+@app.route("/get_user_posts/<username>")
+@jwt_required()
+def get_user_posts(username):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        if user:
+            posts = user.posts
+            return jsonify(posts=[{
+                "post_id": post.post_id,
+                "post_text": post.post_text,
+                "image": post.image,
+                "location": post.location,
+                "timestamp": post.timestamp,
+                "username": post.username,
+                "likes_count": len(post.likes),
+                "comments_count": len(post.comments)
+            } for post in posts]), 200
+        else:
+            return jsonify(message="User not found."), 500
+    except Exception as e:
+        return jsonify(message=str(e)), 500
 
 @app.route("/comment/<post_id>", methods=['POST'])
 @jwt_required()
@@ -587,6 +613,18 @@ def unfollow_user(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
+@app.route("/check_follow/<username>")
+@jwt_required()
+def check_follow(username):
+    try:
+        following = current_user.following
+        for followed in following:
+            if username == followed.username:
+                return jsonify({'message': 'User is followed.'}), 200
+        return jsonify({'message': 'User not followed.'}), 404
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
 @app.route("/get_following", methods=['GET'])
 @jwt_required()
 def get_following():
@@ -739,7 +777,16 @@ def get_timeline():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-
+# @app.route("/send_message/<username>", methods=['POST'])
+# @jwt_required()
+# def send_message(username):
+#     try:
+#         data = request.get_json()
+#         content = data['content']
+#         receiver = db.session.query(User).filter_by(username=username).first()
+#         if receiver:
+#             if current_user in receiver.followers:
+#
 
 
 if __name__ == "__main__":
