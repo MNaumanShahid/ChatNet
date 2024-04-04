@@ -846,6 +846,45 @@ def get_messages(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
+@app.route("/check_messages")
+@jwt_required()
+def check_messages():
+    try:
+        usernames_messaged = []
+        sender_alias = db.aliased(User)
+        receiver_alias = db.aliased(User)
+        messages = db.session.query(Message) \
+            .join(sender_alias, Message.sender_username == sender_alias.username) \
+            .join(receiver_alias, Message.receiver_username == receiver_alias.username) \
+            .filter(
+            db.or_(sender_alias.username == current_user.username, receiver_alias.username == current_user.username)) \
+            .order_by(Message.timestamp.desc()).all()
+        for message in messages:
+            runame = message.receiver_username
+            suname = message.sender_username
+            cuname = current_user.username
+            if runame != cuname:
+                if runame not in usernames_messaged:
+                    usernames_messaged.append(runame)
+            elif suname != cuname:
+                if suname not in usernames_messaged:
+                    usernames_messaged.append(suname)
+        list_messaged = []
+        for username in usernames_messaged:
+            user = db.session.query(User).filter_by(username=username).first()
+            list_messaged.append(
+                {
+                    'username': user.username,
+                    'profile_picture': user.profile_picture,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name
+                }
+            )
+        return jsonify(user_message_list=list_messaged), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)
