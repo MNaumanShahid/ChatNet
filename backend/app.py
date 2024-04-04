@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_cors import CORS
-from models import db, User, Post, Comment, Like, Notification, follow
+from models import db, User, Post, Comment, Like, Notification, Message, follow
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
@@ -777,16 +777,74 @@ def get_timeline():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-# @app.route("/send_message/<username>", methods=['POST'])
-# @jwt_required()
-# def send_message(username):
-#     try:
-#         data = request.get_json()
-#         content = data['content']
-#         receiver = db.session.query(User).filter_by(username=username).first()
-#         if receiver:
-#             if current_user in receiver.followers:
-#
+@app.route("/send_message/<username>", methods=['POST'])
+@jwt_required()
+def send_message(username):
+    try:
+        data = request.get_json()
+        content = data['content']
+        receiver = db.session.query(User).filter_by(username=username).first()
+        if receiver:
+            if current_user in receiver.followers:
+                new_message = Message(
+                    content=content,
+                    sender_username=current_user.username,
+                    receiver_username=username,
+                )
+                db.session.add(new_message)
+                db.session.commit()
+                return jsonify(message="Message successfully sent"), 200
+            else:
+                return jsonify("User not followed."), 400
+        else:
+            return jsonify("User not found."), 400
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/get_messages/<username>")
+@jwt_required()
+def get_messages(username):
+    try:
+        friend_user = db.session.query(User).filter_by(username=username).first()
+        if friend_user:
+            message_list = []
+            sender_alias = db.aliased(User)
+            receiver_alias = db.aliased(User)
+            messages = db.session.query(Message)\
+            .join(sender_alias, Message.sender_username == sender_alias.username)\
+            .join(receiver_alias, Message.receiver_username == receiver_alias.username)\
+            .filter(db.or_(sender_alias.username == current_user.username, receiver_alias.username == current_user.username))\
+            .order_by(Message.timestamp.desc()).all()
+
+            for message in messages:
+                if message.sender_username == current_user.username:
+                    if message.receiver_username == friend_user.username:
+                        message_list.append(
+                            {
+                                'message_id': message.message_id,
+                                'content': message.content,
+                                'timestamp': message.timestamp,
+                                'sender_username': message.sender_username,
+                                'receiver_username': message.receiver_username,
+                                'sent': True
+                            }
+                        )
+                elif message.sender_username == friend_user.username:
+                    message_list.append(
+                        {
+                            'message_id': message.message_id,
+                            'content': message.content,
+                            'timestamp': message.timestamp,
+                            'sender_username': message.sender_username,
+                            'receiver_username': message.receiver_username,
+                            'sent': False
+                        }
+                    )
+            return jsonify(messages=message_list), 200
+        else:
+            return jsonify(message="User not found."), 400
+    except Exception as e:
+        return jsonify(message=str(e)), 400
 
 
 if __name__ == "__main__":
