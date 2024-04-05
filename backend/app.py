@@ -557,6 +557,19 @@ def get_likes(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
+@app.route("/check_like/<post_id>")
+@jwt_required()
+def check_like(post_id):
+    try:
+        post = db.session.query(Post).filter_by(post_id=post_id).first()
+        likes = post.likes
+        for like in likes:
+            if current_user.username == like.username:
+                return jsonify(message=True), 200
+        return jsonify(message=False), 404
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
 @app.route("/search_users/<filter>", methods=['GET'])
 @jwt_required()
 def search_users(filter):
