@@ -385,6 +385,7 @@ def get_post(post_id):
         with app.app_context():
             post = db.session.query(Post).filter_by(post_id=post_id).first()
             if post:
+                post_user = db.session.query(User).filter_by(username=post.username).first()
                 return jsonify(
                     username=post.username,
                     post_text=post.post_text,
@@ -392,7 +393,8 @@ def get_post(post_id):
                     location=post.location,
                     timestamp=post.timestamp,
                     likes_count = len(post.likes),
-                    comments_count = len(post.comments)
+                    comments_count = len(post.comments),
+                    profile_picture = post_user.profile_picture
                 ), 200
             else:
                 raise Exception("Post not found.")
@@ -412,7 +414,8 @@ def get_all_posts():
             "timestamp": post.timestamp,
             "username": post.username,
             "likes_count": len(post.likes),
-            "comments_count": len(post.comments)
+            "comments_count": len(post.comments),
+            "profile_picture": current_user.profile_picture
         } for post in posts]), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
@@ -432,7 +435,8 @@ def get_user_posts(username):
                 "timestamp": post.timestamp,
                 "username": post.username,
                 "likes_count": len(post.likes),
-                "comments_count": len(post.comments)
+                "comments_count": len(post.comments),
+                "profile_picture": user.profile_picture
             } for post in posts]), 200
         else:
             return jsonify(message="User not found."), 500
@@ -490,12 +494,14 @@ def get_comments(post_id):
         if post:
             comments = []
             for comment in post.comments:
+                comment_user = db.session.query(User).filter_by(username=comment.username).first()
                 add_comment = {
                     'comment_id': comment.comment_id,
                     'timestamp': comment.timestamp,
                     'username': comment.username,
                     'post_id': comment.post_id,
-                    'content': comment.content
+                    'content': comment.content,
+                    "profile_picture": comment_user.profile_picture
                 }
                 comments.append(add_comment)
             return jsonify(comments=comments), 200
@@ -536,11 +542,13 @@ def get_likes(post_id):
         if post:
             likes = []
             for like in post.likes:
+                like_user = db.session.query(User).filter_by(username=like.username).first()
                 add_like = {
                     "like_id": like.like_id,
                     "username": like.username,
                     "timestamp": like.timestamp,
-                    "post_id": post_id
+                    "post_id": post_id,
+                    "profile_picture": like_user.profile_picture
                 }
                 likes.append(add_like)
             return jsonify(likes=likes), 200
@@ -620,8 +628,8 @@ def check_follow(username):
         following = current_user.following
         for followed in following:
             if username == followed.username:
-                return jsonify({'message': 'User is followed.'}), 200
-        return jsonify({'message': 'User not followed.'}), 404
+                return jsonify({'message': True}), 200
+        return jsonify({'message': False}), 404
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
@@ -736,20 +744,24 @@ def get_notifications():
 @jwt_required()
 def get_timeline():
     try:
-        data = request.get_json()
-        limit = data.get('limit')
+        # data = request.get_json()
+        # limit = data.get('limit')
         timeline_posts = []
         current_user_posts = []
         ordered_current_user_posts = db.session.query(Post).filter_by(username=current_user.username).order_by(Post.timestamp.desc()).all()
         for post in ordered_current_user_posts:
-            if datetime.datetime.now() - post.timestamp < timedelta(minutes=30):
+            if datetime.datetime.now() - post.timestamp < timedelta(days=7):
+                post_user = db.session.query(User).filter_by(username=post.username).first()
                 current_user_posts.append({
                     'timestamp': post.timestamp,
                     'post_text': post.post_text,
                     'post_id': post.post_id,
                     'username': post.username,
                     'image': post.image,
-                    'location': post.location
+                    'location': post.location,
+                    'profile_picture': post_user.profile_picture,
+                    'likes_count': len(post.likes),
+                    'comments_count': len(post.comments)
                 })
         timeline_posts.append(current_user_posts)
         for followed in current_user.following:
@@ -757,14 +769,18 @@ def get_timeline():
             followed_username = followed.username
             ordered_followed_user_posts = db.session.query(Post).filter_by(username=followed_username).order_by(Post.timestamp.desc()).all()
             for post in ordered_followed_user_posts:
-                if datetime.datetime.now() - post.timestamp < timedelta(hours=6):
+                if datetime.datetime.now() - post.timestamp < timedelta(days=30):
+                    post_user = db.session.query(User).filter_by(username=post.username).first()
                     user_posts.append({
                     'timestamp': post.timestamp,
                     'post_text': post.post_text,
                     'post_id': post.post_id,
                     'username': post.username,
                     'image': post.image,
-                    'location': post.location
+                    'location': post.location,
+                    'profile_picture': post_user.profile_picture,
+                    'likes_count': len(post.likes),
+                    'comments_count': len(post.comments)
                     })
             timeline_posts.append(user_posts)
 
