@@ -6,7 +6,7 @@ from flask import Flask, request, redirect, url_for, abort, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from models import db, User, Post, Comment, Like, Notification, Message, follow
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
@@ -557,6 +557,7 @@ def get_likes(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
+@cross_origin
 @app.route("/check_like/<post_id>")
 @jwt_required()
 def check_like(post_id):
@@ -644,7 +645,7 @@ def check_follow(username):
                 return jsonify({'message': True}), 200
         return jsonify({'message': False}), 404
     except Exception as e:
-        return jsonify({'message': str(e)}), 500
+        return jsonify({'message': str(e)}), 400
 
 @app.route("/get_following", methods=['GET'])
 @jwt_required()
