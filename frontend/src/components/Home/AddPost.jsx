@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Users } from "../../../dummyData"
 import { BACKEND_URL } from "../backend-url";
 import axios from "axios";
+import { IMGUR_TOKEN } from "../../assets/imgur";
 
 export function AddPost() {
     const [currentUser, setCurrentUser] = useState(null);
     const [postText, setPosttext] = useState(null);
     const [file, setFile] = useState(null);
+    const [formData, setFormData] = useState(new FormData());
 
     const token = localStorage.getItem("token");
 
@@ -24,19 +26,49 @@ export function AddPost() {
 
 
     //upload image and create a new post
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
-        axios.post(BACKEND_URL + "/create_post",{
-            post_text: postText
 
-        }, {
-            headers: {
-                Authorization: token
-            }
-        })
-        .then(res => {
-            setPosttext("");
-        })
+        //if file exists, upload the image first then make the backend request
+        if(file) {
+            //upload the image
+            formData.append("image", file);
+            const response = await axios.post("https://api.imgur.com/3/image", {
+                formData
+            }, {
+                headers: {
+                    Authorization: IMGUR_TOKEN
+                }
+            });
+
+            //create post
+            axios.post(BACKEND_URL + "/create_post",{
+                post_text: postText,
+                image: response.data.data.link
+    
+            }, {
+                headers: {
+                    Authorization: token
+                }
+            })
+            .then(res => {
+                setPosttext("");
+            })
+        }
+        else {
+            axios.post(BACKEND_URL + "/create_post",{
+                post_text: postText,
+    
+            }, {
+                headers: {
+                    Authorization: token
+                }
+            })
+            .then(res => {
+                setPosttext("");
+            })
+        }
+
     }
 
     const changeHandler = (e) => {
