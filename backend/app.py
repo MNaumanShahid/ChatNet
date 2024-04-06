@@ -764,7 +764,7 @@ def get_timeline():
         current_user_posts = []
         ordered_current_user_posts = db.session.query(Post).filter_by(username=current_user.username).order_by(Post.timestamp.desc()).all()
         for post in ordered_current_user_posts:
-            if datetime.datetime.now() - post.timestamp < timedelta(days=7):
+            if datetime.datetime.now() - post.timestamp < timedelta(hours=6):
                 post_user = db.session.query(User).filter_by(username=post.username).first()
                 current_user_posts.append({
                     'timestamp': post.timestamp,
