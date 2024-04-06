@@ -441,7 +441,7 @@ def get_user_posts(username):
         else:
             return jsonify(message="User not found."), 500
     except Exception as e:
-        return jsonify(message=str(e)), 500
+        return jsonify(message=str(e)), 400
 
 @app.route("/comment/<post_id>", methods=['POST'])
 @jwt_required()
