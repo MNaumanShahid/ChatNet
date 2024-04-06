@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Users } from "../../../dummyData"
 import { BACKEND_URL } from "../backend-url";
 import axios from "axios";
-import { IMGUR_TOKEN } from "../../assets/imgur";
+import { IMGUR_CLIENT_ID, IMGUR_TOKEN } from "../../assets/imgur";
 
 export function AddPost() {
     const [currentUser, setCurrentUser] = useState(null);
     const [postText, setPosttext] = useState(null);
     const [file, setFile] = useState(null);
-    const [formData, setFormData] = useState(new FormData());
 
     const token = localStorage.getItem("token");
 
@@ -31,29 +30,49 @@ export function AddPost() {
 
         //if file exists, upload the image first then make the backend request
         if(file) {
-            //upload the image
-            formData.append("image", file);
-            const response = await axios.post("https://api.imgur.com/3/image", {
-                formData
-            }, {
-                headers: {
-                    Authorization: IMGUR_TOKEN
-                }
-            });
+            try {
+                //upload the image
+                let formData = new FormData();
+                formData.append("image", file);
 
-            //create post
-            axios.post(BACKEND_URL + "/create_post",{
-                post_text: postText,
-                image: response.data.data.link
-    
-            }, {
-                headers: {
-                    Authorization: token
-                }
-            })
-            .then(res => {
-                setPosttext("");
-            })
+                const response = await axios.post("https://api.imgur.com/3/image", formData, {
+                    headers: {
+                        Authorization: IMGUR_TOKEN,
+                    }
+                });
+                // let url = null;
+
+                // const response = await fetch("https://api.imgur.com/3/image", {
+                //     method: "post",
+                //     headers: {
+                //         Authorization: IMGUR_TOKEN
+                //     },
+                //     body: formData
+                // })
+                // const data = await response.json();
+                // console.log(data);
+                // throw new Error();
+                
+                
+                //create post
+                axios.post(BACKEND_URL + "/create_post",{
+                    post_text: postText,
+                    image: response.data.data.link
+        
+                }, {
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                .then(res => {
+                    setPosttext("");
+                    //refresh the page
+                    window.location.reload();
+                })
+            }
+            catch(err) {
+                console.log(err);
+            }
         }
         else {
             axios.post(BACKEND_URL + "/create_post",{
@@ -88,7 +107,16 @@ export function AddPost() {
                 <img className="w-12 h-12 rounded-full mr-3" src={currentUser.profile_picture} alt="ProfilePic" />
                 <textarea value={postText} onChange={changeHandler} className="w-full" name="text"rows="4" placeholder="What's on your mind?"></textarea>
             </div>
-
+            {file && (
+                <div>
+                    <div>
+                        <img src={URL.createObjectURL(file)} alt="Post Image" />
+                    </div>
+                    <div className="w-32 text-center rounded-full my-3 cursor-pointer border-2 border-primary" onClick={() => setFile(null)}>
+                        Clear Image
+                    </div>
+                </div>
+            )}
             <div className="flex justify-around mt-3">
                 <label htmlFor="file" className="flex gap-1 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

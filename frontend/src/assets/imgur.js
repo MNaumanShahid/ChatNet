@@ -1,4 +1,4 @@
-export const IMGUR_CLIENT_ID = "3179d2aea05d7df";
+export const IMGUR_CLIENT_ID = "Client-ID 3179d2aea05d7df";
 
 export const IMGUR_CLIENT_SECRET = "2571dfdc6181c2d637ce3d8756efe4a679c4bb75";
 

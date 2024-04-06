@@ -72,7 +72,6 @@ export function Post(props) {
         })
         .then(res => {
             setNewComment("");
-            setShowComments(true);
         })
     }
 
@@ -108,7 +107,7 @@ export function Post(props) {
                     <div onClick={goToProfile(props.Username)} className="cursor-pointer">{props.Username}</div>
                 </div>
                 <div className="font-normal">
-                    {dayjs(props.timestamp, { format: 'ddd, DD MMM YYYY HH:mm:ss [GMT]' }).subtract(1, "day").format("ddd MMM D")}
+                    {dayjs(props.timestamp, { format: 'ddd, DD MMM YYYY HH:mm:ss [GMT]' }).subtract(1, "day").format("MMM D")}
                 </div>
 
             </div>

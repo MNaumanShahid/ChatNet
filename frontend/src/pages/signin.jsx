@@ -8,6 +8,7 @@ import { Button } from "../components/Login/Button"
 import { BottomWarning } from "../components/Login/BottomWarning"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { PasswordBox } from "../components/Settings/PasswordBox"
 
 
 export function SignIn() {
@@ -36,7 +37,8 @@ export function SignIn() {
             <InputBox onChange={(e) => setUsername(e.target.value)} />
 
             <div className="justify-self-start text-xl my-1">Password</div>
-            <InputBox onChange={(e) => setPassword(e.target.value)} />
+            <PasswordBox setValue={setPassword} />
+            {/* <InputBox onChange={(e) => setPassword(e.target.value)} /> */}
 
             <Button label={"Sign In"} onClick={async () => {
 
