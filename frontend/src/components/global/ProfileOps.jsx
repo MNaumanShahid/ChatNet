@@ -6,8 +6,22 @@ import { BACKEND_URL } from "../backend-url";
 
 export function ProfileOps({clickHandler}) {
     const navigate = useNavigate();
-    const currentUser = Users.Users[0];
+    const [currentUser, setCurrentUser] = useState(null);
     const [showBar, setShowBar] = useState(false);
+
+    const token = localStorage.getItem("token");
+
+    //get current user
+    useEffect(() => {
+        axios.get(BACKEND_URL + "/", {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then(res => {
+            setCurrentUser(res.data);
+        })
+    }, [])
 
     const settingBar =() => {
         setShowBar(prevShowBar => !prevShowBar);
@@ -54,9 +68,16 @@ export function ProfileOps({clickHandler}) {
           window.removeEventListener("click", handleClickOutside);
         };
       }, []);
+
+      if(!currentUser) {
+        return <div>
+            ?
+        </div>
+      }
+
     return  <div className="relative">
                 <div onClick={divHandler} className="cursor-pointer h-12 w-12 overflow-hidden rounded-full">
-                    <img src={currentUser.profilePicture} alt="ops" />
+                    <img className="w-full h-full" src={currentUser.profile_picture} alt="ops" />
                     {showBar && (
                     <div className="absolute top-full right-0">
                         <div className="bg-white border border-gray-300 rounded-md shadow z-10 p-1">
