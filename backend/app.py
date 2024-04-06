@@ -405,7 +405,7 @@ def get_post(post_id):
 @jwt_required()
 def get_all_posts():
     try:
-        posts = current_user.posts
+        posts = db.session.query(Post).filter_by(username=current_user.username).order_by(Post.timestamp.desc()).all()
         return jsonify(posts=[{
             "post_id": post.post_id,
             "post_text": post.post_text,
@@ -426,7 +426,7 @@ def get_user_posts(username):
     try:
         user = db.session.query(User).filter_by(username=username).first()
         if user:
-            posts = user.posts
+            posts = db.session.query(Post).filter_by(username=user.username).order_by(Post.timestamp.desc()).all()
             return jsonify(posts=[{
                 "post_id": post.post_id,
                 "post_text": post.post_text,
