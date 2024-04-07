@@ -12,6 +12,7 @@ import { SubHeading } from "../components/Login/SubHeading"
 import { Button } from "../components/Login/Button"
 import { BottomWarning } from "../components/Login/BottomWarning"
 import { useNavigate } from "react-router-dom";
+import { PasswordBox } from "../components/Settings/PasswordBox";
 
 
 export function Signup() {
@@ -67,7 +68,8 @@ export function Signup() {
             </LocalizationProvider>
 
             <div className="justify-self-start text-xl my-1">Password</div>
-            <InputBox onChange={(e) => setPassword(e.target.value)} />
+            <PasswordBox setValue={setPassword} />
+            {/* <InputBox onChange={(e) => setPassword(e.target.value)} /> */}
 
             <Button label={"Sign Up"} onClick={async () => {
                 

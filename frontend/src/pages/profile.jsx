@@ -8,11 +8,14 @@ import axios from "axios";
 import { BACKEND_URL } from "../components/backend-url";
 import { SECTION_TYPE_GRANULARITY } from "@mui/x-date-pickers/internals/utils/getDefaultReferenceDate";
 import { useNavigate } from "react-router";
+import { Backdrop } from "@mui/material";
 
 
 export function Profile() {
     const [currentUser, setCurrentUser] = useState(null);
-    const posts = Posts.posts;
+    const [followers, setFollowers] = useState(null);
+    const [followings, setFollowings] = useState(null);
+    const [posts, setPosts] = useState(null);
     const navigate = useNavigate();
     
     const token = localStorage.getItem("token");
@@ -24,6 +27,7 @@ export function Profile() {
         }
     }); 
 
+    //get current user details
     useEffect(() => {
         axios.get(BACKEND_URL + "/", {
             headers: {
@@ -34,10 +38,53 @@ export function Profile() {
             setCurrentUser(res.data);
         })
         
+    }, []);
+
+    //get current user's posts
+    useEffect(() => {
+        //return early if current user is still null
+        if(!currentUser) {
+            return
+        }
+
+        axios.get(BACKEND_URL + "/get_user_posts/" + currentUser.username, {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then(res => {
+            setPosts(res.data.posts);
+        })
+    },[currentUser])
+
+    //get followers of current user
+    useEffect(() => {
+
+        axios.get(BACKEND_URL + "/get_followers", {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then(res => {
+            setFollowers(res.data.followers);
+        })
     }, [])
 
+    //get followings of current user
+    useEffect(() => {
+        axios.get(BACKEND_URL + "/get_following", {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then(res => {
+            setFollowings(res.data.following)
+        })
+    },[])
+
+
     // Conditionally render based on currentUser being null
-    if (!currentUser) {
+    if (!currentUser || !followers || !followings || !posts) {
         return <div>Loading...</div>;
     }
 
@@ -67,7 +114,7 @@ export function Profile() {
                                     Followers
                                 </div>
                                 <div className=" flex justify-center">
-                                    1234
+                                    {followers.length}
                                 </div>
                             </div>
 
@@ -76,7 +123,7 @@ export function Profile() {
                                     Following
                                 </div>
                                 <div className="flex justify-center">
-                                    1234
+                                    {followings.length}
                                 </div>
                             </div>
                         </div>
@@ -86,10 +133,10 @@ export function Profile() {
                     {posts.map(post => {
                         return (
                             <div>
-                                {post.Image ? (
-                                    <Post key={post.PostID} ProfilePicture={post.ProfilePicture} Username={post.Username} Text={post.PostText} noOfLikes={post.Likes.length} noOfComments={post.Comments.length} image={post.Image} Comments={post.Comments} />
+                                {post.image ? (
+                                    <Post key={post.post_id} postId={post.post_id} ProfilePicture={currentUser.profile_picture} Username={currentUser.username} Text={post.post_text} noOfLikes={post.likes_count} noOfComments={post.comments_count} image={post.image} timestamp={post.timestamp} />
                                 ) : (
-                                    <Post key={post.PostID} ProfilePicture={post.ProfilePicture} Username={post.Username} Text={post.PostText} noOfLikes={post.Likes.length} noOfComments={post.Comments.length} Comments={post.Comments}/>
+                                    <Post key={post.post_id} postId={post.post_id} ProfilePicture={currentUser.profile_picture} Username={currentUser.username} Text={post.post_text} noOfLikes={post.likes_count} noOfComments={post.comments_count} timestamp={post.timestamp} />
                                 )}
                             </div>
                         )

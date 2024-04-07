@@ -9,6 +9,7 @@ import { Users } from "../../../dummyData";
 import { Button } from "./Button";
 import axios from "axios";
 import { BACKEND_URL } from "../backend-url";
+import { IMGUR_TOKEN } from "../../assets/imgur";
 
 export function PersonalInfo() {
     
@@ -23,8 +24,11 @@ export function PersonalInfo() {
     const [error, setError] = useState(null);
     const [msg, setMsg] = useState(null);
     const [parsedCurrentDob, setParsedDob] = useState(null);
+    const [file, setFile] = useState(null);
+    const [fileURL, setFileURL] = useState(null);
     const token = localStorage.getItem("token");
 
+    //fetch details of current user
     useEffect(() => {
         axios.get(BACKEND_URL + "/", {
             headers: {
@@ -86,19 +90,56 @@ export function PersonalInfo() {
     const onClick = async () => {
         setError(null);
         try {
-            //make sure update and password fields aren't null
-            if(!Object.keys(updateData.update).length > 0) {
-                throw new Error("No data updated");
-            }
-            if(!password) {
-                throw new Error("Password is required");
-            }
-            const response = await axios.put(BACKEND_URL + "/update_user", updateData, {
-                headers: {
-                    Authorization: token
+
+            if(!file) {
+                //make sure update and password fields aren't null
+                if(!Object.keys(updateData.update).length > 0) {
+                    throw new Error("No data updated");
                 }
-            });
-            setMsg(response.data.message);
+                if(!password) {
+                    throw new Error("Password is required");
+                }
+    
+                //make the backend call
+                const response = await axios.put(BACKEND_URL + "/update_user", updateData, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                setMsg(response.data.message);
+
+
+            } else {
+                if(!password) {
+                    throw new Error("Password is required");
+                }
+
+                //upload the image
+                const formData = new FormData();
+                formData.append("image", file);
+                const response = await axios.post("https://api.imgur.com/3/image", formData, {
+                    headers: {
+                        Authorization: IMGUR_TOKEN,
+                    }
+                });
+                //include image url in update data
+                updateData.update.profile_picture = response.data.data.link;
+
+                //make sure update and password fields aren't null
+                if(!Object.keys(updateData.update).length > 0) {
+                    throw new Error("No data updated");
+                }
+
+                //make the backend call
+                const res = await axios.put(BACKEND_URL + "/update_user", updateData, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                setMsg(res.data.message);
+
+            }
+
         }
         catch(err) {
             setError(err.message);
@@ -109,7 +150,21 @@ export function PersonalInfo() {
     return <div className="mt-5">
         {currentUser && (
             <>
-            
+                <div className="flex items-center justify-center">
+                    <label htmlFor="file" className="cursor-pointer">
+                        <div className="place-self-center overflow-hidden h-56 w-56 rounded-full">
+                            {file ? (<div>
+                                <img src={URL.createObjectURL(file)} alt="Display Picture" />
+                            </div>) : (
+                            <div>
+                                <img src={currentUser.profile_picture} alt="Display Picture" />
+                            </div>
+                            )}
+                        </div>
+                        <input type="file" id="file" className="hidden" onChange={(e) => setFile(e.target.files[0])} />
+
+                    </label>
+                </div>
                 <div className="grid grid-cols-2 gap-x-40 gap-y-7">
                     <div>
                         <div className="text-xl font-normal">Firstname</div>

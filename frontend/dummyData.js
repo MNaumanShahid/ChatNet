@@ -1,3 +1,116 @@
+export const message_list = {
+  "user_message_list": [
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "johndoe"
+    },
+    {
+      "first_name": "Alice",
+      "last_name": "Smith",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "alicesmith"
+    },
+    {
+      "first_name": "Bob",
+      "last_name": "Johnson",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "bobjohnson"
+    },
+    {
+      "first_name": "Emily",
+      "last_name": "Brown",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "emilybrown"
+    },
+    {
+      "first_name": "Michael",
+      "last_name": "Davis",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "michaeldavis"
+    },
+    {
+      "first_name": "Sarah",
+      "last_name": "Wilson",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "sarahwilson"
+    },
+    {
+      "first_name": "David",
+      "last_name": "Miller",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "davidmiller"
+    },
+    {
+      "first_name": "Emma",
+      "last_name": "Garcia",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "emmagarcia"
+    },
+    {
+      "first_name": "James",
+      "last_name": "Martinez",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "jamesmartinez"
+    },
+    {
+      "first_name": "Olivia",
+      "last_name": "Lopez",
+      "profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "username": "olivialopez"
+    }
+  ]
+}
+
+export const messages = {
+  "messages": [
+    {
+      "content": "Hey there!",
+      "message_id": "bdd8a7ef897148dc87e6adaed86e1263",
+      "receiver_username": "abc1",
+      "sender_username": "abc",
+      "sent": true,
+      "timestamp": "Thu, 04 Apr 2024 10:16:06 GMT"
+    },
+    {
+      "content": "Hi, how are you?",
+      "message_id": "5457efe173e24ca4a04841a86d77df72",
+      "receiver_username": "abc",
+      "sender_username": "abc1",
+      "sent": false,
+      "timestamp": "Thu, 04 Apr 2024 10:15:44 GMT"
+    },
+    {
+      "content": "I'm good, thanks!",
+      "message_id": "16f90c3b50514ea4b501c4015cf5ae73",
+      "receiver_username": "abc",
+      "sender_username": "abc1",
+      "sent": false,
+      "timestamp": "Thu, 04 Apr 2024 10:15:19 GMT"
+    },
+    {
+      "content": "Nice weather today!",
+      "message_id": "539bc8e6bc0444338b8d6eb17c642804",
+      "receiver_username": "abc1",
+      "sender_username": "abc",
+      "sent": true,
+      "timestamp": "Thu, 04 Apr 2024 10:14:30 GMT"
+    },
+    {
+      "content": "Yes, it's lovely!",
+      "message_id": "4ca6742b7828405582ee186303d11229",
+      "receiver_username": "abc1",
+      "sender_username": "abc",
+      "sent": true,
+      "timestamp": "Thu, 04 Apr 2024 10:14:17 GMT"
+    }
+  ]
+}
+
+
+
+
 export const Users = {
   Users : [
       {
