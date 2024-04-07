@@ -1,3 +1,5 @@
+import os
+
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
@@ -15,39 +17,20 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
+app.config['SECRET_KEY'] = os.environ.get("FLASK_KEY")
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", 'sqlite:///chatnet.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# with app.app_context():
-#     db.create_all()
 
-
-app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
+app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY")
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
-# app.config["JWT_COOKIE_SECURE"] = False
-# app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
-
-# @app.after_request
-# def refresh_expiring_jwts(response):
-#     try:
-#         exp_timestamp = get_jwt()["exp"]
-#         now = datetime.datetime.now(timezone.utc)
-#         target_timestamp = datetime.datetime.timestamp(now + timedelta(minutes=30))
-#         if target_timestamp > exp_timestamp:
-#             access_token = create_access_token(identity=get_jwt_identity())
-#             set_access_cookies(response, access_token)
-#         return response
-#     except (RuntimeError, KeyError):
-#         # Case where there is not a valid JWT. Just return the original response
-#         return response
 
 @jwt.expired_token_loader
 def my_expired_token_callback(jwt_header, jwt_payload):
@@ -917,4 +900,4 @@ def check_messages():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False)
