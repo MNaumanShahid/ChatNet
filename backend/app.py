@@ -16,7 +16,7 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
                                 unset_jwt_cookies)
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "headers": ["Content-Type", "Authorization"]}})
+CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_KEY")
 
 
@@ -557,7 +557,7 @@ def check_like(post_id):
         return jsonify({'message': str(e)}), 400
 
 @cross_origin()
-@app.route("/search_users/<filter>", methods=['GET'])
+@app.route("/search_users/<filter>")
 @jwt_required()
 def search_users(filter):
     try:
