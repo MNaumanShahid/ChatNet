@@ -556,7 +556,7 @@ def check_like(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@cross_origin()
+@cross_origin
 @app.route("/search_users/<filter>")
 @jwt_required()
 def search_users(filter):
