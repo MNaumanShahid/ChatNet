@@ -528,4 +528,69 @@ export const Friendships = {
             "Timestamp": "2024-02-19 07:15:00"
           }
     ]
+    
 }
+
+export const dummyUsers = [
+  {
+    id: 1,
+    name: "John Doe",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "online"
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "offline"
+  },
+  {
+    id: 3,
+    name: "Alex Johnson",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "online"
+  },
+  {
+    id: 4,
+    name: "Emily Brown",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "offline"
+  },
+  {
+    id: 5,
+    name: "Michael Wilson",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "online"
+  },
+  {
+    id: 6,
+    name: "Sophia Taylor",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "offline"
+  },
+  {
+    id: 7,
+    name: "James Anderson",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "online"
+  },
+  {
+    id: 8,
+    name: "Olivia Martinez",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "offline"
+  },
+  {
+    id: 9,
+    name: "William Garcia",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "online"
+  },
+  {
+    id: 10,
+    name: "Emma Lopez",
+    profilePhoto: "https://thumbs.dreamstime.com/z/student-avatar-illustration-user-profile-icon-youth-avatar-student-avatar-illustration-simple-cartoon-user-portrait-user-profile-276205546.jpg",
+    status: "offline"
+  },
+];
+
