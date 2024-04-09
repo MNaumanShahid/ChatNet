@@ -7,6 +7,7 @@ import { Profile } from './pages/profile'
 import { Home } from './pages/Home'
 import { UserProfile } from './pages/UserProfile'
 import { Settings } from './pages/Settings'
+import { Messenger } from './pages/Messenger'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/user/:username" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/messenger" element={<Messenger />}/>
         </Routes>
       </BrowserRouter>
   )
