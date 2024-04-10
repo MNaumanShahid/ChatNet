@@ -4,7 +4,7 @@ dayjs.extend(utc);
 export function Message(props){
     return (
         <div className={`p-3 ${props.sender == props.activeUser ? "flex justify-end" : "flex justify-start"}`}>
-            <div className="mx-3 mt-2 rounded-xl h-auto w-5/12 bg-primary text-white ">
+            <div className={`mx-3 mt-2 rounded-xl h-auto w-5/1 text-white ${props.sender == props.activeUser ? "bg-chat1" : "bg-chat2"} `}>
                 <div className="mt-3 mb-2 mx-4">
                     {props.content}
                 </div>
