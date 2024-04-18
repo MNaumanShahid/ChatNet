@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,4 +18,10 @@
         display: grid;
         grid-template-columns: 15% 85%;
     }
+}
+
+.greet {
+    background: -webkit-linear-gradient(16deg, #f40bda, #711e6d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
