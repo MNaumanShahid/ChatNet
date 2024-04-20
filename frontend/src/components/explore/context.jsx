@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Users } from '../../../dummyData';
+import { BACKEND_URL } from '../backend-url';
+import axios from 'axios';
 
 // Create a new context
 const AppContext = createContext();
@@ -12,10 +14,10 @@ export const useAppContext = () => {
 // Context Provider component
 export const AppProvider = ({ children }) => {
 
-  const currentUser = Users.Users[0];
 
   const exampleResponse = "Hey there! I'm doing well, thanks for asking. Did you know that octopuses have three hearts? It's pretty fascinating how nature comes up with these unique designs. Speaking of nature, have you ever tried stargazing on a clear night? The universe can be so awe-inspiring when you take a moment to appreciate it. Any exciting plans or projects you're working on lately?";
   const greetText = "How may I help you today?"
+  const [currentUser, setCurrentUser] = useState(null);
   const [input, setInput] = useState("");
   const [recentPrompt, setRecentPrompt] = useState("");
   const [prevPrompts, setPrevPromts] = useState([]);
@@ -23,6 +25,20 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
   const [greeting, setGreeting] = useState("");
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    axios.get(BACKEND_URL + "/", {
+        headers: {
+            Authorization: token
+        }
+    })
+    .then(res => {
+        setCurrentUser(res.data);
+    })
+
+  },[])
 
 
   const displayGreeting = async() => {
