@@ -1,22 +1,46 @@
 import { useState, useEffect, useRef } from "react";
-import { Users } from "../../../dummyData"
-import axios from "axios";
+import { Users } from "../../../dummyData";
 import { BACKEND_URL } from "../backend-url";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function SearchBar() {
-  const users = Users.Users;
-  const [suggestions, setSuggestions] = useState(users);
+  
+  // const users = Users.Users;
+  const [suggestions, setSuggestions] = useState(null);
+  const [filter, setFilter] = useState(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
 
-  const onInputHandler = async (event) => {
-    setSuggestions(users);
-    if (filter.trim() === "") {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+
+  //fetch search results
+  useEffect(() => {
+    axios.get(BACKEND_URL + "/search_users/" + filter + "%", {
+      headers: {
+        Authorization: token
+      }
+    })
+    .then(res => {
+      setSuggestions(res.data.users);
+    })
+  }, [filter]);
+
+  const onInputHandler = (event) => {
+
+    setFilter(event.target.value);
+
+    if (event.target.value.trim() === "") {
       setShowSuggestions(false); // Hide suggestions if input value is empty
     } else {
       setShowSuggestions(true);
     }
   };
+
+
+
   useEffect(() => {
     // Function to handle clicks outside of search box and suggestion box
     const handleClickOutside = (event) => {
@@ -31,6 +55,12 @@ export function SearchBar() {
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const goToProfile = (username) => {
+    navigate("/user/" + username);
+  }
+
+
   // className="border border-gray-300 rounded-md px-4 py-2 w-full" {/* Apply Tailwind classes */}
   return (
     <div className="flex bg-white place-items-center p-1 rounded-full">
@@ -60,11 +90,11 @@ export function SearchBar() {
         {showSuggestions && (
           <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow z-10 p-2">
             {suggestions.map((suggestion, index) => (
-              <div key={index} className="flex px-4 py-2 cursor-pointer hover:bg-primary hover:text-white rounded-md">
+              <div onClick={() => goToProfile(suggestion.username)} key={index} className="flex place-items-center px-4 py-2 cursor-pointer hover:bg-gray-300 rounded-md">
                 <div>
-                  <img className="w-9 h-9 mr-3 rounded-full" src={suggestion.profilePicture} alt="profilePic" />
+                  <img className="w-9 h-9 mr-3 rounded-full" src={suggestion.profile_picture} alt="profilePic" />
                 </div>
-                <div>{suggestion.username}</div>
+                <div>{suggestion.first_name} {suggestion.last_name}</div>
               </div>
             ))}
           </div>

@@ -24,7 +24,7 @@ export function PasswordBox({setValue}) {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
       <div>
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+        <FormControl fullWidth variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
             onChange={changeHandler}
