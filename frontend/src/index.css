@@ -25,3 +25,29 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.loader hr {
+    animation: loader 3s infinite linear;
+}
+
+@keyframes loader {
+    0%{
+        background-position: -800px 0px;
+    }
+    100%{
+        background-position: 800px 0px;
+    }
+}
+
+.greeting {
+    border-right: 5px solid;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    animation:
+        cursor .5s step-end infinite alternate;
+}
+
+@keyframes cursor {
+    50% {border-color: transparent;}
+}
