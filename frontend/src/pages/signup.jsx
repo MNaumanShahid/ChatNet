@@ -41,7 +41,7 @@ export function Signup() {
     }
 
 
-    return <div className="flex justify-between items-center h-screen bg-cover bg-gradient-to-r from-black to-violet-900">
+    return <div className="flex justify-between items-center h-auto bg-cover bg-gradient-to-r from-black to-violet-900">
         <div>
             <div className="m-10 text-7xl text-white font-bold">Welcome</div>
         </div>

@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Users } from "../../../dummyData"
+import axios from "axios";
+import { BACKEND_URL } from "../backend-url";
 
 export function SearchBar() {
   const users = Users.Users;
@@ -7,9 +9,9 @@ export function SearchBar() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
 
-  const onInputHandler = (event) => {
-    const inputValue = event.target.value;
-    if (inputValue.trim() === "") {
+  const onInputHandler = async (event) => {
+    setSuggestions(users);
+    if (filter.trim() === "") {
       setShowSuggestions(false); // Hide suggestions if input value is empty
     } else {
       setShowSuggestions(true);

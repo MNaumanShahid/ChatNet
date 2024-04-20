@@ -29,7 +29,7 @@ export function Home() {
                 <AddPost />
                 {posts.map((post) => {
                     return (
-                        <div>
+                        <div key={post.PostID}>
                         {post.Image ? (
                             <Post key={post.PostID} ProfilePicture={post.ProfilePicture} Username={post.Username} Text={post.PostText} noOfLikes={post.Likes.length} noOfComments={post.Comments.length} image={post.Image} Comments={post.Comments} />
                         ) : (
