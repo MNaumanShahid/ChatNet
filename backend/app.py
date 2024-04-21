@@ -3,7 +3,7 @@ from datetime import timedelta
 from datetime import timezone
 import os
 
-from flask import Flask, request, redirect, url_for, abort, jsonify
+from flask import Flask, request, redirect, url_for, abort, jsonify, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
@@ -35,6 +35,17 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+from flask import Response
+
+@current_app.before_request
+def basic_authentication():
+    if request.method.lower() == 'options':
+        return Response()
 
 # @app.after_request
 # def refresh_expiring_jwts(response):
