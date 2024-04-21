@@ -1,5 +1,3 @@
-import os
-
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
@@ -10,29 +8,48 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_cors import CORS, cross_origin
 from models import db, User, Post, Comment, Like, Notification, Message, follow
+from recommend import add_entry, find_users_emb
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
                                 unset_jwt_cookies)
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
-app.config['SECRET_KEY'] = os.environ.get("FLASK_KEY")
+# CORS(app, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", 'sqlite:///chatnet.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 with app.app_context():
     db.create_all()
 
-app.config['JWT_SECRET_KEY'] = os.environ.get("JWT_SECRET_KEY")
+
+app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+# app.config["JWT_COOKIE_SECURE"] = False
+# app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
+
+# @app.after_request
+# def refresh_expiring_jwts(response):
+#     try:
+#         exp_timestamp = get_jwt()["exp"]
+#         now = datetime.datetime.now(timezone.utc)
+#         target_timestamp = datetime.datetime.timestamp(now + timedelta(minutes=30))
+#         if target_timestamp > exp_timestamp:
+#             access_token = create_access_token(identity=get_jwt_identity())
+#             set_access_cookies(response, access_token)
+#         return response
+#     except (RuntimeError, KeyError):
+#         # Case where there is not a valid JWT. Just return the original response
+#         return response
 
 @jwt.expired_token_loader
 def my_expired_token_callback(jwt_header, jwt_payload):
@@ -78,6 +95,7 @@ def signup():
         last_name = data.get('lastname')
         bio = data.get('bio')
         dob = data.get('dob')
+        gender = data.get('gender')
         if dob:
             dob = datetime.datetime(day=int(dob["day"]), month=int(dob["month"]), year=int(dob["year"]))
         profile_picture = data.get('profile_picture')
@@ -109,7 +127,8 @@ def signup():
             profile_picture = profile_picture,
             city = city,
             country = country,
-            account_private = account_private
+            account_private = account_private,
+            gender = gender
         )
         with app.app_context():
             db.session.add(new_user)
@@ -122,6 +141,48 @@ def signup():
         return jsonify({'message': 'Successfully signed up.',
                         'access_token': access_token}), 200
 
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/add_vdb_entry", methods=['POST'])
+@jwt_required()
+def add_vdb_entry():
+    try:
+        username = current_user.username
+        user = db.session.query(User).filter_by(username=username).first()
+        dob = user.dob
+        age = datetime.datetime.now().year - dob.year
+        gender = user.gender
+
+        data = request.get_json()
+        answer1 = data.get('answer1')
+        answer2 = data.get('answer2')
+        answer3 = data.get('answer3')
+
+        add_entry(username, gender, age, answer1, answer2, answer3)
+
+        return jsonify({'message': 'Successfully added entry to database.'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/find_users", methods=['GET', 'POST'])
+@jwt_required()
+def find_users():
+    try:
+        data = request.get_json()
+        prompt = data.get('prompt')
+        output = find_users_emb(prompt)
+        users_list = []
+        for username in output:
+            user = db.session.query(User).filter_by(username=username).first()
+            if user:
+                users_list.append({
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'profile_picture': user.profile_picture
+                })
+        return jsonify({'users': users_list}), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
@@ -556,8 +617,7 @@ def check_like(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@cross_origin
-@app.route("/search_users/<filter>")
+@app.route("/search_users/<filter>", methods=['GET'])
 @jwt_required()
 def search_users(filter):
     try:
@@ -903,4 +963,4 @@ def check_messages():
 
 
 if __name__ == "__main__":
-    app.run(debug = False)
+    app.run(debug = True)
