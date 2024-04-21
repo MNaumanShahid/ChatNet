@@ -8,13 +8,15 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_cors import CORS, cross_origin
 from models import db, User, Post, Comment, Like, Notification, Message, follow
+from recommend import add_entry, find_users_emb
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
                                 unset_jwt_cookies)
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+# CORS(app, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
 
 
@@ -93,6 +95,7 @@ def signup():
         last_name = data.get('lastname')
         bio = data.get('bio')
         dob = data.get('dob')
+        gender = data.get('gender')
         if dob:
             dob = datetime.datetime(day=int(dob["day"]), month=int(dob["month"]), year=int(dob["year"]))
         profile_picture = data.get('profile_picture')
@@ -124,7 +127,8 @@ def signup():
             profile_picture = profile_picture,
             city = city,
             country = country,
-            account_private = account_private
+            account_private = account_private,
+            gender = gender
         )
         with app.app_context():
             db.session.add(new_user)
@@ -137,6 +141,48 @@ def signup():
         return jsonify({'message': 'Successfully signed up.',
                         'access_token': access_token}), 200
 
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/add_vdb_entry", methods=['POST'])
+@jwt_required()
+def add_vdb_entry():
+    try:
+        username = current_user.username
+        user = db.session.query(User).filter_by(username=username).first()
+        dob = user.dob
+        age = datetime.datetime.now().year - dob.year
+        gender = user.gender
+
+        data = request.get_json()
+        answer1 = data.get('answer1')
+        answer2 = data.get('answer2')
+        answer3 = data.get('answer3')
+
+        add_entry(username, gender, age, answer1, answer2, answer3)
+
+        return jsonify({'message': 'Successfully added entry to database.'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/find_users", methods=['GET', 'POST'])
+@jwt_required()
+def find_users():
+    try:
+        data = request.get_json()
+        prompt = data.get('prompt')
+        output = find_users_emb(prompt)
+        users_list = []
+        for username in output:
+            user = db.session.query(User).filter_by(username=username).first()
+            if user:
+                users_list.append({
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'profile_picture': user.profile_picture
+                })
+        return jsonify({'users': users_list}), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
