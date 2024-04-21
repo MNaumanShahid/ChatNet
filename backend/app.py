@@ -35,6 +35,15 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
+def build_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+def build_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 # @app.after_request
 # def refresh_expiring_jwts(response):
@@ -149,12 +158,7 @@ def signup():
 def add_vdb_entry():
     try:
         if request.method == 'OPTIONS':
-            # Handle OPTIONS request (preflight check)
-            response = jsonify({'message': 'Preflight check successful'})
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-            return response
+            return build_preflight_response()
         username = current_user.username
         user = db.session.query(User).filter_by(username=username).first()
         dob = user.dob
@@ -168,10 +172,11 @@ def add_vdb_entry():
 
         add_entry(username, gender, age, answer1, answer2, answer3)
         response = jsonify({'message': 'Successfully added entry to database.'})
-        response = make_response(response)
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        # response = make_response(response)
+        # response.headers['Access-Control-Allow-Origin'] = '*'
+        # response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        # response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response = build_actual_response(response)
         return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
@@ -635,12 +640,7 @@ def check_like(post_id):
 def search_users(filter):
     try:
         if request.method == 'OPTIONS':
-            # Handle OPTIONS request (preflight check)
-            response = jsonify({'message': 'Preflight check successful'})
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-            return response
+            return build_preflight_response()
         users_list = []
         users = db.session.query(User).filter(User.username.like(filter)).limit(5)
         for user in users:
@@ -665,10 +665,11 @@ def search_users(filter):
         users_list = temp
 
         response = jsonify(users=users_list)
-        response = make_response(response)
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        # response = make_response(response)
+        # response.headers['Access-Control-Allow-Origin'] = '*'
+        # response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        # response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response = build_actual_response(response)
         return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
