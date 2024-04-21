@@ -86,7 +86,7 @@ export function Signup() {
                     setError(response.data.message);
                     let token = "Bearer " + response.data.access_token;
                     localStorage.setItem("token", token);
-                    navigate("/");
+                    navigate("/intro");
                 }
                 catch(err) {
                     console.log(err);

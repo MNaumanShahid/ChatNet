@@ -70,6 +70,7 @@ export const AppProvider = ({ children }) => {
                 resolve();
             }, 3000);
         });
+        
         let newResponseArray = exampleResponse.split(" ");
         setLoading(false);
         setInput("");
