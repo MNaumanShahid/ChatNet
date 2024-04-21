@@ -3,7 +3,7 @@ from datetime import timedelta
 from datetime import timezone
 import os
 
-from flask import Flask, request, redirect, url_for, abort, jsonify, current_app
+from flask import Flask, request, redirect, url_for, abort, jsonify, current_app, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
@@ -167,8 +167,12 @@ def add_vdb_entry():
         answer3 = data.get('answer3')
 
         add_entry(username, gender, age, answer1, answer2, answer3)
-
-        return jsonify({'message': 'Successfully added entry to database.'}), 200
+        response = jsonify({'message': 'Successfully added entry to database.'})
+        response = make_response(response)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
@@ -658,7 +662,13 @@ def search_users(filter):
         temp = []
         [temp.append(user) for user in users_list if user not in temp]
         users_list = temp
-        return jsonify(users=users_list), 200
+
+        response = jsonify(users=users_list)
+        response = make_response(response)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
