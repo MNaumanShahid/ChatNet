@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { BACKEND_URL } from "../components/backend-url"
 import { Logo } from "../components/Login/Logo"
@@ -8,6 +8,7 @@ import { Button } from "../components/Login/Button"
 import { BottomWarning } from "../components/Login/BottomWarning"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { PasswordBox } from "../components/Settings/PasswordBox"
 
 
 export function SignIn() {
@@ -15,6 +16,14 @@ export function SignIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [err, setError] = useState(null);
+
+    //if user is already logged in, redirect them to their homepage
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        if(token) {
+            navigate("/");
+        }
+    },[])
 
     return <div className="flex justify-between items-center h-screen bg-cover bg-gradient-to-r from-black to-violet-900">
         <div>
@@ -28,7 +37,8 @@ export function SignIn() {
             <InputBox onChange={(e) => setUsername(e.target.value)} />
 
             <div className="justify-self-start text-xl my-1">Password</div>
-            <InputBox onChange={(e) => setPassword(e.target.value)} />
+            <PasswordBox setValue={setPassword} />
+            {/* <InputBox onChange={(e) => setPassword(e.target.value)} /> */}
 
             <Button label={"Sign In"} onClick={async () => {
 
@@ -37,10 +47,9 @@ export function SignIn() {
                         username,
                         password
                     });
-                    setError(response.data.message);
-                    //set username to local storage
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("token", response.access_token);
+                    //set token to local storage
+                    const token = "Bearer " + response.data.access_token;
+                    localStorage.setItem("token", token);
                     //redirect them to homepage
                     navigate("/");
                 }

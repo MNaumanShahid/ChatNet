@@ -9,8 +9,8 @@ def get_uuid():
 
 follow = db.Table(
     'follow',
-    db.Column("following_username", db.Integer, db.ForeignKey("users.username")),
-    db.Column("follower_username", db.Integer, db.ForeignKey("users.username"))
+    db.Column("following_username", db.String(50), db.ForeignKey("users.username")),
+    db.Column("follower_username", db.String(50), db.ForeignKey("users.username"))
 )
 
 class User(db.Model):
@@ -23,7 +23,7 @@ class User(db.Model):
     last_name = db.Column(db.String(50))
     bio = db.Column(db.Text)
     dob = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
-    profile_picture = db.Column(db.String(1000))
+    profile_picture = db.Column(db.String(1000), nullable=False, server_default="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=")
     city = db.Column(db.String(50))
     country = db.Column(db.String(50))
     account_private = db.Column(db.Boolean, default=False)
@@ -35,6 +35,8 @@ class User(db.Model):
     comments = relationship("Comment", back_populates="user", cascade="all, delete")
     likes = relationship("Like", back_populates="user", cascade="all, delete")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete")
+    sent_messages = relationship("Message", foreign_keys='Message.sender_username', back_populates="sender", cascade="all, delete")
+    received_messages = relationship("Message", foreign_keys='Message.receiver_username', back_populates="receiver", cascade="all, delete")
 
     followers = db.relationship(
         'User',
@@ -51,7 +53,7 @@ class User(db.Model):
 class Post(db.Model):
     __tablename__ = "posts"
     post_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
-    username = db.Column(db.String(32), db.ForeignKey('users.username'), nullable=False)
+    username = db.Column(db.String(50), db.ForeignKey('users.username'), nullable=False)
     user = relationship("User", lazy="subquery", back_populates="posts")
     post_text = db.Column(db.Text)
     image = db.Column(db.String(1000))
@@ -70,7 +72,7 @@ class Comment(db.Model):
     comment_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
     post_id = db.Column(db.String(32), db.ForeignKey('posts.post_id'), nullable=False)
     post = db.relationship("Post", lazy="subquery", back_populates="comments")
-    username = db.Column(db.String(32), db.ForeignKey('users.username'), nullable=False)
+    username = db.Column(db.String(50), db.ForeignKey('users.username'), nullable=False)
     user = relationship("User", lazy="subquery", back_populates="comments")
     timestamp = db.Column(db.DateTime)
     content = db.Column(db.Text)
@@ -84,7 +86,7 @@ class Like(db.Model):
     like_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
     post_id = db.Column(db.String(32), db.ForeignKey('posts.post_id'))
     post = relationship("Post", lazy="subquery", back_populates="likes")
-    username = db.Column(db.String(32), db.ForeignKey('users.username'), nullable=False)
+    username = db.Column(db.String(50), db.ForeignKey('users.username'), nullable=False)
     user = relationship("User", lazy="subquery", back_populates="likes")
 
     timestamp = db.Column(db.DateTime)
@@ -95,12 +97,25 @@ class Like(db.Model):
 class Notification(db.Model):
     __tablename__ = "notifications"
     notification_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
-    username = db.Column(db.String(32), db.ForeignKey('users'))
+    username = db.Column(db.String(50), db.ForeignKey('users.username'), nullable=False)
     user = relationship("User", lazy="subquery", back_populates="notifications")
     timestamp = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     content = db.Column(db.Text)
 
     def __repr__(self):
         return f"Notification ('{self.notification_id}', '{self}"
+
+class Message(db.Model):
+    message_id = db.Column(db.String(32), primary_key=True, unique=True, nullable=False, default=get_uuid)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.now(), nullable=False)
+    sender_username = db.Column(db.String(50), db.ForeignKey('users.username'), nullable=False)
+    receiver_username = db.Column(db.String(50), db.ForeignKey('users.username'), nullable=False)
+
+    sender = db.relationship('User', foreign_keys=[sender_username])
+    receiver = db.relationship('User', foreign_keys=[receiver_username])
+
+    def __repr__(self):
+        return f"Message('{self.message_id}', '{self}"
 
 

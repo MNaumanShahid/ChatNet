@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Users } from "../../../dummyData"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../backend-url";
 
 export function Sidebar() {
     const navigate = useNavigate();
@@ -11,23 +14,46 @@ export function Sidebar() {
     const goToProfile = () => {
         navigate("/profile");
     }
+    const goToMessage = () => {
+        navigate("/messenger");
+    }
 
     return <div className="m-3 justify-self-start">
         <ProfileButton onClick={goToProfile} />
         <Button label="Home" Icon={HomeIcon} onClick={goToHome}/>
-        <Button label="Messenger" Icon={MessengerIcon} />
+        <Button label="Messenger" Icon={MessengerIcon} onClick={goToMessage}/>
     </div>
 }
 
 function ProfileButton({onClick}) {
-    const currentUser = Users.Users[0];
+    const [currentUser, setCurrentUser] = useState(null);
+
+    const token = localStorage.getItem("token");
+
+    //get current user
+    useEffect(() => {
+        axios.get(BACKEND_URL + "/", {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then(res => {
+            setCurrentUser(res.data)
+        })
+    },[]);
+
+    if(!currentUser) {
+        return <div>
+            Loading...
+        </div>
+    }
 
     return <div onClick={onClick} className="p-2 flex justify-start items-center hover:bg-gray-300 transition-colors duration-200 hover:cursor-pointer rounded-lg mb-5">
         <div className="h-14 w-14 rounded-full overflow-hidden mr-3">
-            <img src={currentUser.profilePicture} alt="ProfilePic" />
+            <img src={currentUser.profile_picture} alt="ProfilePic" />
         </div>
         <div className="text-xl font-semibold">
-            {currentUser.firstname} {currentUser.lastname}
+            {currentUser.first_name} {currentUser.last_name}
         </div>
     </div>
 }

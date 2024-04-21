@@ -6,8 +6,8 @@ from flask import Flask, request, redirect, url_for, abort, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
-from flask_cors import CORS
-from models import db, User, Post, Comment, Like, Notification, follow
+from flask_cors import CORS, cross_origin
+from models import db, User, Post, Comment, Like, Notification, Message, follow
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
@@ -23,8 +23,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
@@ -385,12 +385,16 @@ def get_post(post_id):
         with app.app_context():
             post = db.session.query(Post).filter_by(post_id=post_id).first()
             if post:
+                post_user = db.session.query(User).filter_by(username=post.username).first()
                 return jsonify(
                     username=post.username,
                     post_text=post.post_text,
                     image=post.image,
                     location=post.location,
                     timestamp=post.timestamp,
+                    likes_count = len(post.likes),
+                    comments_count = len(post.comments),
+                    profile_picture = post_user.profile_picture
                 ), 200
             else:
                 raise Exception("Post not found.")
@@ -401,17 +405,43 @@ def get_post(post_id):
 @jwt_required()
 def get_all_posts():
     try:
-        posts = current_user.posts
+        posts = db.session.query(Post).filter_by(username=current_user.username).order_by(Post.timestamp.desc()).all()
         return jsonify(posts=[{
             "post_id": post.post_id,
             "post_text": post.post_text,
             "image": post.image,
             "location": post.location,
             "timestamp": post.timestamp,
-            "username": post.username
+            "username": post.username,
+            "likes_count": len(post.likes),
+            "comments_count": len(post.comments),
+            "profile_picture": current_user.profile_picture
         } for post in posts]), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
+
+@app.route("/get_user_posts/<username>")
+@jwt_required()
+def get_user_posts(username):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        if user:
+            posts = db.session.query(Post).filter_by(username=user.username).order_by(Post.timestamp.desc()).all()
+            return jsonify(posts=[{
+                "post_id": post.post_id,
+                "post_text": post.post_text,
+                "image": post.image,
+                "location": post.location,
+                "timestamp": post.timestamp,
+                "username": post.username,
+                "likes_count": len(post.likes),
+                "comments_count": len(post.comments),
+                "profile_picture": user.profile_picture
+            } for post in posts]), 200
+        else:
+            return jsonify(message="User not found."), 500
+    except Exception as e:
+        return jsonify(message=str(e)), 400
 
 @app.route("/comment/<post_id>", methods=['POST'])
 @jwt_required()
@@ -464,12 +494,14 @@ def get_comments(post_id):
         if post:
             comments = []
             for comment in post.comments:
+                comment_user = db.session.query(User).filter_by(username=comment.username).first()
                 add_comment = {
                     'comment_id': comment.comment_id,
                     'timestamp': comment.timestamp,
                     'username': comment.username,
                     'post_id': comment.post_id,
-                    'content': comment.content
+                    'content': comment.content,
+                    "profile_picture": comment_user.profile_picture
                 }
                 comments.append(add_comment)
             return jsonify(comments=comments), 200
@@ -510,16 +542,32 @@ def get_likes(post_id):
         if post:
             likes = []
             for like in post.likes:
+                like_user = db.session.query(User).filter_by(username=like.username).first()
                 add_like = {
                     "like_id": like.like_id,
                     "username": like.username,
                     "timestamp": like.timestamp,
-                    "post_id": post_id
+                    "post_id": post_id,
+                    "profile_picture": like_user.profile_picture
                 }
                 likes.append(add_like)
             return jsonify(likes=likes), 200
         else:
             raise Exception("Post not found.")
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@cross_origin
+@app.route("/check_like/<post_id>")
+@jwt_required()
+def check_like(post_id):
+    try:
+        post = db.session.query(Post).filter_by(post_id=post_id).first()
+        likes = post.likes
+        for like in likes:
+            if current_user.username == like.username:
+                return jsonify(message=True), 200
+        return jsonify(message=False), 404
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
@@ -584,6 +632,18 @@ def unfollow_user(username):
                 return jsonify({'message': 'User not followed.'}), 400
         else:
             return jsonify("User not found"), 400
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/check_follow/<username>")
+@jwt_required()
+def check_follow(username):
+    try:
+        following = current_user.following
+        for followed in following:
+            if username == followed.username:
+                return jsonify({'message': True}), 200
+        return jsonify({'message': False}), 404
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
@@ -698,20 +758,24 @@ def get_notifications():
 @jwt_required()
 def get_timeline():
     try:
-        data = request.get_json()
-        limit = data.get('limit')
+        # data = request.get_json()
+        # limit = data.get('limit')
         timeline_posts = []
         current_user_posts = []
         ordered_current_user_posts = db.session.query(Post).filter_by(username=current_user.username).order_by(Post.timestamp.desc()).all()
         for post in ordered_current_user_posts:
-            if datetime.datetime.now() - post.timestamp < timedelta(minutes=30):
+            if datetime.datetime.now() - post.timestamp < timedelta(hours=6):
+                post_user = db.session.query(User).filter_by(username=post.username).first()
                 current_user_posts.append({
                     'timestamp': post.timestamp,
                     'post_text': post.post_text,
                     'post_id': post.post_id,
                     'username': post.username,
                     'image': post.image,
-                    'location': post.location
+                    'location': post.location,
+                    'profile_picture': post_user.profile_picture,
+                    'likes_count': len(post.likes),
+                    'comments_count': len(post.comments)
                 })
         timeline_posts.append(current_user_posts)
         for followed in current_user.following:
@@ -719,14 +783,18 @@ def get_timeline():
             followed_username = followed.username
             ordered_followed_user_posts = db.session.query(Post).filter_by(username=followed_username).order_by(Post.timestamp.desc()).all()
             for post in ordered_followed_user_posts:
-                if datetime.datetime.now() - post.timestamp < timedelta(hours=6):
+                if datetime.datetime.now() - post.timestamp < timedelta(days=30):
+                    post_user = db.session.query(User).filter_by(username=post.username).first()
                     user_posts.append({
                     'timestamp': post.timestamp,
                     'post_text': post.post_text,
                     'post_id': post.post_id,
                     'username': post.username,
                     'image': post.image,
-                    'location': post.location
+                    'location': post.location,
+                    'profile_picture': post_user.profile_picture,
+                    'likes_count': len(post.likes),
+                    'comments_count': len(post.comments)
                     })
             timeline_posts.append(user_posts)
 
@@ -739,6 +807,112 @@ def get_timeline():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
+@app.route("/send_message/<username>", methods=['POST'])
+@jwt_required()
+def send_message(username):
+    try:
+        data = request.get_json()
+        content = data['content']
+        receiver = db.session.query(User).filter_by(username=username).first()
+        if receiver:
+            if current_user in receiver.followers:
+                new_message = Message(
+                    content=content,
+                    sender_username=current_user.username,
+                    receiver_username=username,
+                )
+                db.session.add(new_message)
+                db.session.commit()
+                return jsonify(message="Message successfully sent"), 200
+            else:
+                return jsonify("User not followed."), 400
+        else:
+            return jsonify("User not found."), 400
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/get_messages/<username>")
+@jwt_required()
+def get_messages(username):
+    try:
+        friend_user = db.session.query(User).filter_by(username=username).first()
+        if friend_user:
+            message_list = []
+            sender_alias = db.aliased(User)
+            receiver_alias = db.aliased(User)
+            messages = db.session.query(Message)\
+            .join(sender_alias, Message.sender_username == sender_alias.username)\
+            .join(receiver_alias, Message.receiver_username == receiver_alias.username)\
+            .filter(db.or_(sender_alias.username == current_user.username, receiver_alias.username == current_user.username))\
+            .order_by(Message.timestamp.desc()).all()
+
+            for message in messages:
+                if message.sender_username == current_user.username:
+                    if message.receiver_username == friend_user.username:
+                        message_list.append(
+                            {
+                                'message_id': message.message_id,
+                                'content': message.content,
+                                'timestamp': message.timestamp,
+                                'sender_username': message.sender_username,
+                                'receiver_username': message.receiver_username,
+                                'sent': True
+                            }
+                        )
+                elif message.sender_username == friend_user.username:
+                    message_list.append(
+                        {
+                            'message_id': message.message_id,
+                            'content': message.content,
+                            'timestamp': message.timestamp,
+                            'sender_username': message.sender_username,
+                            'receiver_username': message.receiver_username,
+                            'sent': False
+                        }
+                    )
+            return jsonify(messages=message_list), 200
+        else:
+            return jsonify(message="User not found."), 400
+    except Exception as e:
+        return jsonify(message=str(e)), 400
+
+@app.route("/check_messages")
+@jwt_required()
+def check_messages():
+    try:
+        usernames_messaged = []
+        sender_alias = db.aliased(User)
+        receiver_alias = db.aliased(User)
+        messages = db.session.query(Message) \
+            .join(sender_alias, Message.sender_username == sender_alias.username) \
+            .join(receiver_alias, Message.receiver_username == receiver_alias.username) \
+            .filter(
+            db.or_(sender_alias.username == current_user.username, receiver_alias.username == current_user.username)) \
+            .order_by(Message.timestamp.desc()).all()
+        for message in messages:
+            runame = message.receiver_username
+            suname = message.sender_username
+            cuname = current_user.username
+            if runame != cuname:
+                if runame not in usernames_messaged:
+                    usernames_messaged.append(runame)
+            elif suname != cuname:
+                if suname not in usernames_messaged:
+                    usernames_messaged.append(suname)
+        list_messaged = []
+        for username in usernames_messaged:
+            user = db.session.query(User).filter_by(username=username).first()
+            list_messaged.append(
+                {
+                    'username': user.username,
+                    'profile_picture': user.profile_picture,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name
+                }
+            )
+        return jsonify(user_message_list=list_messaged), 200
+    except Exception as e:
+        return jsonify(message=str(e)), 400
 
 
 

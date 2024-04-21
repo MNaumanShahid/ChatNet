@@ -7,10 +7,6 @@ export function Topbar() {
     const navigate = useNavigate();
     const [showOps, setShowOps] = useState(false);
 
-    const OpsClickHandler = () => {
-        navigate("/settings");
-    }
-
     const LogoHandler = () => {
         navigate("/");
     }
@@ -21,7 +17,7 @@ export function Topbar() {
                 ChatNet
             </div>
             <SearchBar />
-            <ProfileOps clickHandler={OpsClickHandler} />
+            <ProfileOps/>
         </div>
     </div> 
 }
