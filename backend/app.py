@@ -17,7 +17,7 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 
 app = Flask(__name__)
 # CORS(app, supports_credentials=True)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "https://chatnet-wheat.vercel.app/"}})
 app.config['SECRET_KEY'] = os.environ.get("FLAKS_KEY")
 
 
@@ -144,6 +144,7 @@ def signup():
         return jsonify({'message': str(e)}), 400
 
 @app.route("/add_vdb_entry", methods=['POST'])
+@cross_origin()
 @jwt_required()
 def add_vdb_entry():
     try:
@@ -165,6 +166,7 @@ def add_vdb_entry():
         return jsonify({'message': str(e)}), 400
 
 @app.route("/find_users", methods=['GET', 'POST'])
+@cross_origin()
 @jwt_required()
 def find_users():
     try:
