@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
+import os
 
 from flask import Flask, request, redirect, url_for, abort, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -17,11 +18,11 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 app = Flask(__name__)
 # CORS(app, supports_credentials=True)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
+app.config['SECRET_KEY'] = os.environ.get("FLAKS_KEY")
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", 'sqlite:///chatnet.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -29,10 +30,8 @@ with app.app_context():
     db.create_all()
 
 
-app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_KEY')
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
-# app.config["JWT_COOKIE_SECURE"] = False
-# app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
@@ -963,4 +962,4 @@ def check_messages():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False)
