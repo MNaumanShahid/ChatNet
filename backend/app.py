@@ -17,7 +17,7 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 
 app = Flask(__name__)
 # CORS(app, supports_credentials=True)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}, headers=['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'])
 app.config['SECRET_KEY'] = os.environ.get("FLAKS_KEY")
 
 
@@ -288,7 +288,7 @@ def update_user():
             if first_name:
                 current_user.first_name = first_name
             if last_name:
-                current_user.lastname = last_name
+                current_user.last_name = last_name
             if bio:
                 current_user.bio = bio
             if dob:
