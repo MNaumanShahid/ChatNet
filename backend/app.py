@@ -17,7 +17,7 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 
 app = Flask(__name__)
 # CORS(app, supports_credentials=True)
-CORS(app, resources={r"/*": {"origins": "https://chatnet-wheat.vercel.app/"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = os.environ.get("FLAKS_KEY")
 
 
