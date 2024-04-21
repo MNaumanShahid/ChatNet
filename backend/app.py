@@ -144,7 +144,7 @@ def signup():
         return jsonify({'message': str(e)}), 400
 
 @app.route("/add_vdb_entry", methods=['POST', 'OPTIONS'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def add_vdb_entry():
     try:
@@ -630,6 +630,7 @@ def check_like(post_id):
         return jsonify({'message': str(e)}), 400
 
 @app.route("/search_users/<filter>", methods=['GET', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def search_users(filter):
     try:
