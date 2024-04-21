@@ -35,17 +35,6 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
-@app.after_request
-def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
-
-from flask import Response
-
-@current_app.before_request
-def basic_authentication():
-    if request.method.lower() == 'options':
-        return Response()
 
 # @app.after_request
 # def refresh_expiring_jwts(response):
@@ -154,11 +143,18 @@ def signup():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/add_vdb_entry", methods=['POST'])
+@app.route("/add_vdb_entry", methods=['POST', 'OPTIONS'])
 @cross_origin()
 @jwt_required()
 def add_vdb_entry():
     try:
+        if request.method == 'OPTIONS':
+            # Handle OPTIONS request (preflight check)
+            response = jsonify({'message': 'Preflight check successful'})
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+            return response
         username = current_user.username
         user = db.session.query(User).filter_by(username=username).first()
         dob = user.dob
@@ -629,10 +625,17 @@ def check_like(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/search_users/<filter>", methods=['GET'])
+@app.route("/search_users/<filter>", methods=['GET', 'OPTIONS'])
 @jwt_required()
 def search_users(filter):
     try:
+        if request.method == 'OPTIONS':
+            # Handle OPTIONS request (preflight check)
+            response = jsonify({'message': 'Preflight check successful'})
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+            return response
         users_list = []
         users = db.session.query(User).filter(User.username.like(filter)).limit(5)
         for user in users:
