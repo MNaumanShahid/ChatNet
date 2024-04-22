@@ -18,11 +18,11 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 app = Flask(__name__)
 # CORS(app, supports_credentials=True)
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}, headers=['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'])
-app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
+app.config['SECRET_KEY'] = ""
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://chatnet_octb_user:5lYkNRNB06DHCWIeHv0CdMIZDQxEbt8H@dpg-coiih7779t8c738hh9d0-a.singapore-postgres.render.com/chatnet_octb"
+app.config['SQLALCHEMY_DATABASE_URI'] = ""
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -35,19 +35,19 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
-def build_preflight_response():
-    response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add('Access-Control-Allow-Headers', "*")
-    response.headers.add('Access-Control-Allow-Methods', "*")
-    return response
-def build_actual_response(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
-
-@app.after_request
-def set_headers(response):
-    response.headers["Referrer-Policy"] = "no-referrer"
+# def build_preflight_response():
+#     response = make_response()
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     response.headers.add('Access-Control-Allow-Headers', "*")
+#     response.headers.add('Access-Control-Allow-Methods', "*")
+#     return response
+# def build_actual_response(response):
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     return response
+#
+# @app.after_request
+# def set_headers(response):
+#     response.headers["Referrer-Policy"] = "no-referrer"
 
 # @app.after_request
 # def refresh_expiring_jwts(response):
@@ -161,8 +161,8 @@ def signup():
 @jwt_required()
 def add_vdb_entry():
     try:
-        if request.method == 'OPTIONS':
-            return build_preflight_response()
+        # if request.method == 'OPTIONS':
+        #     return build_preflight_response()
         username = current_user.username
         user = db.session.query(User).filter_by(username=username).first()
         dob = user.dob
@@ -180,7 +180,7 @@ def add_vdb_entry():
         # response.headers['Access-Control-Allow-Origin'] = '*'
         # response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
         # response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response = build_actual_response(response)
+        # response = build_actual_response(response)
         return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
@@ -643,8 +643,8 @@ def check_like(post_id):
 @jwt_required()
 def search_users(filter):
     try:
-        if request.method == 'OPTIONS':
-            return build_preflight_response()
+        # if request.method == 'OPTIONS':
+        #     return build_preflight_response()
         users_list = []
         users = db.session.query(User).filter(User.username.like(filter)).limit(5)
         for user in users:
@@ -673,7 +673,7 @@ def search_users(filter):
         # response.headers['Access-Control-Allow-Origin'] = '*'
         # response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
         # response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response = build_actual_response(response)
+        # response = build_actual_response(response)
         return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
@@ -994,4 +994,4 @@ def check_messages():
 
 
 if __name__ == "__main__":
-    app.run(debug = False)
+    app.run(host="0.0.0.0", port=5000, debug=False)
