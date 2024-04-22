@@ -1,39 +1,53 @@
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
+import os
 
-from flask import Flask, request, redirect, url_for, abort, jsonify
+from flask import Flask, request, redirect, url_for, abort, jsonify, current_app, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from flask_cors import CORS, cross_origin
 from models import db, User, Post, Comment, Like, Notification, Message, follow
+from recommend import add_entry, find_users_emb
 import datetime
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, current_user,
                                 get_jwt, get_jwt_identity, set_access_cookies,
                                 unset_jwt_cookies)
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+# CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}, headers=['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'])
 app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chatnet.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://chatnet_octb_user:5lYkNRNB06DHCWIeHv0CdMIZDQxEbt8H@dpg-coiih7779t8c738hh9d0-a.singapore-postgres.render.com/chatnet_octb"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 
-app.config['JWT_SECRET_KEY'] = 'jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ'
+app.config['JWT_SECRET_KEY'] = "jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ"
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
-# app.config["JWT_COOKIE_SECURE"] = False
-# app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
+def build_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+def build_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+@app.after_request
+def set_headers(response):
+    response.headers["Referrer-Policy"] = "no-referrer"
 
 # @app.after_request
 # def refresh_expiring_jwts(response):
@@ -63,7 +77,7 @@ def user_lookup_callback(_jwt_header, jwt_data):
     return User.query.filter_by(username=identity).one_or_none()
 
 
-@app.route('/', methods=['GET'])
+@app.route('/api/', methods=['GET'])
 @jwt_required()
 def home():
     try:
@@ -82,7 +96,7 @@ def home():
     except Exception as e:
         return jsonify(error=str(e)), 400
 
-@app.route('/signup', methods=['POST'])
+@app.route('/api/signup', methods=['POST'])
 def signup():
     try:
         data = request.get_json()
@@ -93,6 +107,7 @@ def signup():
         last_name = data.get('lastname')
         bio = data.get('bio')
         dob = data.get('dob')
+        gender = data.get('gender')
         if dob:
             dob = datetime.datetime(day=int(dob["day"]), month=int(dob["month"]), year=int(dob["year"]))
         profile_picture = data.get('profile_picture')
@@ -124,7 +139,8 @@ def signup():
             profile_picture = profile_picture,
             city = city,
             country = country,
-            account_private = account_private
+            account_private = account_private,
+            gender = gender
         )
         with app.app_context():
             db.session.add(new_user)
@@ -140,9 +156,60 @@ def signup():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
+@app.route("/api/add_vdb_entry", methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+@jwt_required()
+def add_vdb_entry():
+    try:
+        if request.method == 'OPTIONS':
+            return build_preflight_response()
+        username = current_user.username
+        user = db.session.query(User).filter_by(username=username).first()
+        dob = user.dob
+        age = datetime.datetime.now().year - dob.year
+        gender = user.gender
+
+        data = request.get_json()
+        answer1 = data.get('answer1')
+        answer2 = data.get('answer2')
+        answer3 = data.get('answer3')
+
+        add_entry(username, gender, age, answer1, answer2, answer3)
+        response = jsonify({'message': 'Successfully added entry to database.'})
+        # response = make_response(response)
+        # response.headers['Access-Control-Allow-Origin'] = '*'
+        # response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        # response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response = build_actual_response(response)
+        return response, 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
+
+@app.route("/api/find_users", methods=['GET', 'POST'])
+@cross_origin()
+@jwt_required()
+def find_users():
+    try:
+        data = request.get_json()
+        prompt = data.get('prompt')
+        output = find_users_emb(prompt)
+        users_list = []
+        for username in output:
+            user = db.session.query(User).filter_by(username=username).first()
+            if user:
+                users_list.append({
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'profile_picture': user.profile_picture
+                })
+        return jsonify({'users': users_list}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
 
 
-@app.route('/login', methods=['POST'])
+
+@app.route('/api/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
@@ -169,7 +236,7 @@ def login():
             return jsonify({'message': str(e)}), 404
         return jsonify({'message': str(e)}), 400
 
-@app.route('/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 def logout():
     try:
         response = jsonify({"msg": "logout successful"})
@@ -178,7 +245,7 @@ def logout():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route('/profile/<string:username>', methods=['GET'])
+@app.route('/api/profile/<string:username>', methods=['GET'])
 @jwt_required()
 def get_profile(username):
     try:
@@ -203,7 +270,7 @@ def get_profile(username):
             return jsonify(message=str(e)), 404
         return jsonify({'message': str(e)}), 400
 
-@app.route('/update_user', methods=['PUT'])
+@app.route('/api/update_user', methods=['PUT'])
 @jwt_required()
 def update_user():
     try:
@@ -230,7 +297,7 @@ def update_user():
             if first_name:
                 current_user.first_name = first_name
             if last_name:
-                current_user.lastname = last_name
+                current_user.last_name = last_name
             if bio:
                 current_user.bio = bio
             if dob:
@@ -250,7 +317,7 @@ def update_user():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/update_username", methods=['PUT'])
+@app.route("/api/update_username", methods=['PUT'])
 @jwt_required()
 def update_username():
     try:
@@ -297,7 +364,7 @@ def update_username():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/delete_user", methods=['POST'])
+@app.route("/api/delete_user", methods=['POST'])
 @jwt_required()
 def delete_user():
     try:
@@ -326,7 +393,7 @@ def delete_user():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/create_post", methods=['POST'])
+@app.route("/api/create_post", methods=['POST'])
 @jwt_required()
 def create_post():
     try:
@@ -345,7 +412,7 @@ def create_post():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/update_post/<post_id>", methods=['PUT'])
+@app.route("/api/update_post/<post_id>", methods=['PUT'])
 @jwt_required()
 def update_post(post_id):
     try:
@@ -366,7 +433,7 @@ def update_post(post_id):
         return jsonify({'message': str(e)}), 400
 
 
-@app.route("/delete_post/<post_id>", methods=['DELETE'])
+@app.route("/api/delete_post/<post_id>", methods=['DELETE'])
 @jwt_required()
 def delete_post(post_id):
     try:
@@ -378,7 +445,7 @@ def delete_post(post_id):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_post/<post_id>", methods=['GET'])
+@app.route("/api/get_post/<post_id>", methods=['GET'])
 @jwt_required()
 def get_post(post_id):
     try:
@@ -401,7 +468,7 @@ def get_post(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_all_posts/", methods=['GET'])
+@app.route("/api/get_all_posts/", methods=['GET'])
 @jwt_required()
 def get_all_posts():
     try:
@@ -420,7 +487,7 @@ def get_all_posts():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_user_posts/<username>")
+@app.route("/api/get_user_posts/<username>")
 @jwt_required()
 def get_user_posts(username):
     try:
@@ -443,7 +510,7 @@ def get_user_posts(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/comment/<post_id>", methods=['POST'])
+@app.route("/api/comment/<post_id>", methods=['POST'])
 @jwt_required()
 def comment(post_id):
     try:
@@ -468,7 +535,7 @@ def comment(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/delete_comment/<comment_id>", methods=['DELETE'])
+@app.route("/api/delete_comment/<comment_id>", methods=['DELETE'])
 @jwt_required()
 def delete_comment(comment_id):
     try:
@@ -486,7 +553,7 @@ def delete_comment(comment_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_comments/<post_id>", methods=['GET'])
+@app.route("/api/get_comments/<post_id>", methods=['GET'])
 @jwt_required()
 def get_comments(post_id):
     try:
@@ -510,7 +577,7 @@ def get_comments(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/like/<post_id>", methods=['POST'])
+@app.route("/api/like/<post_id>", methods=['POST'])
 @jwt_required()
 def like_post(post_id):
     try:
@@ -534,7 +601,7 @@ def like_post(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_likes/<post_id>", methods=['GET'])
+@app.route("/api/get_likes/<post_id>", methods=['GET'])
 @jwt_required()
 def get_likes(post_id):
     try:
@@ -558,7 +625,7 @@ def get_likes(post_id):
         return jsonify({'message': str(e)}), 400
 
 @cross_origin
-@app.route("/check_like/<post_id>")
+@app.route("/api/check_like/<post_id>")
 @jwt_required()
 def check_like(post_id):
     try:
@@ -571,10 +638,13 @@ def check_like(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/search_users/<filter>", methods=['GET'])
+@app.route("/api/search_users/<filter>", methods=['GET', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 @jwt_required()
 def search_users(filter):
     try:
+        if request.method == 'OPTIONS':
+            return build_preflight_response()
         users_list = []
         users = db.session.query(User).filter(User.username.like(filter)).limit(5)
         for user in users:
@@ -597,11 +667,18 @@ def search_users(filter):
         temp = []
         [temp.append(user) for user in users_list if user not in temp]
         users_list = temp
-        return jsonify(users=users_list), 200
+
+        response = jsonify(users=users_list)
+        # response = make_response(response)
+        # response.headers['Access-Control-Allow-Origin'] = '*'
+        # response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        # response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response = build_actual_response(response)
+        return response, 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/follow_user/<username>", methods=['POST'])
+@app.route("/api/follow_user/<username>", methods=['POST'])
 @jwt_required()
 def follow_user(username):
     try:
@@ -618,7 +695,7 @@ def follow_user(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/unfollow_user/<username>", methods=['POST'])
+@app.route("/api/unfollow_user/<username>", methods=['POST'])
 @jwt_required()
 def unfollow_user(username):
     try:
@@ -635,7 +712,7 @@ def unfollow_user(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/check_follow/<username>")
+@app.route("/api/check_follow/<username>")
 @jwt_required()
 def check_follow(username):
     try:
@@ -647,7 +724,7 @@ def check_follow(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_following", methods=['GET'])
+@app.route("/api/get_following", methods=['GET'])
 @jwt_required()
 def get_following():
     try:
@@ -665,7 +742,7 @@ def get_following():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_followers", methods=['GET'])
+@app.route("/api/get_followers", methods=['GET'])
 @jwt_required()
 def get_followers():
     try:
@@ -683,7 +760,7 @@ def get_followers():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/user/get_following/<username>", methods=['GET'])
+@app.route("/api/user/get_following/<username>", methods=['GET'])
 def get_user_following(username):
     try:
         user = db.session.query(User).filter_by(username=username).first()
@@ -700,7 +777,7 @@ def get_user_following(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/user/get_followers/<username>", methods=['GET'])
+@app.route("/api/user/get_followers/<username>", methods=['GET'])
 def get_user_followers(username):
     try:
         user = db.session.query(User).filter_by(username=username).first()
@@ -717,7 +794,7 @@ def get_user_followers(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/send_notification", methods=['POST'])
+@app.route("/api/send_notification", methods=['POST'])
 @jwt_required()
 def send_notification():
     try:
@@ -736,7 +813,7 @@ def send_notification():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_notifications", methods=['GET'])
+@app.route("/api/get_notifications", methods=['GET'])
 @jwt_required()
 def get_notifications():
     try:
@@ -754,7 +831,7 @@ def get_notifications():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_timeline", methods=['GET'])
+@app.route("/api/get_timeline", methods=['GET'])
 @jwt_required()
 def get_timeline():
     try:
@@ -807,7 +884,7 @@ def get_timeline():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/send_message/<username>", methods=['POST'])
+@app.route("/api/send_message/<username>", methods=['POST'])
 @jwt_required()
 def send_message(username):
     try:
@@ -831,7 +908,7 @@ def send_message(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_messages/<username>")
+@app.route("/api/get_messages/<username>")
 @jwt_required()
 def get_messages(username):
     try:
@@ -876,7 +953,7 @@ def get_messages(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/check_messages")
+@app.route("/api/check_messages")
 @jwt_required()
 def check_messages():
     try:
@@ -917,4 +994,4 @@ def check_messages():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False)
