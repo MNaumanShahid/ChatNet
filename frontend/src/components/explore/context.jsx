@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Users } from '../../../dummyData';
 import { BACKEND_URL } from '../backend-url';
 import axios from 'axios';
+import { useAsyncError } from 'react-router-dom';
 
 // Create a new context
 const AppContext = createContext();
@@ -25,6 +26,8 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
   const [greeting, setGreeting] = useState("");
+
+  const [suggestions, setSuggestions] = useState([]);
 
   const token = localStorage.getItem("token");
 
@@ -64,12 +67,20 @@ export const AppProvider = ({ children }) => {
         setPrevPromts(prev => [...prev, input])
 
         //send backend request
-        await new Promise(resolve => {
-            setTimeout(() => {
-                console.log("wait complete");
-                resolve();
-            }, 3000);
-        });
+        // await new Promise(resolve => {
+        //     setTimeout(() => {
+        //         console.log("wait complete");
+        //         resolve();
+        //     }, 3000);
+        // });
+        const res = await axios.get("/api/find_users", {
+          prompt: input
+        }, {
+          headers: {
+            Authorization: token
+          }
+        })
+        setSuggestions(res.data.users);
         
         let newResponseArray = exampleResponse.split(" ");
         setLoading(false);

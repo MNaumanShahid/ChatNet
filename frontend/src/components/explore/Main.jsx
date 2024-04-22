@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Users } from "../../../dummyData"
 import { useAppContext } from "./context";
-
+import { Card } from "./card";
+import { message_list } from "../../../dummyData";
 
 export function Main() {
-
+    const dummyUsers = message_list.user_message_list;
     const {currentUser, exampleResponse,
         input,setInput,
         recentPrompt, setRecentPrompt,
@@ -13,7 +14,8 @@ export function Main() {
         loading, setLoading,
         resultData,setResultData,
         onSend,
-        delayPara, greeting} = useAppContext();
+        delayPara, greeting,
+    suggestions, setSuggestions} = useAppContext();
 
     if(!currentUser) {
         return <div>
@@ -21,8 +23,8 @@ export function Main() {
         </div>
     }
 
-    return <div className="w-full inline-flex justify-center">
-        <div className="w-full flex flex-col items-center justify-center overflow-y-scroll">
+    return <div className="w-full inline-flex justify-center ">
+        <div className="w-full flex flex-col items-center justify-center ">
 
             {!showResult ? (<>
                 <div className="text-6xl w-7/12 m-auto mt-24 text-gray-400 font-normal">
@@ -57,7 +59,7 @@ export function Main() {
                 </div> */}
             </>
             ) : (<>
-                <div className="w-7/12 absolute top-24">
+                <div className="w-7/12 absolute top-24 " >
                     <div className="flex gap-3 my-3">
                         <img src={currentUser.profile_picture} alt="profilePic" className="w-12 h-12 rounded-full" />
                         <p>{recentPrompt}</p>
@@ -74,8 +76,12 @@ export function Main() {
                                 <hr className="rounded-lg min-h-6 min-w-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
                                 <hr className="rounded-lg min-h-6 min-w-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
                             </div>
-                        ) : <div className="text-base tracking-wide font-mono">
-                                {resultData}
+                        ) : <div className="text-base tracking-wide font-serif items-center w-full overflow-y-scroll h-auto">
+                                {dummyUsers.map((user, index) => {
+                                    return <div className="flex justify-center items-center mt-5">
+                                        <Card key={index} first_name={user.first_name} last_name={user.last_name} profile_picture={user.profile_picture} username={user.username} />
+                                    </div>
+                                })}
                             </div>
                             
                         }
@@ -84,7 +90,7 @@ export function Main() {
             </>
             )}
 
-            <div className="flex place-items-center w-7/12 pr-4 absolute bottom-3 rounded-full mt-52 border-2">
+            <div className="flex place-items-center w-7/12 pr-4 rounded-full mt-52 border-2 fixed bottom-0">
                 <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Enter a prompt here..." className="w-full p-3 rounded-full focus:outline-none" />
                 <svg onClick={onSend} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 hover:bg-gray-300 rounded-full p-1 transition-colors">
                     <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
