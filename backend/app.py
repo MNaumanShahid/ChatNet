@@ -73,7 +73,7 @@ def user_lookup_callback(_jwt_header, jwt_data):
     return User.query.filter_by(username=identity).one_or_none()
 
 
-@app.route('/', methods=['GET'])
+@app.route('/api/', methods=['GET'])
 @jwt_required()
 def home():
     try:
@@ -92,7 +92,7 @@ def home():
     except Exception as e:
         return jsonify(error=str(e)), 400
 
-@app.route('/signup', methods=['POST'])
+@app.route('/api/signup', methods=['POST'])
 def signup():
     try:
         data = request.get_json()
@@ -152,7 +152,7 @@ def signup():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/add_vdb_entry", methods=['POST', 'OPTIONS'])
+@app.route("/api/add_vdb_entry", methods=['POST', 'OPTIONS'])
 @cross_origin(supports_credentials=True)
 @jwt_required()
 def add_vdb_entry():
@@ -181,7 +181,7 @@ def add_vdb_entry():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/find_users", methods=['GET', 'POST'])
+@app.route("/api/find_users", methods=['GET', 'POST'])
 @cross_origin()
 @jwt_required()
 def find_users():
@@ -205,7 +205,7 @@ def find_users():
 
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
@@ -232,7 +232,7 @@ def login():
             return jsonify({'message': str(e)}), 404
         return jsonify({'message': str(e)}), 400
 
-@app.route('/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 def logout():
     try:
         response = jsonify({"msg": "logout successful"})
@@ -241,7 +241,7 @@ def logout():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route('/profile/<string:username>', methods=['GET'])
+@app.route('/api/profile/<string:username>', methods=['GET'])
 @jwt_required()
 def get_profile(username):
     try:
@@ -266,7 +266,7 @@ def get_profile(username):
             return jsonify(message=str(e)), 404
         return jsonify({'message': str(e)}), 400
 
-@app.route('/update_user', methods=['PUT'])
+@app.route('/api/update_user', methods=['PUT'])
 @jwt_required()
 def update_user():
     try:
@@ -313,7 +313,7 @@ def update_user():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/update_username", methods=['PUT'])
+@app.route("/api/update_username", methods=['PUT'])
 @jwt_required()
 def update_username():
     try:
@@ -360,7 +360,7 @@ def update_username():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/delete_user", methods=['POST'])
+@app.route("/api/delete_user", methods=['POST'])
 @jwt_required()
 def delete_user():
     try:
@@ -389,7 +389,7 @@ def delete_user():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/create_post", methods=['POST'])
+@app.route("/api/create_post", methods=['POST'])
 @jwt_required()
 def create_post():
     try:
@@ -408,7 +408,7 @@ def create_post():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/update_post/<post_id>", methods=['PUT'])
+@app.route("/api/update_post/<post_id>", methods=['PUT'])
 @jwt_required()
 def update_post(post_id):
     try:
@@ -429,7 +429,7 @@ def update_post(post_id):
         return jsonify({'message': str(e)}), 400
 
 
-@app.route("/delete_post/<post_id>", methods=['DELETE'])
+@app.route("/api/delete_post/<post_id>", methods=['DELETE'])
 @jwt_required()
 def delete_post(post_id):
     try:
@@ -441,7 +441,7 @@ def delete_post(post_id):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_post/<post_id>", methods=['GET'])
+@app.route("/api/get_post/<post_id>", methods=['GET'])
 @jwt_required()
 def get_post(post_id):
     try:
@@ -464,7 +464,7 @@ def get_post(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_all_posts/", methods=['GET'])
+@app.route("/api/get_all_posts/", methods=['GET'])
 @jwt_required()
 def get_all_posts():
     try:
@@ -483,7 +483,7 @@ def get_all_posts():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_user_posts/<username>")
+@app.route("/api/get_user_posts/<username>")
 @jwt_required()
 def get_user_posts(username):
     try:
@@ -506,7 +506,7 @@ def get_user_posts(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/comment/<post_id>", methods=['POST'])
+@app.route("/api/comment/<post_id>", methods=['POST'])
 @jwt_required()
 def comment(post_id):
     try:
@@ -531,7 +531,7 @@ def comment(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/delete_comment/<comment_id>", methods=['DELETE'])
+@app.route("/api/delete_comment/<comment_id>", methods=['DELETE'])
 @jwt_required()
 def delete_comment(comment_id):
     try:
@@ -549,7 +549,7 @@ def delete_comment(comment_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_comments/<post_id>", methods=['GET'])
+@app.route("/api/get_comments/<post_id>", methods=['GET'])
 @jwt_required()
 def get_comments(post_id):
     try:
@@ -573,7 +573,7 @@ def get_comments(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/like/<post_id>", methods=['POST'])
+@app.route("/api/like/<post_id>", methods=['POST'])
 @jwt_required()
 def like_post(post_id):
     try:
@@ -597,7 +597,7 @@ def like_post(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_likes/<post_id>", methods=['GET'])
+@app.route("/api/get_likes/<post_id>", methods=['GET'])
 @jwt_required()
 def get_likes(post_id):
     try:
@@ -621,7 +621,7 @@ def get_likes(post_id):
         return jsonify({'message': str(e)}), 400
 
 @cross_origin
-@app.route("/check_like/<post_id>")
+@app.route("/api/check_like/<post_id>")
 @jwt_required()
 def check_like(post_id):
     try:
@@ -634,7 +634,7 @@ def check_like(post_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/search_users/<filter>", methods=['GET', 'OPTIONS'])
+@app.route("/api/search_users/<filter>", methods=['GET', 'OPTIONS'])
 @cross_origin(supports_credentials=True)
 @jwt_required()
 def search_users(filter):
@@ -674,7 +674,7 @@ def search_users(filter):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/follow_user/<username>", methods=['POST'])
+@app.route("/api/follow_user/<username>", methods=['POST'])
 @jwt_required()
 def follow_user(username):
     try:
@@ -691,7 +691,7 @@ def follow_user(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/unfollow_user/<username>", methods=['POST'])
+@app.route("/api/unfollow_user/<username>", methods=['POST'])
 @jwt_required()
 def unfollow_user(username):
     try:
@@ -708,7 +708,7 @@ def unfollow_user(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/check_follow/<username>")
+@app.route("/api/check_follow/<username>")
 @jwt_required()
 def check_follow(username):
     try:
@@ -720,7 +720,7 @@ def check_follow(username):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_following", methods=['GET'])
+@app.route("/api/get_following", methods=['GET'])
 @jwt_required()
 def get_following():
     try:
@@ -738,7 +738,7 @@ def get_following():
     except Exception as e:
         return jsonify({'message': str(e)}), 400
 
-@app.route("/get_followers", methods=['GET'])
+@app.route("/api/get_followers", methods=['GET'])
 @jwt_required()
 def get_followers():
     try:
@@ -756,7 +756,7 @@ def get_followers():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/user/get_following/<username>", methods=['GET'])
+@app.route("/api/user/get_following/<username>", methods=['GET'])
 def get_user_following(username):
     try:
         user = db.session.query(User).filter_by(username=username).first()
@@ -773,7 +773,7 @@ def get_user_following(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/user/get_followers/<username>", methods=['GET'])
+@app.route("/api/user/get_followers/<username>", methods=['GET'])
 def get_user_followers(username):
     try:
         user = db.session.query(User).filter_by(username=username).first()
@@ -790,7 +790,7 @@ def get_user_followers(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/send_notification", methods=['POST'])
+@app.route("/api/send_notification", methods=['POST'])
 @jwt_required()
 def send_notification():
     try:
@@ -809,7 +809,7 @@ def send_notification():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_notifications", methods=['GET'])
+@app.route("/api/get_notifications", methods=['GET'])
 @jwt_required()
 def get_notifications():
     try:
@@ -827,7 +827,7 @@ def get_notifications():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_timeline", methods=['GET'])
+@app.route("/api/get_timeline", methods=['GET'])
 @jwt_required()
 def get_timeline():
     try:
@@ -880,7 +880,7 @@ def get_timeline():
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/send_message/<username>", methods=['POST'])
+@app.route("/api/send_message/<username>", methods=['POST'])
 @jwt_required()
 def send_message(username):
     try:
@@ -904,7 +904,7 @@ def send_message(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/get_messages/<username>")
+@app.route("/api/get_messages/<username>")
 @jwt_required()
 def get_messages(username):
     try:
@@ -949,7 +949,7 @@ def get_messages(username):
     except Exception as e:
         return jsonify(message=str(e)), 400
 
-@app.route("/check_messages")
+@app.route("/api/check_messages")
 @jwt_required()
 def check_messages():
     try:
