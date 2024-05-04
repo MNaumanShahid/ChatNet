@@ -198,8 +198,8 @@ export function Intro() {
         </div>
     }
 
-    return <div className="grid grid-cols-1 w-screen h-screen justify-items-center">
-            <div className="w-7/12 overflow-y-scroll pb-20">
+    return <div className="grid grid-cols-1 w-screen h-screen justify-items-center overflow-y-scroll scrollbar">
+            <div className="w-7/12  pb-20">
 
                 <div id={"welcome"} className="text-6xl mt-16 w-full greet">
                     Welcome {currentUser.first_name}
@@ -252,5 +252,25 @@ export function Intro() {
                     <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                 </svg>
             </div>
+            {/* Custom scrollbar styles */}
+            <style>
+                {`
+                    /* Track */
+                    ::-webkit-scrollbar {
+                        width: 2px;
+                    }
+
+                    /* Handle */
+                    ::-webkit-scrollbar-thumb {
+                        background: #4f4f4f;
+                        border-radius: 5px;
+                    }
+
+                    /* Handle on hover */
+                    ::-webkit-scrollbar-thumb:hover {
+                        background: #555;
+                    }
+                `}
+            </style>
     </div>
 }

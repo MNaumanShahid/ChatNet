@@ -26,7 +26,6 @@ class User(db.Model):
     profile_picture = db.Column(db.String(1000), nullable=False, server_default="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=")
     city = db.Column(db.String(50))
     country = db.Column(db.String(50))
-    gender = db.Column(db.String(15), nullable=False)
     account_private = db.Column(db.Boolean, default=False)
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
@@ -118,3 +117,5 @@ class Message(db.Model):
 
     def __repr__(self):
         return f"Message('{self.message_id}', '{self}"
+
+

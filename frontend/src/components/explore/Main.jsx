@@ -23,7 +23,7 @@ export function Main() {
         </div>
     }
 
-    return <div className="w-full inline-flex justify-center ">
+    return <div className="w-full inline-flex justify-center " style={{ maxHeight: "calc(100vh - 4rem)" }}>
         <div className="w-full flex flex-col items-center justify-center ">
 
             {!showResult ? (<>
@@ -59,7 +59,7 @@ export function Main() {
                 </div> */}
             </>
             ) : (<>
-                <div className="w-7/12 absolute top-24 " >
+                <div className="w-7/12 absolute top-24" >
                     <div className="flex gap-3 my-3">
                         <img src={currentUser.profile_picture} alt="profilePic" className="w-12 h-12 rounded-full" />
                         <p>{recentPrompt}</p>
@@ -76,9 +76,9 @@ export function Main() {
                                 <hr className="rounded-lg min-h-6 min-w-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
                                 <hr className="rounded-lg min-h-6 min-w-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
                             </div>
-                        ) : <div className="text-base tracking-wide font-serif items-center w-full overflow-y-scroll h-auto">
+                        ) : <div className="text-base tracking-wide font-serif items-center w-full overflow-y-scroll scrollbar h-auto grid grid-cols-2 " style={{ maxHeight: "calc(100vh - 16rem)" }}>
                                 {dummyUsers.map((user, index) => {
-                                    return <div className="flex justify-center items-center mt-5">
+                                    return <div className="flex justify-start items-center mt-5 col-span-1 ml-16">
                                         <Card key={index} first_name={user.first_name} last_name={user.last_name} profile_picture={user.profile_picture} username={user.username} />
                                     </div>
                                 })}
@@ -97,5 +97,25 @@ export function Main() {
                 </svg>
             </div>
         </div>
+        {/* Custom scrollbar styles */}
+        <style>
+                {`
+                    /* Track */
+                    ::-webkit-scrollbar {
+                        width: 2px;
+                    }
+
+                    /* Handle */
+                    ::-webkit-scrollbar-thumb {
+                        background: #4f4f4f;
+                        border-radius: 5px;
+                    }
+
+                    /* Handle on hover */
+                    ::-webkit-scrollbar-thumb:hover {
+                        background: #555;
+                    }
+                `}
+            </style>
     </div>
 }

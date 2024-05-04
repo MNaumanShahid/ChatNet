@@ -189,13 +189,13 @@ export function UserProfile() {
                     </div>
                 </div>
                 <div className="w-full h-screen overflow-y-scroll mt-10">
-                    {posts.map(post => {
+                    {posts.map((post,index) => {
                         return (
                             <div>
                                 {post.image ? (
-                                    <Post key={post.post_id} postId={post.post_id} ProfilePicture={profile.profile_picture} Username={post.username} Text={post.post_text} noOfLikes={post.likes_count} noOfComments={post.comments_count} image={post.image} timestamp={post.timestamp} />
+                                    <Post key={index} postId={post.post_id} ProfilePicture={profile.profile_picture} Username={post.username} Text={post.post_text} noOfLikes={post.likes_count} noOfComments={post.comments_count} image={post.image} timestamp={post.timestamp} />
                                 ) : (
-                                    <Post key={post.post_id} postId={post.post_id} ProfilePicture={profile.profile_picture} Username={post.username} Text={post.post_text} noOfLikes={post.likes_count} noOfComments={post.comments_count} timestamp={post.timestamp} />
+                                    <Post key={index} postId={post.post_id} ProfilePicture={profile.profile_picture} Username={post.username} Text={post.post_text} noOfLikes={post.likes_count} noOfComments={post.comments_count} timestamp={post.timestamp} />
                                 )}
                             </div>
                         )

@@ -150,8 +150,8 @@ export function Messenger() {
         <div className="h-screen overflow-hidden">
             <Topbar />
             <div className="grid grid-cols-7 h-full">
-                <div className="col-span-2 bg-gray-100" style={{ maxHeight: "calc(100vh - 4rem)" }}>
-                    <div className="relative h-16 flex shadow-sm">
+                <div className="col-span-2 bg-white" style={{ maxHeight: "calc(100vh - 4rem)" }}>
+                    <div className="relative h-16 flex shadow-sm bg-gray-100">
                         <div onClick={(event) => {
                             event.stopPropagation();
                             showBar ? (setShowBar(false)) : (setShowBar(true));
@@ -207,16 +207,13 @@ export function Messenger() {
                         })}
                     </div>
                 </div>
-                <div className="relative col-span-5 bg-gray-500 overflow-y-auto scrollbar" >
+                <div className="relative col-span-5 bg-blue-100 overflow-y-auto scrollbar" >
                     {activeUser ? (
                         <div className="absolute w-full">
                             <div className="relative h-16 flex justify-between shadow-lg border-x-2 border-gray-300  bg-gray-100">
                                 <div>
-                                    <div className="ml-6 mt-2 text-lg font-medium font-sans">
+                                    <div className="ml-6 mt-4 text-lg font-medium font-sans">
                                         {activeUser}
-                                    </div>
-                                    <div className="ml-6 text-primary font-medium">
-                                        online 
                                     </div>
                                 </div>
                                 <div className="flex mr-6 mt-4">
@@ -257,7 +254,7 @@ export function Messenger() {
                                     )}
                                 </div>
                             </div>
-                            <div className="overflow-y-auto scrollbar h-screen" style={{ backgroundImage: 'url(/background.jpg)', backgroundSize: "cover", backgroundPosition: 'center', maxHeight: "calc(100vh - 12rem" }} ref={messagesEndRef}>
+                            <div className="overflow-y-auto scrollbar h-screen" style={{ backgroundImage: 'url(/background.jpeg)', backgroundSize: "cover", backgroundPosition: 'center', maxHeight: "calc(100vh - 12rem" }} ref={messagesEndRef}>
                                 {messageList.slice().reverse().map((msg, index) => {
                                     return <Message key={index} content={msg.content} sent={msg.sent} timestamp={msg.timestamp} activeUser={activeUser} sender={msg.sender_username} />
                                 })}

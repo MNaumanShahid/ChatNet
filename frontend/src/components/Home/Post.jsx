@@ -13,7 +13,7 @@ export function Post(props) {
     const [comments, setComments] = useState(null);
     const [showComments, setShowComments] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
-    const [newComment, setNewComment] = useState(null);
+    const [newComment, setNewComment] = useState("");
     
     const token = localStorage.getItem("token");
     const navigate = useNavigate();

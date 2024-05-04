@@ -6,7 +6,7 @@ import { IMGUR_CLIENT_ID, IMGUR_TOKEN } from "../../assets/imgur";
 
 export function AddPost() {
     const [currentUser, setCurrentUser] = useState(null);
-    const [postText, setPosttext] = useState(null);
+    const [postText, setPosttext] = useState();
     const [file, setFile] = useState(null);
 
     const token = localStorage.getItem("token");
