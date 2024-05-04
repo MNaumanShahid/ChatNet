@@ -47,7 +47,7 @@ export function Home() {
         .then(res => {
             setPosts(res.data.posts)
         })
-    },[posts])
+    },[])
 
 
     if(!currentUser || !posts) {
