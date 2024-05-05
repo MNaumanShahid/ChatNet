@@ -13,7 +13,7 @@ export function Post(props) {
     const [comments, setComments] = useState(null);
     const [showComments, setShowComments] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
-    const [newComment, setNewComment] = useState(null);
+    const [newComment, setNewComment] = useState("");
     
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -100,7 +100,7 @@ export function Post(props) {
     }
 
     return (
-        <div className="mt-5 border-2 w-9/12 mx-auto p-3 rounded-md shadow-lg mb-5">
+        <div className="mt-5 border-2 w-9/12 mx-auto p-3 rounded-3xl shadow-lg mb-5">
             <div className="flex place-items-center font-black justify-between">
                 <div className="flex place-items-center">
                     <img onClick={goToProfile(props.Username)} className="w-12 h-12 rounded-full mr-3 cursor-pointer" src={props.ProfilePicture} alt="ProfilePic" />

@@ -8,6 +8,8 @@ import { Home } from './pages/Home'
 import { UserProfile } from './pages/UserProfile'
 import { Settings } from './pages/Settings'
 import { Messenger } from './pages/Messenger'
+import { Explore } from './pages/explore'
+import { Intro } from './pages/intro'
 
 function App() {
 
@@ -20,7 +22,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/user/:username" element={<UserProfile />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/messenger" element={<Messenger />}/>
+          <Route path='/messenger' element={<Messenger />}/>
+          <Route path='/explore' element={<Explore />}/>
+          <Route path='/intro' element={<Intro />} />
         </Routes>
       </BrowserRouter>
   )
