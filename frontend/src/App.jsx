@@ -18,13 +18,13 @@ function App() {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/user/:username" element={<UserProfile />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path='/messenger' element={<Messenger />}/>
-          <Route path='/explore' element={<Explore />}/>
-          <Route path='/intro' element={<Intro />} />
+          <Route path="api/profile" element={<Profile />} />
+          <Route path="api/" element={<Home />} />
+          <Route path="api/user/:username" element={<UserProfile />} />
+          <Route path="api/settings" element={<Settings />} />
+          <Route path='api/messenger' element={<Messenger />}/>
+          <Route path='api/explore' element={<Explore />}/>
+          <Route path='api/intro' element={<Intro />} />
         </Routes>
       </BrowserRouter>
   )
