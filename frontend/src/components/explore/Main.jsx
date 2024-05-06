@@ -16,13 +16,12 @@ export function Main() {
         onSend,
         delayPara, greeting,
     suggestions, setSuggestions} = useAppContext();
-
     if(!currentUser) {
         return <div>
             Loading...
         </div>
     }
-
+    // console.log(suggestions);
     return <div className="w-full inline-flex justify-center " style={{ maxHeight: "calc(100vh - 4rem)" }}>
         <div className="w-full flex flex-col items-center justify-center ">
 
@@ -77,7 +76,7 @@ export function Main() {
                                 <hr className="rounded-lg min-h-6 min-w-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
                             </div>
                         ) : <div className="text-base tracking-wide font-serif items-center w-full overflow-y-scroll scrollbar h-auto grid grid-cols-2 " style={{ maxHeight: "calc(100vh - 16rem)" }}>
-                                {dummyUsers.map((user, index) => {
+                                {suggestions.users.map((user, index) => {
                                     return <div className="flex justify-start items-center mt-5 col-span-1 ml-16">
                                         <Card key={index} first_name={user.first_name} last_name={user.last_name} profile_picture={user.profile_picture} username={user.username} />
                                     </div>

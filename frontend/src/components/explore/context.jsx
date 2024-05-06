@@ -58,7 +58,7 @@ export const AppProvider = ({ children }) => {
     displayGreeting();
   },[])
 
-  const onSend = async (prompt) => {
+  const onSend = async () => {
             
         setResultData("");
         setLoading(true);
@@ -73,14 +73,13 @@ export const AppProvider = ({ children }) => {
         //         resolve();
         //     }, 3000);
         // });
-        const res = await axios.get("/api/find_users", {
+        const res = await axios.post(BACKEND_URL + "/find_users", {
           prompt: input
-        }, {
-          headers: {
-            Authorization: token
-          }
         })
-        setSuggestions(res.data.users);
+        setSuggestions(res.data);
+        console.log("HELLO");
+        console.log(res.data.users);
+
         
         let newResponseArray = exampleResponse.split(" ");
         setLoading(false);
@@ -117,7 +116,8 @@ export const AppProvider = ({ children }) => {
         onSend,
         delayPara,
         newChat,
-        greeting
+        greeting,
+        suggestions,setSuggestions
       }}
     >
       {children}

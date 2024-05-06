@@ -80,7 +80,8 @@ export function Signup() {
                         password,
                         firstname,
                         lastname,
-                        dob
+                        dob,
+                        gender: "Male"
                     });
                     // re direct to homepage
                     setError(response.data.message);
