@@ -22,7 +22,7 @@ app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://chatnet_octb_user:5lYkNRNB06DHCWIeHv0CdMIZDQxEbt8H@dpg-coiih7779t8c738hh9d0-a.singapore-postgres.render.com/chatnet_octb"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://chatnet_octb_user:5lYkNRNB06DHCWIeHv0CdMIZDQxEbt8H@dpg-coiih7779t8c738hh9d0-a.singapore-postgres.render.com/chatnet_octb"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
