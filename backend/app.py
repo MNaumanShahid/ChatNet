@@ -18,11 +18,11 @@ from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, c
 app = Flask(__name__)
 # CORS(app, supports_credentials=True)
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}, headers=['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'])
-app.config['SECRET_KEY'] = os.environ.get("FLAKS_KEY")
+app.config['SECRET_KEY'] = "845jdbvjdb8422kds**jbsdfjds"
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", 'sqlite:///chatnet.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://chatnet_octb_user:5lYkNRNB06DHCWIeHv0CdMIZDQxEbt8H@dpg-coiih7779t8c738hh9d0-a.singapore-postgres.render.com/chatnet_octb"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -30,20 +30,20 @@ with app.app_context():
     db.create_all()
 
 
-app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_KEY')
+app.config['JWT_SECRET_KEY'] = "jhdHB98Biu*&uY*^vGuhu*&^*yCTD^%^7JBJ"
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
-def build_preflight_response():
-    response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add('Access-Control-Allow-Headers', "*")
-    response.headers.add('Access-Control-Allow-Methods', "*")
-    return response
-def build_actual_response(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+# def build_preflight_response():
+#     response = make_response()
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     response.headers.add('Access-Control-Allow-Headers', "*")
+#     response.headers.add('Access-Control-Allow-Methods', "*")
+#     return response
+# def build_actual_response(response):
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     return response
 
 # @app.after_request
 # def refresh_expiring_jwts(response):
