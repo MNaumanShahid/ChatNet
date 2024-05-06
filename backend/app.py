@@ -182,7 +182,6 @@ def add_vdb_entry():
 
 @app.route("/api/find_users", methods=['GET', 'POST'])
 @cross_origin()
-@jwt_required()
 def find_users():
     try:
         data = request.get_json()
