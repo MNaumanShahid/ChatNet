@@ -5,7 +5,7 @@ from pprint import pprint
 import os
 import re
 
-uri = "mongodb+srv://naumanshahidwork:JtSUt7tESoSeNxfa@cluster0.sf2li9u.mongodb.net/"
+uri = os.environ.het("MONGODB_URI")
 client = MongoClient(uri)
 DB_NAME = "chatnet"
 COLLECTION_NAME = "user"
